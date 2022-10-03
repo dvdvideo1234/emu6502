@@ -1,0 +1,344 @@
+Voici un tableau de référence des termes et expressions associées au 6502 :
+Terme 							Description
+Absolute address 				Cette expression permet d'indiquer une adresse identifiant un emplacement d'entreposage ou un 	périphérique sans l'utilisation d'une base, d'un déplacement ou d'un autre facteur. Voir aussi Effective address, Relative offset.
+Absolute addressing 			Cette expression permet d'indiquer un mode d'adressage dans lequel l'instruction contient l'adresse réelle requise pour son exécution. Dans la terminologie 6502, l'adressage absolu fait référence à un type d'adressage direct dans lequel l'instruction contient une adresse complète de 16 bits par opposition à l'adressage de page zéro dans lequel l'instruction ne contient qu'une adresse de 8 bits à la page 0.
+Absolute indexed addressing 	Cette expression permet d'indiquer un format d'adressage indexé dans laquelle l'instruction contient une adresse de base complète de 16 bits.
+Accumulator 					Ce mot permet d'indiquer un registre étant la source implicite d'un opérande et la destination du résultat pour la plupart des opérations arithmétiques et logiques.
+ACIA 							Cette abréviation, provenant de l'anglicisme Asynchronous Communications Interface Adapter, permet d'indiquer un périphérique d'interface série. Les ACIA courants dans les micro-ordinateurs basés sur 6502 sont les périphériques 6551 et 6850. Voir également UART.
+Active transition 				(dans un PIA ou VIA) 	Cette expression permet d'indiquer le bord sur la ligne de contrôle définissant un drapeau d'interruption. Les alternatives sont un front négatif (1 à la transition) ou un front positif (0 à 1 transition).
+Address 						Ce mot permet d'indiquer le code d'identification distinguant un emplacement mémoire ou un port d'entrée/sortie d'un autre et pouvant être utilisé pour en sélectionner un en particulier.
+Addressing modes 				Cette expression permet d'indiquer les méthodes pour spécifier les adresses à utiliser pour exécuter une instruction. Les modes d'adressage courants sont direct, immédiat, indexé, indirect et relatif.
+Address register 				Cette expression permet d'indiquer un registre contenant une adresse mémoire.
+Address space 					Cette expression permet d'indiquer l'intervalle totale d'adresses à laquelle un ordinateur particulier peut se référer.
+ALU 							Cette abréviation, provenant de l'anglicisme Arithmetic-logic unit, permet d'indiquer un périphérique pouvant exécuter l'une des nombreuses fonctions arithmétiques ou logiques; Les entrées de fonction sélectionnent quelle fonction est exécutée pendant un cycle particulier.
+Arithmetic-logic unit 			Cette expression permet d'indiquer un périphérique pouvant exécuter l'une des nombreuses fonctions arithmétiques ou logiques; Les entrées de fonction sélectionnent quelle fonction est exécutée pendant un cycle particulier. Synonyme de ALU.
+Arithmetic shift 				Cette expression permet d'indiquer une opération de décalage préservant la valeur du bit de signe (bit le plus significatif). Dans un décalage vers la droite, cela se traduit par la copie du bit de signe dans les positions de bit suivantes (appelée extension de signe).
+Arm 							Ce mot permet d'indiquer l'activation de quelques choses comme une interruption.
+Array 							Ce mot permet d'indiquer une collection d'éléments de données connexes, généralement entreposés dans des adresses mémoire consécutives.
+ASCII 							Cette abréviation, provenant de l'anglicisme American Standard Code for Information Interchange, permet d'indiquer un code de caractères de 7 bits largement utilisé dans les micro-ordinateurs et les communications.
+Assembler 						Ce mot permet d'indiquer un programme informatique convertissant les programmes en langage assembleur en un format (langage machine) que l'ordinateur peut exécuter directement. L'assembleur convertie les codes et les noms des opérations mnémotechniques en leurs équivalents numériques et attribue des emplacements en mémoire aux données et instructions.
+Assembly language 				Cette expression permet d'indiquer un langage informatique dans lequel le programmeur peut utiliser des codes d'opération mnémotechniques, des étiquettes et des noms pour faire référence à leurs équivalents numériques.
+Asynchronous 					Ce mot permet d'indiquer le fonctionnement sans référence à une source de synchronisation globale, c'est-à-dire à des intervalles irréguliers.
+Autodecrementing 				Ce mot permet d'indiquer la décrémentation automatique d'un registre d'adresses dans le cadre de l'exécution d'une instruction l'utilisant.
+Autoincrementing 				Ce mot permet d'indiquer l'incrémentation automatique d'un registre d'adresses dans le cadre de l'exécution d'une instruction l'utilisant.
+Automatic mode 					Cette expression permet d'indiquer un mode de fonctionnement dans lequel la puce périphérique produit automatiquement des signaux de commande sans intervention de programme spécifique.
+Base address 					Cette expression permet d'indiquer l'adresse en mémoire à laquelle une matrice ou une table démarre. Aussi appelé adresse de départ ou base.
+Baud 							Ce mot permet d'indiquer une mesure de la vitesse à laquelle les données série sont transmises, bits par seconde, mais comprenant à la fois les bits de données et les bits utilisés pour la synchronisation, la vérification des erreurs et à d'autres fins. Les débits en bauds courants sont 110, 300, 1200, 2400, 4800 et 9600.
+Baud rate generator 			Cette expression permet d'indiquer un périphérique générant les intervalles de temps appropriés entre les bits pour la transmission de données série.
+BCD 							Cette abréviation, provenant de l'anglicisme Binary-Coded Decimal, permet d'indiquer une représentation de nombres décimaux dans laquelle chaque chiffre décimal est codé séparément en un nombre binaire.
+Bidirectional 					Ce mot permet d'indiquer une capacité de transporter des signaux dans les deux sens.
+Binary-coded decimal 			Cette expression permet d'indiquer une représentation de nombres décimaux dans laquelle chaque chiffre décimal est codé séparément en un nombre binaire. Synonyme de BCD.
+Binary search 					Cette expression permet d'indiquer une recherche dans laquelle l'ensemble des éléments à rechercher est divisé en deux parties égales (ou presque égales) à chaque itération. La partie contenant l'élément recherché est ensuite déterminée et utilisée comme ensemble dans l'itération suivante. Une recherche binaire divise ainsi par deux la taille de l'ensemble recherché à chaque itération. Cette méthode suppose évidemment que l'ensemble des éléments est ordonné.
+Bit test 						Cette expression permet d'indiquer une opération déterminant si un bit est 0 ou 1. Fait généralement référence à une opération ET logique avec un masque approprié.
+Block 							Ce mot permet d'indiquer un groupe ou une section entière, comme un ensemble de registres ou une section de mémoire.
+Block comparison 				Cette expression permet d'indiquer une recherche s'étendant à travers un bloc de mémoire jusqu'à ce que l'élément recherché soit trouvé ou que le bloc entier soit examiné.
+Block move 						Cette expression permet d'indiquer une déplacement d'un ensemble complet de données d'une zone de mémoire à une autre.
+Boolean variable 				Cette expression permet d'indiquer une variable n'ayant que deux valeurs possibles, pouvant être représentées comme vrai et faux ou comme 1 et 0. Voir aussi drapeau ou Flags en anglais.
+Borrow 							Ce mot permet d'indiquer qu'un bit est mis à 1 si une soustraction produit un résultat négatif et à s'il produit un résultat positif ou nul. La retenue est couramment utilisé pour soustraire des nombres trop longs pour être traités en une seule opération.
+Bounce 							Ce mot permet d'indiquer l'action d'aller et venir entre les états avant d'atteindre un état final.
+Branch instruction 				Cette expression permet d'indiquer une instruction plaçant une nouvelle valeur dans le compteur de programme, s'écartant ainsi de l'incrémentation normale en une étape. Les instructions de saut peuvent être conditionnelles; autrement dit, la nouvelle valeur ne peut être placée dans le compteur de programme que si une condition est satisfaite.
+Break instruction 				Cette expression permet d'indiquer une instruction forçant un saut vers une adresse spécifique (dépendante du processeur), souvent utilisée pour produire des points d'arrêt ou pour indiquer des erreurs matérielles ou logicielles.
+Breakpoint 						Ce mot permet d'indiquer une condition spécifiée par l'utilisateur dans laquelle l'exécution du programme doit se terminer temporairement. Les points d'arrêt sont utilisés comme une aide au débogage. La spécification des conditions dans lesquelles l'exécution se terminera est appelée définition des points d'arrêt et la désactivation de ces conditions est appelée suppression des points d'arrêt.
+BSC 							Cette abréviation, provenant de l'anglicisme Binary Synchronous Communications, permet d'indiquer un protocole de ligne plus ancien souvent utilisé par les ordinateurs et terminaux de l'entreprise IBM.
+Bubble sort 					Cette expression permet d'indiquer une technique de tri passant par un tableau échangeant chaque paire d'éléments en désordre.
+Buffer 							Ce mot permet d'indiquer une zone d'entreposage temporaire généralement utilisée pour contenir les données avant leur transfert vers leur destination finale.
+Buffer empty 					Cette expression permet d'indiquer un signal étant actif lorsque des données entrées dans un tampon ou un registre ont été transférées vers sa destination finale.
+Buffer full 					Cette expression permet d'indiquer un signal étant actif lorsqu'un tampon ou un registre est complètement occupé par des données n'ayant pas été transférées vers sa destination finale.
+Buffer index 					Cette expression permet d'indiquer l'index de la prochaine adresse disponible dans un tampon.
+Buffer pointer 					Cette expression permet d'indiquer un emplacement d'entreposage contenant la prochaine adresse disponible dans une mémoire tampon.
+Bug 							Ce mot permet d'indiquer une erreur ou un défaut de fabrication.
+Byte 							Ce mot permet d'indiquer une unité de 8 bits. Peut être décrit comme consistant en un quartet ou chiffre élevé (les quatre bits les plus significatifs) et un quartet ou chiffre bas (les quatre bits les moins significatifs).
+Byte-length 					Cette expression permet d'indiquer une longueur de 8 bits par élément.
+Cal 							Ce mot permet d'indiquer l'action de transférer le contrôle au sous-programme tout en conservant les informations nécessaires pour reprendre le programme en cours. Un appel diffère d'un saut ou d'une branche en ce qu'un appel conserve des informations concernant son origine, contrairement à un saut ou une branche.
+Carry 							Ce mot permet d'indiquer un bit valant 1 si une addition déborde dans la position du chiffre suivant. Synonyme de retenue.
+Carry flag 						Cette expression permet d'indiquer un drapeau valant 1 si la dernière opération a généré une retenue à partir du bit le plus significatif et si ce n'est pas le cas. Synonyme de drapeau de retenue.
+CASE statement 					Cette expression permet d'indiquer une instruction dans un langage informatique de haut niveau demandant à l'ordinateur d'exécuter l'un des sous-programmes, en fonction de la valeur d'une variable. Autrement dit, l'ordinateur exécute le premier sous-programme si la variable a la première valeur spécifiée,... L'instruction GO TO calculée remplit une fonction similaire dans le langage de programmation FORTRAN.
+Central processing unit 		Cette expression permet d'indiquer la section de contrôle de l'ordinateur contrôlant ses opérations, récupérant et exécutant des instructions et exécutant des fonctions arithmétiques et logiques. Synonyme de CPU ou microprocesseur.
+Checksum 						Ce mot permet d'indiquer la somme logique incluse dans un bloc de données pour se prémunir contre les erreurs d'enregistrement ou de transmission. Également appelé parité longitudinale ou contrôle de redondance longitudinale (LRC).
+Circular shift 					Cette expression permet d'indiquer une rotation de bits.
+Cleaning the stack 				Cette expression permet d'indiquer une suppression des éléments indésirables de la pile, généralement en ajustant le pointeur de pile.
+Clear 							Ce mot permet d'indiquer l'action de mettre à zéro ou de fixer une valeur sur 0.
+Clock 							Ce mot permet d'indiquer un signal de synchronisation régulier régissant les transitions dans un système.
+Close 							Ce mot permet d'indiquer l'action de rendre un fichier inactif. Le contenu final du fichier est la dernière information entreposée par l'utilisateur. L'utilisateur doit généralement fermer un fichier après avoir travaillé avec lui.
+Coding 							Ce mot permet d'indiquer une rédaction d'instructions dans un langage informatique.
+Combo chip 						Cette expression permet d'indiquer une périphérique exécutant plus d'une fonction dans un système informatique; le terme fait généralement référence aux périphériques contenant de la mémoire, des ports d'entrée/sortie, des minuteries,..., tels que les périphériques 6530, 6531 et 6532.
+Command register 				Cette expression permet d'indiquer un registre dont le contenu détermine l'état d'un transfert ou le mode de fonctionnement d'un périphérique. Synonyme de Control register.
+Comment 						Ce mot permet d'indiquer une section d'un programme n'ayant aucune fonction autre que la documentation. Les commentaires ne sont ni converties ni exécutés, mais simplement copiés dans la liste des programmes.
+Complement 						Ce mot permet d'indiquer l'opération d'inverser; voir aussi son complément, complément à deux.
+Concatenation 					Ce mot permet d'indiquer l'action de relier, enchaîner ou s'unir en une série. Dans les opérations de chaîne de caractères, placement d'une chaîne de caractères après l'autre.
+Condition code 					Cette expression permet d'indiquer une condition appliqué en fonction d'un drapeau.
+Control register 				Cette expression permet d'indiquer un registre dont le contenu détermine l'état d'un transfert ou le mode de fonctionnement d'un périphérique.
+Control signal 					Cette expression permet d'indiquer un signal dirigeant un transfert d'entrée/sortie ou change le mode de fonctionnement d'un périphérique.
+Cyclic redundancy check 		Cette expression permet d'indiquer un code de détection d'erreur généré à partir d'un polynôme pouvant être ajouté à un bloc de données ou à une zone d'entreposage. Synonyme de CRC.
+Data accepted 					Cette expression permet d'indiquer un signal étant actif lorsque les données les plus récentes ont été transférées avec succès.
+Data direction register 		Cette expression permet d'indiquer un registre déterminant si des lignes d'entrée/sortie bidirectionnelles sont utilisées comme entrées ou sorties. Abrégé en DDR dans certains diagrammes.
+Data-link control 				Cette expression permet d'indiquer un ensemble de conventions régissant le format et le calendrier des échanges de données entre les systèmes de communication. Aussi appelé protocole.
+Data ready 						Cette expression permet d'indiquer un signal étant actif lorsque de nouvelles données sont disponibles pour le récepteur. Identique aux données valides.
+Data register 					Cette expression permet d'indiquer, dans un PIA ou VIA, le port d'entrée/sortie actuel. Aussi appelé registre de sortie ou registre périphérique.
+DDCMP 							Cette abréviation, provenant de l'anglicisme Digital Data Communications Message Protocol, permet d'indiquer un protocole largement utilisé prenant en charge toute méthode de transfert physique de données (synchronisé ou désynchronisé, série ou parallèle).
+Debounce 						Ce mot permet d'indiquer l'action de convertir la sortie d'un contact avec rebond en une transition unique et propre entre les états. L'anti-rebond est le plus souvent appliqué aux sorties des touches mécaniques ou des interrupteurs rebondissant avant de s'installer dans leurs positions finales.
+Debounce time 					Cette expression permet d'indiquer le temps nécessaire pour annuler un changement d'état.
+Debugger 						Ce mot permet d'indiquer un programme aidant à localiser et à corriger les erreurs dans un programme utilisateur. Certaines versions sont appelées outils de débogage dynamique ou DDT.
+Debugging 						Ce mot permet d'indiquer un processus de localisation et de correction des erreurs dans un programme.
+Device address 					Cette expression permet d'indiquer l'adresse d'un port associé à un périphérique d'entrée ou de sortie.
+Diagnostic 						Ce mot permet d'indiquer un programme vérifiant le fonctionnement d'un périphérique et rapporte ses résultats.
+Digit shift 					Cette expression permet d'indiquer un décalage d'une position de chiffre BCD ou de 4 positions de bits.
+Direct addressing 				Cette expression permet d'indiquer un mode d'adressage dans lequel l'instruction contient l'adresse nécessaire à son exécution. Le microprocesseur 6502 dispose de deux types d'adressage direct : l'adressage de page zéro (ne nécessitant qu'une adresse 8 bits à la page 0) et l'adressage absolu (nécessitant une adresse 16 bits complète dans deux octets de mémoire).
+Disarm 							Ce mot permet d'indiquer l'action de désactiver, mais le plus souvent appliqué aux interruptions.
+Disable 						Ce mot permet d'indiquer l'action d'interdire à une activité de se poursuivre ou à un signal (comme une interruption) d'être reconnu.
+Double word 					Cette expression permet d'indiquer une unité de 32 bits.
+Driver 							Ce mot permet d'indiquer un pilote d'entrée/sortie.
+Dump 							Ce mot permet d'indiquer une fonction affichant le contenu d'une section entière de mémoire ou d'un groupe de registres sur un périphérique de sortie.
+Dynamic allocation 				Cette expression permet d'indiquer l'allocation de mémoire pour un sous-programme à partir de ce qui est disponible lorsque le sous-programme est appelé. Cette expression s'oppose à l'attribution statique d'une zone d'entreposage fixe à chaque sous-programme. L'allocation dynamique réduit souvent l'utilisation de la mémoire car les sous-programmes peuvent partager des zones; cependant, cela nécessite généralement un temps d'exécution supplémentaire et une surcharge de gestion de la mémoire.
+EBCDIC 							Cette abréviation, provenant de l'anglicisme Expanded Binary-Coded Decimal Interchange Code, permet d'indiquer un code de caractères de 8 bits souvent utilisé dans les gros ordinateurs.
+Echo 							Ce mot permet d'indiquer la réflexion des informations transmises vers l'émetteur; renvoie à un terminal les informations reçues de celui-ci.
+Editor 							Ce mot permet d'indiquer un programme manipulant le matériel textuel et permet à l'utilisateur d'apporter des corrections, des ajouts, des suppressions et d'autres modifications.
+Effective address 				Cette expression permet d'indiquer l'adresse actuel utilisée par une instruction pour récupérer ou entreposer des données.
+EIA RS-232 						Cette expression permet d'indiquer une interface standard pour la transmission de données numériques en série, parrainée par l'Electronic Industries Association of Washington, D.C. Elle a été partiellement remplacée par RS-449.
+Enable 							Ce mot permet à une activité de se poursuivre ou à un signal (tel qu'une interruption) d'être reconnu.
+Endless loop 					Cette expression permet d'indiquer une instruction transférant le contrôle à elle-même, s'exécutant ainsi indéfiniment (ou jusqu'à ce qu'un signal matériel l'interrompe).
+Error-correcting code 			Cette expression permet d'indiquer un code que le destinataire peut utiliser pour corriger les erreurs dans les messages; le code lui-même ne contient aucun message supplémentaire.
+Error-detecting code 			Cette expression permet d'indiquer un code que le destinataire peut utiliser pour détecter les erreurs dans les messages; le code lui-même ne contient aucun message supplémentaire.
+Even parity 					Cette expression permet d'indiquer un code de détection d'erreur de 1 bit rendant le nombre total de 1 bits dans une unité de données (y compris le bit de parité) pair.
+EXCLUSIVE OR function 			Cette expression permet d'indiquer une fonction logique étant vraie si l'une de ses entrées est vraie mais pas les deux. Il est donc vrai si ses entrées ne sont pas égales (c'est-à-dire si l'une d'elles est un 1 logique et l'autre est un 0 logique).
+External reference 				Cette expression permet d'indiquer l'utilisation dans un programme d'un nom défini dans un autre programme.
+F (flag) register 				Cette expression permet d'indiquer un registre d'état de processeur ou Processor status register. Voir le registre P.
+File 							Ce mot permet d'indiquer une collection d'informations connexes étant traitée comme une unité à des fins d'entreposage ou de récupération.
+Fill 							Ce mot permet d'indiquer un placement des valeurs dans des zones d'entreposage non utilisées auparavant, initialisation de la mémoire ou de l'entreposage.
+Flag 							Ce mot permet d'indiquer un seul bit indiquant une condition dans l'ordinateur, souvent utilisé pour choisir entre des séquences d'instructions alternatives.
+Flag 							Ce mot permet d'indiquer, dans un contexte logiciel, un drapeau étant activé (1) ou désactivé (0) et peut être utilisé pour choisir entre deux plans d'action alternatifs. La variable booléenne et le sémaphore sont d'autres termes ayant la même signification.
+Flag register 					Cette expression permet d'indiquer un registre d'état de processeur ou Processor status register. Voir le registre P.
+Free-running mode 				Cette expression permet d'indiquer un mode de fonctionnement pour une minuterie dans lequel il indique la fin d'un intervalle de temps puis en démarre un autre de même durée. Également appelé mode continu.
+Function key 					Cette expression permet d'indiquer une touche amenant un système à exécuter une fonction (telle que l'effacement de l'écran d'un terminal vidéo) ou à exécuter une procédure.
+Global 							Ce mot permet d'indiquer une variable universelle. Défini dans plus d'une section d'un programme informatique, plutôt que utilisé uniquement localement.
+Handshake 						Ce mot permet d'indiquer un transfert désynchronisé dans lequel l'émetteur et le récepteur échangent des signaux prédéterminés pour établir la synchronisation et pour indiquer l'état du transfert de données. En règle générale, l'expéditeur indique que de nouvelles données sont disponibles et le destinataire lit les données et indique qu'il est prêt pour plus.
+Hardware stack 					Cette expression permet d'indiquer une pile que l'ordinateur gère automatiquement lors de l'exécution des instructions l'utilisant.
+Head 							Ce mot permet d'indiquer l'emplacement de l'élément le plus récemment entré dans la file d'attente.
+Header 							Ce mot permet d'indiquer l'entête de la file d'attente.
+Hexadecimal 					Ce mot permet d'indiquer un système numérique avec une base 16. Les chiffres sont les nombres décimaux jusqu'à 9, suivis des lettres A à F.
+Hex code 						Cette expression permet d'indiquer un code objet.
+High-level language 			Cette expression permet d'indiquer un langage de programmation visant à résoudre des problèmes, plutôt que d'être conçu pour une conversion pratique en instructions informatiques. Un compilateur ou un interpréteur convertira un programme écrit dans un langage de haut niveau dans une format que l'ordinateur peut exécuter. Les langages de programmation de haut niveau courants incluent BASIC, COBOL, FORTRAN et Pascal.
+High-level language 			Cette expression permet d'indiquer un langage de programmation visant à résoudre des problèmes, plutôt que d'être conçu pour une conversion pratique en instructions informatiques. Un compilateur ou un interpréteur convertira un programme écrit dans un langage de haut niveau dans une format que l'ordinateur peut exécuter. Les langages de programmation de haut niveau courants incluent BASIC, COBOL, FORTRAN et Pascal.
+Immediate addressing 			Cette expression permet d'indiquer un mode d'adressage dans lequel les données requises par une instruction font partie de l'instruction. Les données suivent immédiatement le code d'opération en mémoire.
+Independent mode 				Cette expression permet d'indiquer un mode de fonctionnement dans lequel les signaux d'état et de commande associés à un port d'entrée/sortie parallèle peuvent être utilisés indépendamment des transferts de données via le port.
+Index 							Ce mot permet d'indiquer un élément de données utilisé pour identifier un élément particulier d'un tableau ou d'une table.
+Indexed addressing 				Cette expression permet d'indiquer un mode d'adressage dans lequel l'adresse est modifiée par le contenu d'un registre d'index pour déterminer l'adresse effective (l'adresse réelle utilisée).
+Indexed indirect addressing 	Cette expression permet d'indiquer un mode d'adressage dans lequel l'adresse effective est déterminée par indexation à partir de l'adresse de base puis en utilisant l'adresse indexée indirectement. Ceci est également appelé préindexation, car l'indexation est effectuée avant l'indirection. Bien entendu, le tableau commençant à l'adresse de base donnée doit être constitué d'adresses pouvant être utilisées indirectement.
+Index register 					Cette expression permet d'indiquer un registre pouvant être utilisé pour modifier les adresses mémoire.
+Indirect addressing 			Cette expression permet d'indiquer un mode d'adressage dans lequel l'adresse effective est le contenu de l'adresse incluse dans l'instruction, plutôt que l'adresse elle-même.
+Indirect indexed addressing 	Cette expression permet d'indiquer un mode d'adressage dans lequel l'adresse effective est déterminée en obtenant d'abord l'adresse de base indirectement puis en indexant à partir de cette adresse de base. Aussi connu sous le nom de post-indexation, puisque l'indexation est effectuée après l'indirection.
+Indirect jump 					Cette expression permet d'indiquer une instruction de saut transférant le contrôle à l'adresse entreposée dans un registre ou un emplacement de mémoire, plutôt qu'à une adresse fixe.
+Indirect jump 					Cette expression permet d'indiquer une instruction de saut transférant le contrôle à l'adresse entreposée dans un registre ou un emplacement de mémoire, plutôt qu'à une adresse fixe.
+Input/output control block (IOCB) 	Cette expression permet d'indiquer un groupe d'emplacements d'entreposage contenant les informations requises pour contrôler le fonctionnement d'un périphérique d'entrée/sortie. Les informations incluent généralement les adresses des routines exécutant des opérations telles que le transfert d'une seule unité de données ou la détermination de l'état du périphérique.
+Input/output control system (IOCS) 	Cette expression permet d'indiquer un ensemble de routines informatiques contrôlant les performances des opérations d'entrée/sortie.
+Instruction 					Ce mot permet d'indiquer un groupe de bits définissant une opération informatique et fait partie de l'ensemble d'instructions.
+Instruction cycle 				Cette expression permet d'indiquer une processus de récupération, de décodage et d'exécution d'une instruction.
+Instruction execution time 		Cette expression permet d'indiquer le temps nécessaire pour récupérer, décoder et exécuter une instruction.
+Instruction fetch 				Cette expression permet d'indiquer un processus d'adressage de la mémoire et de lecture d'une instruction dans le microprocesseur pour le décodage et l'exécution.
+Instruction length 				Cette expression permet d'indiquer la quantité de mémoire nécessaire pour entreposer une instruction complète.
+Instruction set 				Cette expression permet d'indiquer l'ensemble des instructions générales disponibles sur un ordinateur spécifié. L'ensemble d'entrées auquel le microprocesseur produira une réponse connue lorsqu'elles sont extraites, décodées et exécutées.
+Interpolation 					Ce mot permet d'indiquer l'estimation des valeurs d'une fonction à des points entre ceux pour lesquels les valeurs sont déjà connues.
+Interrupt 						Ce mot permet d'indiquer un signal suspendant temporairement la séquence normale des opérations de l'ordinateur et transfère le contrôle à une routine spéciale.
+Interrupt-driven 				Cette expression permet d'indiquer une dépendance aux interruptions pour son fonctionnement, peut rester inactif jusqu'à ce qu'il reçoive une interruption.
+Interrupt flag 					Cette expression permet d'indiquer un bit dans la section d'entrée/sortie étant défini lorsqu'un événement se produit et nécessite une intervention dans le microprocesseur. Les événements typiques incluent une transition active sur une ligne de contrôle et l'épuisement d'un décompte par une minuterie.
+Interrupt mask 					Cette expression permet d'indiquer un bit déterminant si les interruptions seront reconnues. Un bit de masque ou de désactivation doit être effacé pour autoriser les interruptions, tandis qu'un bit d'activation doit être défini.
+Interrupt request 				Cette expression permet d'indiquer un signal étant actif lorsqu'un périphérique demande un service, souvent utilisé pour provoquer une interruption du processeur. Voir aussi le drapeau d'interruption.
+Interrupt service routine 		Cette expression permet d'indiquer un programme exécutant les actions requises pour répondre à une interruption.
+Inverted borrow 				Cette expression permet d'indiquer un bit étant fixé à 0 si une soustraction produit un résultat négatif et à 1 si elle produit un positif ou un résultat. Une retenue inversé peut être utilisé comme une vraie retenue, sauf que le complément de sa valeur (c'est-à-dire 1 moins sa valeur) doit être utilisé dans l'extension à des nombres plus longs.
+IOCB 							Cette abréviation, provenant de l'anglicisme Input/output control block, permet d'indiquer un bloc de contrôle d'entrée/sortie.
+IOCS 							Cette abréviation, provenant de l'anglicisme Input/output control system, permet d'indiquer un système de contrôle d'entrée/sortie.
+I/O device table 				Cette expression permet d'indiquer une table établissant la correspondance entre les périphériques logiques auxquels les programmes font référence et les périphériques physiques étant actuellement utilisés dans les transferts de données. Une table de périphériques d'entrée/sortie doit être placée en mémoire afin d'exécuter un programme faisant référence à des périphériques logiques sur un ordinateur avec un ensemble particulier de périphériques (physiques) actuel. La table des périphériques d'entrée/sortie peut, par exemple, contenir les adresses de départ des pilotes d'entrée/sortie gérant les différents périphériques.
+I/O driver 						Cette expression permet d'indiquer un programme informatique transférant des données vers ou depuis un périphérique d'entrée/sortie, également appelé pilote ou utilitaire d'entrée/sortie. Le pilote doit exécuter les fonctions d'initialisation et gérer l'état et le contrôle, ainsi que transférer physiquement les données actuels.
+Jump instruction 				Cette expression permet d'indiquer une instruction plaçant une nouvelle valeur dans le compteur de programme, s'écartant ainsi de l'incrémentation normale en une étape. Les instructions de saut peuvent être conditionnelles; autrement dit, la nouvelle valeur ne peut être placée dans le compteur de programme que si une condition est satisfaite.
+Jump table 						Cette expression permet d'indiquer une table composée des adresses de départ des routines exécutables, utilisée pour transférer le contrôle à l'une d'entre elles.
+Label 							Ce mot permet d'indiquer un nom attaché à une instruction ou une instruction dans un programme identifiant l'emplacement en mémoire du code de langage machine ou de l'affectation produite à partir de cette instruction ou instruction.
+Latch 							Ce mot permet d'indiquer un périphérique conservant son contenu jusqu'à ce que de nouvelles données y soient spécifiquement entrées.
+Leading edge 					Cette expression permet d'indiquer le front marquant le début d'une impulsion.
+Least significant bit 			Cette expression permet d'indiquer le bit le plus à droite d'un groupe de bits, c'est-à-dire un bit d'octet ou un mot de 16 bits.
+Library program 				Cette expression permet d'indiquer un programme faisant partie d'un ensemble de programmes et étant écrit et documenté selon un format standard.
+LIFO (last-in, first-out) memory 	Cette expression permet d'indiquer une mémoire étant organisée en fonction de l'ordre dans lequel les éléments sont saisis et à partir de laquelle les éléments ne peuvent être récupérés que dans l'ordre opposé à celui dans lequel ils ont été saisis. Voir aussi Pile ou Stack.
+Linearization 					Ce mot permet d'indiquer l'approximation mathématique d'une fonction par une ligne droite entre deux points auxquels ses valeurs sont connues.
+Linked list 					Cette expression permet d'indiquer une liste dans laquelle chaque élément contient un pointeur (ou un lien) vers l'élément suivant. Aussi appelé chaîne ou liste chaînée.
+List 							Ce mot permet d'indiquer un ensemble d'éléments ordonné.
+Logical device 					Cette expression permet d'indiquer le périphérique d'entrée ou de sortie auquel un programme se réfère. Le périphérique actuel ou physique est déterminé en recherchant le périphérique logique dans une table de périphériques d'entrée/sortie - une table contenant les adresses d'entrée/sortie actuels (ou les adresses de départ des pilotes d'entrée/sortie) correspondant aux numéros de périphériques logiques.
+Logical shift 					Cette expression permet d'indiquer une opération de décalage déplaçant les zéros à la fin lorsque les données d'origine sont décalées.
+Longitudinal parity 			Cette expression permet d'indiquer la somme logique incluse dans un bloc de données pour se prémunir contre les erreurs d'enregistrement ou de transmission. Également appelé parité longitudinale ou contrôle de redondance longitudinale (LRC).
+Logical sum 					Cette expression permet d'indiquer une somme binaire sans report entre les positions de bit. Voir aussi Checksum ou EXCLUSIVE OR function.
+Longitudinal redundancy check (LRC) 	Cette expression permet d'indiquer la somme logique incluse dans un bloc de données pour se prémunir contre les erreurs d'enregistrement ou de transmission. Également appelé parité longitudinale ou contrôle de redondance longitudinale (LRC).
+Lookup table 					Cette expression permet d'indiquer un tableau de données organisé de sorte que la réponse à un problème peut être déterminée simplement en sélectionnant l'entrée correcte (sans aucun calcul).
+Low-level language 				Cette expression permet d'indiquer un langage informatique dans lequel chaque instruction est convertie directement en une seule instruction en langage machine.
+Machine language 				Cette expression permet d'indiquer un langage de programmation que l'ordinateur peut exécuter directement sans conversion autre que des conversions numériques.
+Maintenance (of programs) 		Cette expression permet d'indiquer un mettre à jour et corriger les programmes informatiques en cours d'utilisation.
+Majority logic 					Cette expression permet d'indiquer une fonction de logique combinatoire étant vraie lorsque plus de la moitié des entrées sont vraies.
+Manual mode 					Cette expression permet d'indiquer un mode de fonctionnement dans lequel la puce ne produit des signaux de commande que lorsqu'elle y est spécifiquement ordonnée par un programme.
+Mark 							Ce mot permet d'indiquer l'état 1 sur une ligne de communication de données série.
+Mask 							Ce mot permet d'indiquer un modèle de bits isolant un ou plusieurs bits d'un groupe de bits.
+Maskable interrupt 				Cette expression permet d'indiquer une interruption que le système peut désactiver.
+Memory capacity 				Cette expression permet d'indiquer le nombre total d'adresses mémoire différentes (généralement spécifiées en octets) pouvant être associées à un ordinateur particulier.
+Microcomputer 					Ce mot permet d'indiquer un ordinateur ayant un microprocesseur comme unité centrale de traitement.
+Microprocessor 					Ce mot permet d'indiquer une unité centrale complète pour un ordinateur construit à partir d'un ou de quelques circuits intégrés.
+Mnemonic 						Ce mot permet d'indiquer une mémoire mnémonique, un nom suggérant la signification actuel ou le but de l'objet auquel il se réfère.
+Modem (Modulator/demodulator) 	Cette expression permet d'indiquer un périphérique ajoutant ou supprimant une fréquence porteuse, permettant ainsi aux données d'être transmises sur un canal haute fréquence ou reçues d'un tel canal.
+Modular programming 			Cette expression permet d'indiquer une méthode de programmation par laquelle le programme global est divisé en sections ou modules logiquement séparés.
+Module 							Ce mot permet d'indiquer une partie ou une section d'un programme.
+Monitor 						Ce mot permet d'indiquer un programme offrant la possibilité à l'utilisateur de l'ordinateur d'entrer des programmes et des données, d'exécuter des programmes, d'examiner le contenu de la mémoire et des registres de l'ordinateur et d'utiliser les périphériques de l'ordinateur. Voir également Système d'exploitation.
+Most significant bit 			Cette expression permet d'indiquer le bit le plus à gauche dans un groupe de bits, c'est-à-dire le bit 7 d'un octet ou le bit 15 d'un mot de 16 bits.
+Multifunction device 			Cette expression permet d'indiquer un périphérique exécutant plus d'une fonction dans un système informatique; le terme fait généralement référence aux périphériques contenant de la mémoire, des ports d'entrée/sortie, des minuteries,..., tels que les périphériques 6530, 6531 et 6532.
+Multitasking 					Ce mot permet d'indiquer l'utilisation d'exécution de nombreuses tâches pendant une seule période, généralement en travaillant sur chacune d'entre elles pendant une partie spécifiée de la période et en suspendant les tâches devant attendre l'entrée, la sortie, l'achèvement d'autres tâches ou des événements externes.
+Negate 							Ce mot permet d'indiquer l'action de trouver le complément à deux (négatif) d'un nombre.
+Negative edge 					Cette expression permet d'indiquer une transition de 1 à 0 dans une impulsion binaire.
+Negative flag 					Cette expression permet d'indiquer le drapeau de signe.
+Negative logic 					Cette expression permet d'indiquer un circuit dans lequel un zéro logique est l'état actif ou un ON.
+Nesting 						Ce mot permet d'indiquer la construction des programmes de manière hiérarchique avec un niveau contenu dans un autre, et ainsi de suite. Le niveau d'imbrication est le nombre de transferts de contrôle nécessaires pour atteindre une partie particulière d'un programme sans jamais revenir à un niveau supérieur.
+Nibble 							Ce mot permet d'indiquer une unité de quatre bits. Un octet (huit bits) peut être décrit comme étant constitué d'un quartet élevé (quatre bits les plus significatifs) et d'un quartet bas (quatre bits les moins significatifs).
+Nine's complement 				Cette expression permet d'indiquer le résultat de la soustraction d'un nombre décimal d'un nombre ayant 9 dans chaque position de chiffre.
+Nonmaskable interrupt 			Cette expression permet d'indiquer une interruption ne pouvant pas être désactivée dans le microprocesseur.
+Nonvolatile memory 				Cette expression permet d'indiquer une mémoire conservant son contenu lorsque l'alimentation est coupée.
+No-op 							Cette expression permet d'indiquer une instruction ne faisant rien d'autre que d'incrémenter le compteur de programme.
+Normalization 					Ce mot permet d'indiquer l'action d'ajuster un nombre dans un format régulier ou standard. Un exemple typique est la mise à l'échelle d'une fraction binaire afin que son bit le plus significatif soit 1.
+Object code 					Cette expression permet d'indiquer un programme étant la sortie d'un programme de conversion, tel qu'un assembleur. Il s'agit généralement d'un programme en langage machine prêt à être exécuté.
+Odd parity 						Cette expression permet d'indiquer un code de détection d'erreur de 1 bit rendant impair le nombre total de 1 bits dans une unité de données (y compris le bit de parité).
+Offset 							Ce mot permet d'indiquer une distance d'un point de départ ou d'une adresse de base.
+One's complement 				Cette expression permet d'indiquer un complément logique bit par bit d'un nombre, obtenu en remplaçant chaque bit par un 1 et chaque 1 bit par un 0.
+One-shot 						Cette expression permet d'indiquer un dispositif produisant une sortie d'impulsion de durée connue en réponse à une entrée d'impulsion. Un chronomètre fonctionne en mode one-shot lorsqu'il indique la fin d'un intervalle unique de durée connue.
+Open 							Ce mot permet d'indiquer l'action de préparer un fichier à l'utilisation. L'utilisateur doit généralement ouvrir un fichier avant de travailler avec lui.
+Operating system (OS) 			Cette expression permet d'indiquer un programme informatique contrôlant les opérations globales d'un ordinateur et exécute des fonctions telles que l'affectation de places en mémoire aux programmes et aux données, la planification de l'exécution de programmes, le traitement des interruptions et le contrôle du système d'entrée/sortie global. Également connu sous le nom de programme de surveillance, de direction ou de contrôle principal, bien que le terme moniteur soit généralement réservé à un système d'exploitation simple avec des fonctions limitées.
+Operation code (op code) 		Cette expression permet d'indiquer une partie d'une instruction spécifiant l'opération à effectuer.
+OS 								Cette abréviation, de l'anglicisme Operating system, permet d'indiquer le système d'exploitation.
+Output register 				Cette expression permet d'indiquer le port d'entrée/sortie actuel dans un PIA ou VIA. Aussi appelé registre de données ou registre périphérique.
+Overflow (dans la pile) 		Ce mot permet d'indiquer un dépassement de la quantité de mémoire allouée à une pile.
+Overflow (arithmétique) 		Ce mot permet d'indiquer un complément à deux. Voir Two's complement overflow.
+P register 						Cette expression permet d'indiquer le registre d'état du processeur (P) et parfois le compteur de programme (PC). La plupart des références 6502 abrégent le compteur de programme en PC et le registre d'état du processeur en P, mais certains se réfèrent au compteur de programme en P et au registre d'état du processeur (drapeau) en F.
+Packed decimal 					Cette expression permet d'indiquer un format décimal codé en binaire dans lequel chaque octet de 8 bits contient deux chiffres décimaux.
+Page 							Ce mot permet d'indiquer une subdivision de la mémoire. Dans la terminologie 6502, une page est une section de mémoire de 256 octets dans laquelle toutes les adresses ont les mêmes 8 bits les plus significatifs (ou numéro de page). Par exemple, la page C6 comprend les adresses mémoire C600 à C6FF.
+Paged address 					Cette expression permet d'indiquer l'identificateur caractérisant une adresse mémoire particulière sur une page connue. Dans la terminologie 6502, il s'agit des 8 bits les moins significatifs d'une adresse mémoire.
+Page number 					Cette expression permet d'indiquer l'identificateur caractérisant une page de mémoire particulière. Dans la terminologie 6502, il s'agit des 8 bits les plus significatifs d'une adresse mémoire.
+Page 0 							Cette expression permet d'indiquer, dans la terminologie 6502, les 256 adresses les plus basses en mémoire (adresses 0000 à 00FF).
+Parallel interface 				Cette expression permet d'indiquer une interface entre un microprocesseur et des périphériques d'entrée ou de sortie gérant les données en parallèle (plus d'un bit à la fois).
+Parameter 						Ce mot permet d'indiquer un élément devant être fourni à un sous-programme ou un programme pour qu'il soit exécuté.
+Parity 							Ce mot permet d'indiquer un code de détection d'erreur de 1 bit rendant le nombre total de 1 bits dans une unité de données, y compris le bit de parité, impair (parité impaire) ou pair (parité paire). Également appelé parité verticale ou contrôle de redondance verticale (VRC).
+Passing parameters 				Cette expression permet d'indiquer l'action de rendre les paramètres requis disponibles pour un sous-programme.
+Peripheral Interface 			Cette expression permet d'indiquer une des versions de la famille 6500 d'une interface parallèle; des exemples sont les périphériques 6520, 6522, 6530 et 6532.
+Peripheral ready 				Cette expression permet d'indiquer un signal étant actif lorsqu'un périphérique peut accepter plus de données.
+Peripheral register 			Cette expression permet d'indiquer le port d'entrée ou de sortie actuel dans un PIA ou VIA. Aussi appelé registre de données ou registre de sortie.
+Physical device 				Cette expression permet d'indiquer un périphérique d'entrée ou de sortie actuel, par opposition à un périphérique logique.
+PIA 							Cette abréviation, provenant de l'anglicisme Peripheral Interface Adapter, permet d'indiquer un nom commun du périphérique 6520 ou 6820 se composant de deux ports d'entrée/sortie bidirectionnels en 8 bits, de deux lignes d'état et de deux lignes d'état ou de contrôle bidirectionnelles. Le 6821 est un périphérique similaire.
+Pointer 						Ce mot permet d'indiquer un lieu d'entreposage contenant l'adresse d'un élément de données plutôt que l'élément lui-même. Un pointeur indique où se trouve l'élément.
+Polling 						Ce mot permet d'indiquer l'action de déterminer quels périphériques d'entrée/sortie sont prêts en examinant l'état d'un périphérique un à la fois.
+Polling interrupt system 		Cette expression permet d'indiquer un système d'interruption dans lequel un programme détermine la source d'une interruption particulière en examinant l'état des sources potentielles une à la fois.
+Pop 							Ce mot permet d'indiquer l'action de supprime un opérande d'une pile.
+Port 							Ce mot permet d'indiquer l'unité adressable de base de la section d'entrée/sortie de l'ordinateur.
+Positive edge 					Ce mot permet d'indiquer une transition de 0 à 1 dans une impulsion binaire.
+Postdecrementing 				Ce mot permet d'indiquer la décrémentation d'un registre d'adresses après son utilisation.
+Postincrementing 				Ce mot permet d'indiquer l'incrémentation un registre d'adresses après son utilisation.
+Postindexing 					Ce mot permet d'indiquer l'adressage indexé indirect.
+Power fail interrupt 			Cette expression permet d'indiquer une interruption informant le microprocesseur d'une perte d'alimentation imminente.
+Predecrementing 				Ce mot permet d'indiquer une décrémentation d'un registre d'adresses avant de l'utiliser.
+Preincrementing 				Ce mot permet d'indiquer une incrémentation d'un registre d'adresses avant de l'utiliser.
+Preindexing 					Ce mot permet d'indiquer l'adressage indirect indexé.
+Priority interrupt system 		Cette expression permet d'indiquer un système d'interruption dans lequel certaines interruptions ont priorité sur d'autres, c'est-à-dire qu'elles seront traitées en premier ou qu'elles interrompront les routines de service des autres.
+Processor status (P or F) register 	Cette expression permet d'indiquer un registre définissant l'état actuel d'un ordinateur, contenant souvent divers bits indiquant les conditions internes. Les autres noms de ce registre incluent le registre de code de condition, le registre de drapeau (F), le registre d'état et le mot d'état.
+Program counter (PC or P register) 	Cette expression permet d'indiquer un registre contenant l'adresse de la prochaine instruction à extraire de la mémoire.
+Programmable I/O device 		Cette expression permet d'indiquer un périphérique d'entrée/sortie dont le mode de fonctionnement peut être déterminé par le chargement de registres sous le contrôle du programme.
+Programmable peripheral chip 	Cette expression permet d'indiquer une puce pouvant fonctionner dans une variété de modes; son mode de fonctionnement actuel est déterminé par le chargement des registres de commande sous le contrôle du programme.
+Programmable timer 				Cette expression permet d'indiquer une périphérique pouvant gérer une variété de tâches de synchronisation, y compris la génération de retards, sous le contrôle du programme.
+Program relative addressing 	Cette expression permet d'indiquer un format d'adressage relatif dans laquelle l'adresse de base est le compteur de programme. L'utilisation de cette format d'adressage permet de déplacer facilement des programmes d'un endroit de la mémoire à un autre.
+Programmed input/output 		Cette expression permet d'indiquer une entrée ou sortie exécutée sous le contrôle du programme sans utiliser d'interruptions ou d'autres techniques matérielles spéciales.
+Protocol 						Ce mot permet d'indiquer un contrôle de liaison de données.
+Pseudo-operation ou pseudo-op ou pseudo-instruction 	Cette expression permet d'indiquer un code d'opération en langage assembleur demandant à l'assembleur d'effectuer une action mais n'entraînant pas la génération d'une instruction en langage machine.
+Pull 							Ce mot permet d'indiquer l'action de supprimer un opérande d'une pile, comme pop.
+Push 							Ce mot permet d'indiquer l'action d'entreposer un opérande dans une pile.
+Queue 							Ce mot permet d'indiquer un ensemble de tâches, d'adresses d'entreposage ou d'autres éléments étant utilisés selon le principe du premier entré, premier sorti; autrement dit, le premier élément entré dans la file d'attente est le premier à être supprimé.
+Queue header 					Cette expression permet d'indiquer un ensemble d'emplacements d'entreposage décrivant l'emplacement actuel et l'état d'une file d'attente.
+RAM 							Cette abréviation, provenant de l'anglicisme Random-access memory, permet d'indiquer la mémoire à accès aléatoire.
+Random-access memory 			Cette expression permet d'indiquer une mémoire pouvant être à la fois lue et modifiée (écrite) en fonctionnement normal.
+Read-only memory (ROM) 			Cette expression permet d'indiquer une mémoire pouvant être lue mais non modifiée en fonctionnement normal.
+Ready for data 					Cette expression permet d'indiquer un signal étant actif lorsque le récepteur peut accepter plus de données.
+Real-time 						Cette expression permet d'indiquer en synchronisation avec l'occurrence actuel des événements.
+Real-time clock 				Cette expression permet d'indiquer un périphérique interrompant un microprocesseur à intervalles de temps réguliers.
+Real-time operating system 		Cette expression permet d'indiquer un système d'exploitation pouvant agir en tant que superviseur des programmes ayant des exigences en temps réel. Peut également être appelé un cadre en temps réel ou un moniteur en temps réel.
+Reentrant 						Ce mot permet d'indiquer un programme ou sous-programme pouvant être exécuté simultanément pendant que le même sous-programme est interrompu ou mis en suspens.
+Register 						Ce mot permet d'indiquer un emplacement d'entreposage à l'intérieur du microprocesseur.
+Relative addressing 			Cette expression permet d'indiquer un mode d'adressage dans lequel l'adresse spécifiée dans l'instruction est le déplacement par rapport à une adresse de base.
+Relative offset 				Cette expression permet d'indiquer la différence entre l'adresse réelle à utiliser dans une instruction et la valeur actuelle du compteur de programme.
+Relocatable 					Ce mot permet d'indiquer du code pouvant être placé n'importe où dans la mémoire sans changements; c'est-à-dire un programme pouvant occuper n'importe quel ensemble d'adresses mémoire consécutives.
+Return 							Ce mot permet d'indiquer l'action de renvoyer le contrôle au programme ayant initialement appelé le sous-programme et reprenant son exécution.
+RIOT 							Cette abréviation, provenant de l'anglicisme ROM/I/O/timer ou RAM/I/O/timer, permet d'indiquer un périphérique contenant de la mémoire (ROM ou RAM), des ports d'entrée/sortie et des minuteries.
+ROM 							Cette abréviation, provenant de l'anglicisme Read-only memory, permet d'indiquer la mémoire en lecture seulement.
+Rotate 							Ce mot permet d'indiquer une opération de décalage traitant les données comme si elles étaient disposées en cercle, c'est-à-dire comme si les bits les plus significatifs et les moins significatifs étaient connectés directement ou via un bit de retenue.
+Row major order 				Cette expression permet d'indiquer l'entreposage des éléments d'un tableau multidimensionnel dans une mémoire linéaire en modifiant les index en commençant par l'extrême droite en premier. Autrement dit, si les éléments sont A(I, J, K) et commencent par A(0,0,0), l'ordre est A(0,0,0), A(0,0,1), ..., A(0,1,0), A((0,1,1),... La technique inverse (changer l'index le plus à gauche en premier) est appelée ordre majeur des colonnes.
+RRIOT 							Cette abréviation, provenant de l'anglicisme ROM/RAM/I/O/timer, permet d'indiquer un périphérique contenant une mémoire en lecture seulement, une mémoire en lecture/écriture, des ports d'entrée/sortie et des minuteries.
+RS-232 							Cette expression permet d'indiquer une interface standard pour la transmission de données numériques en série, parrainée par l'Electronic Industries Association of Washington, D.C. Elle a été partiellement remplacée par RS-449.
+Scheduler 						Ce mot permet d'indiquer un programme déterminant quand d'autres programmes doivent être démarrés et arrêtés.
+Scratchpad 						Ce mot permet d'indiquer une zone de mémoire particulièrement simple et rapide à utiliser pour entreposer des données variables ou des résultats intermédiaires. La page est généralement utilisée comme bloc-notes dans les micro-ordinateurs 6502.
+SDLC 							Cette abréviation, provenant de l'anglicisme Synchronous Data Link Control, permet d'indiquer le protocole successeur de BSC pour les ordinateurs et terminaux de l'entreprise IBM.
+Semaphore 						Ce mot permet d'indiquer un drapeau.
+Serial 							Ce mot permet d'indiquer un bit à la fois.
+Serial interface 				Cette expression permet d'indiquer une interface entre un microprocesseur et des périphériques d'entrée ou de sortie qui traitent les données en série. Les interfaces série couramment utilisées dans les ordinateurs basés sur 6502 sont les périphériques 6551 et 6850. Voir également UART.
+Shift instruction 				Cette expression permet d'indiquer une instruction déplaçant tous les bits des données d'un certain nombre de positions de bits, comme dans un registre à décalage.
+Signed number 					Cette expression permet d'indiquer un nombre dans lequel un ou plusieurs bits représentent si le nombre est positif ou négatif. Un format courant est que le bit le plus significatif représente le signe (0 = positif, 1 = négatif).
+Sign extension 					Cette expression permet d'indiquer le processus de copie du bit de signe (le plus significatif) vers la droite comme dans un décalage arithmétique. L'extension de signe préserve le signe lorsque les nombres complémentaires à deux sont divisés ou normalisés.
+Sign flag 						Cette expression permet d'indiquer le drapeau contenant le bit le plus significatif du résultat de l'opération précédente. Il est parfois appelé drapeau négatif, car une valeur de 1 indique un nombre signé négatif.
+Sign function 					Cette expression permet d'indiquer qu'une fonction est 0 si son paramètre est positif et 1 si son paramètre est négatif.
+Software delay 					Cette expression permet d'indiquer un programme n'ayant d'autre fonction que de perdre du temps.
+Software interrupt 				Cette expression permet d'indiquer une interruption logiciel. Synonyme de Trap.
+Software stack 					Cette expression permet d'indiquer une pile étant gérée au moyen d'instructions spécifiques, par opposition à une pile matérielle que l'ordinateur gère automatiquement.
+Source code 					Cette expression permet d'indiquer le code source d'un programme informatique écrit en langage d'assemblage ou dans un langage de haut niveau.
+Source program 					Cette expression permet d'indiquer un programme informatique écrit en langage d'assemblage ou dans un langage de haut niveau.
+Space 							Ce mot permet d'indiquer l'état zéro sur une ligne de communication de données série.
+Stack 							Ce mot permet d'indiquer une section de mémoire accessible uniquement selon le mode dernier entré, premier sorti. Autrement dit, les données peuvent être ajoutées ou supprimées de la pile uniquement par son sommet; les nouvelles données sont placées au-dessus des anciennes données et la suppression d'un élément de données fait de l'élément situé en dessous le nouveau sommet.
+Stack pointer 					Cette expression permet d'indiquer un registre contenant l'adresse du haut d'une pile. Le pointeur de pile contient l'adresse sur la page 1 du prochain emplacement de pile disponible (vide).
+Standard (ou 8,4,2,1) BCD 		Cette expression permet d'indiquer une représentation BCD dans laquelle les positions des bits ont les mêmes poids que dans les nombres binaires ordinaires.
+Standard teletypewriter 		Cette expression permet d'indiquer un téléimprimeur fonctionnant de manière désynchronisé à une vitesse de dix caractères par seconde.
+Start bit 						Cette expression permet d'indiquer un signal de 1 bit correspondant au début de la transmission de données par un périphérique désynchronisé.
+Static allocation 				Cette expression permet d'indiquer un affectation de zones d'entreposage fixes pour les données et les programmes, par opposition à l'allocation dynamique dans laquelle les zones d'entreposage sont attribuées au moment où elles sont nécessaires.
+Status register 				Cette expression permet d'indiquer un registre dont le contenu indique l'état actuel ou le mode de fonctionnement d'un périphérique. Voir également Processor status register (P).
+Status signal 					Cette expression permet d'indiquer un signal décrivant l'état actuel d'un transfert ou le mode de fonctionnement d'un périphérique.
+Stop bit 						Cette expression permet d'indiquer un signal à 1 bit correspondant à la fin de la transmission de données par un périphérique désynchronisé.
+String 							Ce mot permet d'indiquer un tableau (ensemble de données) composé de caractères.
+String functions 				Cette expression permet d'indiquer des procédures offrant la possibilité au programmeur d'opérer sur des données constituées de caractères plutôt que de nombres. Les fonctions typiques sont l'insertion, la suppression, la concaténation, la recherche et le remplacement.
+Strobe 							Ce mot permet d'indiquer un signal identifiant ou décrivant un autre ensemble de signaux et pouvant être utilisé pour contrôler un tampon, un verrou ou un registre.
+Subroutine 						Ce mot permet d'indiquer un sous-programme pouvant être exécuté (appelé) à partir de plusieurs emplacements dans un programme principal.
+Subroutine call 				Cette expression permet d'indiquer des processus par lequel un ordinateur transfère le contrôle de son programme en cours à un sous-programme tout en conservant les informations nécessaires pour reprendre le programme en cours.
+Subroutine linkage 				Cette expression permet d'indiquer le mécanisme par lequel un ordinateur conserve les informations nécessaires pour reprendre son programme en cours après avoir terminé l'exécution d'un sous-programme.
+Suspend 						Ce mot permet d'indiquer un arrête d'exécution et préserve l'état de la tâche jusqu'à une date ultérieure.
+Synchronization 				Ce mot permet d'indiquer un caractère utilisé uniquement pour synchroniser l'émetteur et le récepteur.
+Synchronous 					Ce mot permet d'indiquer une opération selon une source de synchronisation globale ou une horloge, c'est-à-dire à intervalles réguliers.
+Systems software 				Cette expression permet d'indiquer les programmes exécutant des fonctions administratives ou aident au développement d'autres programmes mais n'effectuent en fait aucune des charges de travail ultimes de l'ordinateur.
+Tail 							Ce mot permet d'indiquer l'emplacement de l'élément le plus ancien de la file d'attente, c'est-à-dire la première entrée.
+Task 							Ce mot permet d'indiquer un programme autonome pouvant faire partie d'un système global sous le contrôle d'un superviseur.
+Task status 					Cette expression permet d'indiquer un ensemble de paramètres spécifiant l'état actuel d'une tâche. Une tâche peut être suspendue et reprise tant que son état est enregistré et restauré.
+Teletypewriter 					Ce mot permet d'indiquer un périphérique contenant un clavier et une imprimante série étant souvent utilisé dans les communications et avec les ordinateurs. Également appelé Teletype (une marque déposée de Teletype Corporation of Skokie, Illinois) ou TTY.
+Ten's complement 				Cette expression permet d'indiquer le résultat de la soustraction d'un nombre décimal de zéro (en ignorant le signe négatif), le complément de neuf plus un.
+Terminator 						Ce mot permet d'indiquer un élément de données n'ayant d'autre fonction que de signifier la fin d'un tableau.
+Threaded code 					Cette expression permet d'indiquer un programme composé de sous-programmes, dont chacun transfère automatiquement le contrôle au suivant une fois terminé.
+Timeout 						Ce mot permet d'indiquer une période pendant laquelle aucune activité n'est autorisée à se poursuivre, une période d'inactivité.
+Top of the stack 				Cette expression permet d'indiquer l'adresse contenant l'élément le plus récemment entré dans la pile.
+Trace 							Ce mot permet d'indiquer une aide au débogage fournissant des informations sur un programme pendant que le programme est en cours d'exécution. La trace affiche généralement tout ou partie des résultats intermédiaires.
+Trailing edge 					Cette expression permet d'indiquer le front masquant la fin d'une impulsion.
+Translate instruction 			Cette expression permet d'indiquer une instruction convertissant son opérande en entrée correspondante dans une table.
+Transparent routine 			Cette expression permet d'indiquer une routine fonctionnant sans interférer avec les opérations d'autres routines.
+Trap 							Ce mot permet d'indiquer une instruction forçant un saut vers une adresse spécifique (dépendante du processeur), souvent utilisée pour produire des points d'arrêt ou pour indiquer des erreurs matérielles ou logicielles.
+True borrow 					Cette expression permet d'indiquer une retenue. Voir Borrow.
+Two's complement 				Cette expression permet d'indiquer un nombre binaire qui, lorsqu'il est ajouté au nombre d'origine dans un additionneur binaire, produit un résultat nul. Le complément à deux d'un nombre peut être obtenu en soustrayant le nombre de zéro ou en ajoutant 1 au complément à un.
+Two 's complement overflow 		Cette expression permet d'indiquer une situation dans laquelle une opération arithmétique signée produit un résultat ne pouvant pas être représenté correctement - c'est-à-dire que la grandeur déborde dans le bit de signe.
+UART 							Cette abréviation, provenant de l'anglicisme Universal Asynchronous Receiver/Transmitter, permet d'indiquer un périphérique LSI agissant comme une interface entre les systèmes traitant les données en parallèle et les périphériques gérant les données sous format de série désynchronisé.
+Underflow 						Ce mot permet d'indiquer une tentative de suppression de plus de données d'une pile qu'il n'y a été entré.
+Unsigned number 				Cette expression permet d'indiquer un nombre dans lequel tous les bits sont utilisés pour représenter la grandeur.
+Utility 						Ce mot permet d'indiquer un programme à usage général, généralement fourni par le fabricant de l'ordinateur ou une partie d'un système d'exploitation, exécutant une opération standard ou courante telle que le tri, la conversion de données d'un format à un autre ou la copie d'un fichier.
+Valid data 						Cette expression permet d'indiquer un signal étant actif lorsque de nouvelles données sont disponibles pour le récepteur.
+Vectored interrupt 				Cette expression permet d'indiquer une interruption produisant un code d'identification (ou un vecteur) que la microprocesseur peut utiliser pour transférer le contrôle au sous-programme de service approprié. Le processus par lequel le contrôle est transféré à la routine de service est appelé vectorisation.
+Versatile Interface Adapter (VIA) 	Cette expression permet d'indiquer le nom communément donné au périphérique d'interface parallèle 6522; il se compose de deux ports d'entrée/sortie bidirectionnels de 8 bits, de quatre lignes d'état et de contrôle, de deux temporisateurs 16 bits et d'un registre à décalage.
+VIA 							Cette abréviation, provenant de l'anglicisme Versatile Interface Adapter, permet d'indiquer un adaptateur d'interface polyvalent.
+Volatile memory 				Cette expression permet d'indiquer une mémoire perdant son contenu lorsque l'alimentation est coupée.
+Walking bit test 				Cette expression permet d'indiquer une procédure par laquelle un seul bit de 1 est déplacé à travers chaque position de bit dans une zone de mémoire et un contrôle est effectué pour savoir s'il peut être lu correctement.
+Word 							Ce mot permet d'indiquer le regroupement de base de bits qu'un ordinateur peut traiter en même temps. Lorsqu'il s'agit de microprocesseurs, le terme fait souvent référence à une unité de données de 16 bits.
+Word boundary 					Cette expression permet d'indiquer une limite entre des unités d'entreposage 16 bits contenant deux octets d'informations. Si les informations sont entreposées en unités de longueur de mot, seules les paires d'octets conformes (alignées avec) aux limites de mots contiennent des informations valides. Les paires d'octets mal alignées contiennent un octet d'un mot et un octet d'un autre.
+Word-length 					Cette expression permet d'indiquer une longueur de 16 bits par élément.
+Wraparound 						Ce mot permet d'indiquer l'organisation de manière circulaire comme si les extrémités étaient connectées. Une zone d'entreposage présente un bouclage si les opérations sur celle-ci agissent comme si les emplacements de limite étaient contigus.
+Write-only register 			Cette expression permet d'indiquer un registre que le microprocesseur peut modifier mais ne peut pas lire. Si un programme doit déterminer le contenu d'un tel registre, il doit sauvegarder une copie des données y étant placées.
+Zero flag 						Cette expression permet d'indiquer un drapeau valant 1 si la dernière opération a produit un résultat de zéro et si ce n'est pas le cas.
+Zero page 						Cette expression permet d'indiquer, dans la terminologie 6502, les 256 adresses mémoire les plus basses (adresses de 0000 à 00FF).
+Zero page addressing 			Cette expression permet d'indiquer, dans la terminologie 6502, une forme d'adressage direct dans laquelle l'instruction ne contient qu'une adresse de 8 bits à la page 0. Autrement dit, zéro est implicite comme l'octet le plus significatif de l'adresse directe et n'a pas besoin d'être inclus spécifiquement dans l'instruction.
+Zero-page indexed addressing 	Cette expression permet d'indiquer un format d'adressage indexé dans lequel l'instruction contient une adresse de base à la page 0. Autrement dit, zéro est implicite comme l'octet le plus significatif de l'adresse de base et n'a pas besoin d'être inclus explicitement dans l'instruction.
+Zoned decimal 					Cette expression permet d'indiquer un format décimal codé en binaire dans lequel chaque octet de 8 bits ne contient qu'un seul chiffre décimal.

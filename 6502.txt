@@ -1,0 +1,63 @@
+ Voici un tableau de référence des différents instructions du microprocesseur 6502:
+Nom 	Description
+ADC 	Cette instruction permet de faire une addition avec la retenue.
+AND 	Cette instruction permet de faire un «Et binaire» avec le registre accumulateur.
+ASL 	Cette instruction permet de faire un décalage des bits d'une position vers la gauche; la valeur 0 est mise dans le bit 0 et le bit 7 est copié dans le drapeau de retenue.
+BCC 	Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau de retenue vaut 0.
+BCS 	Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau de retenue vaut 1.
+BEQ 	Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau d'égalité vaut 1.
+BIT 	Cette instruction permet de fixer le drapeau Z comme si la valeur dans l'adresse testée est un «Et binaire» avec l'accumulateur, ainsi les drapeaux S et V sont réglés pour correspondre respectivement aux bit 6 et 7 dans la valeur entreposé dans l'adresse testé.
+BMI 	Cette instruction permet de faire un saut à l'emplacement spécifié si inférieur.
+BNE 	Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau d'égalité vaut 0.
+BPL 	Cette instruction permet de faire un saut à l'emplacement spécifié si supérieur.
+BRK 	Cette instruction permet de provoquer un non-masquage des interruptions et incrémente le compteur de programme.
+BVC 	Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau de débordement vaut 0.
+BVS 	Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau de débordement vaut 1.
+CLC 	Cette instruction permet de fixer le drapeau de retenue à 0.
+CLD 	Cette instruction permet de fixer le drapeau de décimal à 0.
+CLI 	Cette instruction permet de fixer le drapeau d'interruption à 0.
+CLV 	Cette instruction permet de fixer le drapeau de débordement à 0.
+CMP 	Cette instruction permet d'effectuer une comparaison des ensembles de drapeaux comme si une soustraction avait été effectuée.
+CPX 	Cette instruction permet d'effectuer une comparaison des ensembles de drapeaux comme si une soustraction avait été effectuée sur le registre X.
+CPY 	Cette instruction permet d'effectuer une comparaison des ensembles de drapeaux comme si une soustraction avait été effectuée sur le registre Y.
+DEC 	Cette instruction permet de décrémenter une cellule mémoire ou un emplacement absolue.
+DEX 	Cette instruction permet de décrémenter le registre X.
+DEY 	Cette instruction permet de décrémenter le registre Y.
+EOR 	Cette instruction permet d'appliquer un «Ou binaire exclusif» à la cellule mémoire ou un emplacement absolue.
+INC 	Cette instruction permet d'incrémenter une cellule mémoire ou un emplacement absolue.
+INX 	Cette instruction permet d'incrémenter le registre X.
+INY 	Cette instruction permet d'incrémenter le registre Y.
+JMP 	Cette instruction permet de sauter à l'adresse spécifié.
+JSR 	Cette instruction permet d'appeler un sous-programme à l'adresse absolue spécifié.
+LDA 	Cette instruction permet de charger une valeur dans le registre accumulateur.
+LDX 	Cette instruction permet de charger une valeur dans le registre X.
+LDY 	Cette instruction permet de charger une valeur dans le registre Y.
+LSR 	Cette instruction permet de faire un décalage des bits d'une position vers la droite; la valeur 0 est mise dans le bit 7 et le bit 0 est copié dans le drapeau de retenue.
+NOP 	Cette instruction ne fait rien.
+ORA 	Cette instruction permet de faire un «Ou binaire» avec le registre accumulateur.
+PHA 	Cette instruction permet d'empiler le registre A dans la pile.
+PHP 	Cette instruction permet d'empiler le registre d'état P dans la pile.
+PLA 	Cette instruction permet de dépiler le registre A de la pile.
+PLP 	Cette instruction permet de dépiler le registre d'état P de la pile.
+ROL 	Cette instruction permet de faire un décalage des bits d'une position vers la gauche; la valeur de la retenue est mise dans le bit 0 et le bit 7 est copié dans le drapeau de retenue.
+ROR 	Cette instruction permet de faire un décalage des bits d'une position vers la droite; la valeur de la retenue est mise dans le bit 7 et le bit 0 est copié dans le drapeau de retenue.
+RTI 	Cette instruction permet de retourner d'une interruption.
+RTS 	Cette instruction permet de retourner d'un sous-programme.
+SBC 	Cette instruction permet de faire une soustraction avec la retenue.
+SEC 	Cette instruction permet de fixer le drapeau de retenue à 1.
+SED 	Cette instruction permet de fixer le drapeau de décimal à 1.
+SEI 	Cette instruction permet de fixer le drapeau d'interruption à 1.
+STA 	Cette instruction permet d'entreposer une valeur provenant du registre accumulateur.
+STX 	Cette instruction permet d'entreposer une valeur provenant du registre X.
+STY 	Cette instruction permet d'entreposer une valeur provenant du registre Y.
+TAX 	Cette instruction permet de transférer le contenu du registre A dans le registre X.
+TAY 	Cette instruction permet de transférer le contenu du registre A dans le registre Y.
+TSX 	Cette instruction permet de transférer le contenu du registre de pointeur de pile (S) dans le registre X.
+TXA 	Cette instruction permet de transférer le contenu du registre X dans le registre A.
+TXS 	Cette instruction permet de transférer le contenu du registre X dans le registre de pointeur de pile (S).
+TYA 	Cette instruction permet de transférer le contenu du registre Y dans le registre A.
+
+Remarque
+
+    Ce microprocesseur ne dispose pas d'instruction de multiplication, il faudra donc utilisé un algorithme de multiplication russe pour pour effectuer se genre de calcul.
+

@@ -1,0 +1,257 @@
+ Voici un tableau de référence des différents instructions du microprocesseur 6502 avec les opcodes du code machine :
+Nom 	Syntaxe 	Code machine 	Algorithme
+ADC 	ADC n 		69h nnh 		A ← A+n+C
+ADC 	ADC pq 		6Dh qqh pph 	A ← A+(pq)+C
+ADC 	ADC q 		65h qqh 		A ← A+(oq)+C
+ADC 	ADC pq,X 	7Dh qqh pph 	A ← A+(pq+X)+C
+ADC 	ADC pq,Y 	79h qqh pph 	A ← A+(pq+Y)+C
+ADC 	ADC q,X 	75h qqh 		A ← A+(oq+X)+C
+ADC 	ADC d,X 	61h ddh 		l ← (od+X)
+									h ← (od+X+1)
+									A ← A+(hl)+C
+ADC 	ADC d,Y 	71h ddh 		l ← (od)
+									h ← (od+1)
+									A ← A+(hl)+C
+AND 	AND n 		29h nnh 		A ← A ∩ n
+AND 	AND pq 		2Dh qqh pph 	A ← A ∩ (pq)
+AND 	AND q 		25h qqh 		A ← A ∩ (oq)
+AND 	AND pq,X 	3Dh qqh pph 	A ← A ∩ (pq+X)
+AND 	AND pq,Y 	39h qqh pph 	A ← A ∩ (pq+Y)
+AND 	AND q,X 	35h qqh 		A ← A ∩ (oq+X)
+AND 	AND d,X 	21h ddh 		l ← (od+X)
+									h ← (od+X+1)
+									A ← A ∩ (hl)
+AND 	AND d,Y 	31h ddh 		l ← (od)
+									h ← (od+1)
+									A ← A ∩ (hl+Y)
+ASL 	ASL 		0Ah 			C ← 7 ← 0 ← 0
+ASL 	ASL pq 		0Eh qqh pph 	p ↔ q
+ASL 	ASL q 		06h qqh 		o ↔ q
+ASL 	ASL pq,X 	1Eh qqh pph 	p ↔ q + X
+ASL 	ASL q,X 	16h qqh 		o ↔ q + X
+BCC 	BCC e 		90h eeh 		SI C = 0 ALORS
+										PC ← PC + 2+e
+									FIN SI
+									SI C = 1 ALORS
+										PC ← PC + 2
+									FIN SI
+BCS 	BCS e 		B0h eeh 		SI C = 1 ALORS
+										PC ← PC + 2+e
+									FIN SI
+									SI C = 0 ALORS
+										PC ← PC + 2
+									FIN SI
+BEQ 	BEQ e 		F0h eeh 		SI Z = 1 ALORS
+										PC ← PC + 2+e
+									FIN SI
+									SI Z = 0 ALORS
+										PC ← PC + 2
+									FIN SI
+BIT 	BIT pq 		2Ch qqh pph 	Z ← A ∩ (pq)
+									N ← (pq)7
+									V ← (pq)6
+BIT 	BIT q 		24h qqh 		Z ← A ∩ (pq)
+									N ← (oq)7
+									V ← (oq)6
+BMI 	BMI e 		30h eeh 		SI N = 1 ALORS
+										PC ← PC + 2+e
+									FIN SI
+									SI N = 0 ALORS
+										PC ← PC + 2
+									FIN SI
+BNE 	BNE e 		D0h eeh 		SI Z = 0 ALORS
+										PC ← PC + 2+e
+									FIN SI
+									SI Z = 1 ALORS
+										PC ← PC + 2
+									FIN SI
+BPL 	BPL e 		10h eeh 		SI N = 0 ALORS
+										PC ← PC + 2+e
+									FIN SI
+									SI N = 1 ALORS
+										PC ← PC + 2
+									FIN SI
+BRK 	BRK 		00h 			PC ← PC+2
+									(SP)=PCh
+									SP ← SP-1
+									(SP) ← PCb
+									SP ← SP-1
+									(SP) ← P
+									SP ← SP-1
+									PCb ← (FFFE)
+									PCh ← (FFFE)
+BVC 	BVC e 		50h eeh 		SI V = 0 ALORS
+										PC ← PC + 2+e
+									FIN SI
+									SI V = 1 ALORS
+										PC ← PC + 2
+									FIN SI
+BVS 	BVS e 		70h eeh 		SI V = 1 ALORS
+										PC ← PC + 2+e
+									FIN SI
+									SI V = 0 ALORS
+										PC ← PC + 2
+									FIN SI
+CLC 	CLC 		18h 			C ← 0
+CLD 	CLD 		D8h 			D ← 0
+CLI 	CLI 		58h 			I ← 0
+CLV 	CLV 		B8h 			V ← 0
+CMP 	CMP n 		C9h nnh 		A = n
+CMP 	CMP pq 		CDh qqh pph 	A = (pq)
+CMP 	CMP q 		C5h qqh 		A = (oq)
+CMP 	CMP pq,X 	DDh qqh pph 	A = (pq+X)
+CMP 	CMP pq,Y 	D9h qqh pph 	A = (pq+Y)
+CMP 	CMP q,X 	D5h qqh 		A = (oq+X)
+CMP 	CMP d,X 	C1h ddh 		l ← (od+X)
+									h ← (od+X+1)
+									A = (hl)
+CMP 	CMP d,Y 	D1h ddh 		l ← (od)
+									h ← (od+1)
+									A = (hl+Y)
+CPX 	CPX n 		E0h nnh 		X = n
+CPX 	CPX pq 		ECh qqh pph 	X = (pq)
+CPX 	CPX q 		E4h qqh 		X = (oq)
+CPY 	CPY n 		C0h nnh 		Y = n
+CPY 	CPY pq 		CCh qqh pph 	Y = (pq)
+CPY 	CPY q 		C4h qqh 		Y = (oq)
+DEC 	DEC pq 		CEh qqh pph 	(pq) ← (pq) - 1
+DEC 	DEC q 		C6h qqh 		(oq) ← (oq) - 1
+DEC 	DEC pq,X 	DEh qqh pph 	(pq+X) ← (pq+X) - 1
+DEC 	DEC q,X 	D6h qqh 		(oq+X) ← (oq+X) - 1
+DEX 	DEX 		CAh 			X ← X - 1
+DEY 	DEY 		88h 			Y ← Y - 1
+EOR 	EOR n 		49h nnh 		A ← A ^ n
+EOR 	EOR pq 		4Dh qqh pph 	A ← A ^ (pq)
+EOR 	EOR q 		45h qqh 		A ← A ^ (oq)
+EOR 	EOR pq,X 	5Dh qqh pph 	A ← A ^ (pq+X)
+EOR 	EOR pq,Y 	59h qqh pph 	A ← A ^ (pq+Y)
+EOR 	EOR q,X 	55h qqh 		A ← A ^ (oq+X)
+EOR 	EOR d,X 	41h ddh 		l ← (od+X)
+									h ← (od+X+1)
+									A ← A ^ (hl)
+EOR 	EOR d,Y 	51h ddh 		l ← (od)
+									h ← (od+1)
+									A ← A ^ (hl+Y)
+INC 	INC pq 		EEh qqh pph 	(pq) ← (pq) + 1
+INC 	INC q 		E6h qqh 		(oq) ← (oq) + 1
+INC 	INC pq,X 	FEh qqh pph 	(pq+X) ← (pq+X) + 1
+INC 	INC q,X 	F6h qqh 		(oq+X) ← (oq+X) + 1
+INX 	INX 		E8h 			X ← X + 1
+INY 	INY 		C8h 			Y ← Y + 1
+JMP 	JMP pq 		4Ch qqh pph 	PC ← pq
+JMP 	JMP pq,IND 	6Ch qqh pph 	l ← (pq)
+									h ← (pq+1)
+									PC ← hl
+JSR 	JSR pq 		20h qqh pph 	PC ← PC + 2
+									(SP) ← PCh
+									SP ← SP - 1
+									(SP) ← PCb
+									SP ← SP - 1
+									PC ← pq
+LDA 	LDA n 		A9h nnh 		A ← n
+LDA 	LDA pq 		ADh qqh pph 	A ← (pq)
+LDA 	LDA q 		A5h qqh 		A ← (oq)
+LDA 	LDA pq,X 	BDh qqh pph 	A ← (pq+X)
+LDA 	LDA pq,Y 	B9h qqh pph 	A ← (pq+Y)
+LDA 	LDA q,X 	B5h qqh 		A ← (oq+X)
+LDA 	LDA d,X 	A1h ddh 		l ← (od+X)
+									h ← (od+X+1)
+									A ← (hl)
+LDA 	LDA d,Y 	B1h ddh 		l ← (od)
+									h ← (od+1)
+									A ← (hl+Y)
+LDX 	LDX n 		A2h nnh 		X ← n
+LDX 	LDX pq 		AEh qqh pph 	X ← (pq)
+LDX 	LDX q 		A6h qqh 		X ← (oq)
+LDX 	LDX pq,Y 	BEh qqh pph 	X ← (pq+Y)
+LDX 	LDX q,Y 	B6h qqh 		X ← (oq+Y)
+LDY 	LDY n 		A0h nnh 		Y ← n
+LDY 	LDY pq 		ACh qqh pph 	Y ← (pq)
+LDY 	LDY q 		A4h qqh 		Y ← (oq)
+LDY 	LDY pq,X 	BCh qqh pph 	Y ← (pq+X)
+LDY 	LDY q,X 	B4h qqh 		Y ← (oq+X)
+LSR 	LSR 		4Ah 			0 → 7 → 0 → C
+LSR 	LSR pq 		4Eh qqh pph 	p ↔ q
+LSR 	LSR q 		46h qqh 		o ↔ q
+LSR 	LSR pq,X 	5Eh qqh pph 	p ↔ q + X
+LSR 	LSR q,X 	56h qqh 		o ↔ q + X
+NOP 	NOP 		EAh 	 
+ORA 	ORA n 		09h nnh 		A ← A U n
+ORA 	ORA pq 		0Dh qqh pph 	A ← A U (pq)
+ORA 	ORA q 		05h qqh 		A ← A U (oq)
+ORA 	ORA pq,X 	1Dh qqh pph 	A ← A U (pq+X)
+ORA 	ORA pq,Y 	19h qqh pph 	A ← A U (pq+Y)
+ORA 	ORA q,X 	15h qqh 		A ← A U (oq+X)
+ORA 	ORA d,X 	01h ddh 		l ← (od+X)
+									h ← (od+X+1)
+									A ← A U (hl)
+ORA 	ORA d,Y 	11h ddh 		l ← (od)
+									h ← (od+1)
+									A ← A U (hl+Y)
+PHA 	PHA 		48h 			(SP) ← A
+									SP ← SP - 1	
+PHP 	PHP 		08h 			(SP) ← P
+									SP ← SP - 1	
+PLA 	PLA 		68h 			(SP) ← A
+									SP ← SP + 1	
+PLP 	PLP 		28h 			(SP) ← P
+									SP ← SP + 1	
+ROL 	ROL 		2Ah 			A ↔ C ← 7 ↔ 0
+ROL 	ROL pq 		2Eh qqh pph 	pq ← 7 ↔ 0
+ROL 	ROL q 		26h qqh 		oq ← 7 ↔ 0
+ROL 	ROL pq,X 	3Eh qqh pph 	pq ← 7 ↔ 0
+ROL 	ROL q,X 	36h qqh 		oq ← 7 ↔ 0
+ROR 	ROR 		6Ah 			A ↔ C ← 7 ↔ 0
+ROR 	ROR pq 		6Eh qqh pph 	pq ← 7 ↔ 0
+ROR 	ROR q 		66h qqh 		oq ← 7 ↔ 0
+ROR 	ROR pq,X 	7Eh qqh pph 	pq ← 7 ↔ 0
+ROR 	ROR q,X 	76h qqh 		oq ← 7 ↔ 0
+RTI 	RTI 		40h 			P ← (SP)
+									SP ← SP + 1
+									PCb ← (SP)
+									SP ← SP + 1
+									PCh ← (SP)
+									SP ← SP + 1
+RTS 	RTS 		60h 			PCb ← (SP)
+									SP ← SP + 1
+									PCh ← (SP)
+									SP ← SP + 1
+									PC ← PC + 1
+SBC 	SBC n 		E9h nnh 		A ← A - n - C
+SBC 	SBC pq 		E9h qqh pph 	A ← A - (pq) - C
+SBC 	SBC oq 		E5h qqh 		A ← A - (oq) - C
+SBC 	SBC pq,X 	FDh qqh pph 	A ← A - (pq+X) - C
+SBC 	SBC pq,Y 	F9h qqh pph 	A ← A - (pq+Y) - C
+SBC 	SBC q,X 	F5h qqh 		A ← A - (oq+X) - C
+SBC 	SBC d,X 	E1h ddh 		A ← A - (od+X) - C
+									A ← A - (od+X+1) - C
+									A ← A - (hl) - C
+SBC 	SBC d,Y 	F1h ddh 		A ← A - (od) - C
+									A ← A - (od+1) - C
+									A ← A - (hl+Y) - C
+SEC 	SEC 		38h 			C ← 1
+SED 	SED 		F8h 			D ← 1
+SEI 	SEI 		78h 			I ← 1
+STA 	STA pq 		8Dh qqh pph 	(pq) ← A
+STA 	STA oq 		85h qqh 		(oq) ← A
+STA 	STA pq,X 	9Dh qqh pph 	(pq+X) ← A
+STA 	STA pq,Y 	99h qqh pph 	(pq+Y) ← A
+STA 	STA oq,X 	95h qqh 		(oq+X) ← A
+STA 	STA oq,X 	81h ddh 		l ← (od+X)
+									h ← (od+X+1)
+									(hl) ← A
+STA 	STA oq,Y 	91h ddh 		l ← (od)
+									h ← (od+1)
+									(hl+Y) ← A
+STX 	STX pq 		8Eh qqh pph 	(pq) ← X
+STX 	STX oq 		86h qqh 		(oq) ← X
+STX 	STX q,Y 	96h qqh 		(oq+Y) ← X
+STY 	STY pq 		8Ch qqh pph 	(pq) ← Y
+STY 	STY oq 		84h qqh 		(oq) ← Y
+STY 	STY q,X 	94h qqh 		(oq+X) ← Y
+TAX 	TAX 		AAh 			X ← A
+TAY 	TAY 		A8h 			Y ← A
+TSX 	TSX 		BAh 			X ← S
+TXA 	TXA 		8Ah 			A ← X
+TXS 	TXS 		9Ah 			S ← X
+TYA 	TYA 		98h 			A ← Y
