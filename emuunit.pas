@@ -5,52 +5,37 @@ unit EmuUnit;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils, BaseUnit;
 
 type
-  adrType = (INDX, ZP_, IMM_, ABS_, INDY, ZPX, ABSY, ABSX,
-          zpy, RegA, Reg_SP, RegP);
-  pageType = (page0, page1, page2, page3);
-  ProcType = procedure ;
-  opType = (op0, op1, op2, op3, op4, op5, op6, op7);
-  flags = (cf, zf, fi, df, bf, xf, vf, nf);
-  flagSet = packed set of flags;
-  wordAdressable = array[word] of byte;
-  bytep = ^byte;
-  FuncType= function() : bytep;
-  str3  = string[3];
-  str7  = string[7];
-
-type
-  tByteStack = object
-    fsp: byte;
-    procedure setSp(b: byte);
-    function pop: byte;
-    procedure push(b: byte);
-    function popAdr: word;
-    procedure pushAdr(w: word);
-    property sp: byte read fsp write setSp;
-  end;
-
   tRegisters6502 = object
+  private
     AReg: byte;         { Register accumulator }
     XReg: byte;         { Register index X }
     YReg: byte;         { Register index Y }
-    PC: word;        { Register programm counter }
-    opcode: byte;    { opcode }
-    pState: flagSet; { Register processeur }
+    PC: word;           { Register programm counter }
+    opcode: byte;       { opcode }
+    pState: flagSet;    { Register processor }
     adrIndex: adrType;
     opIndex: opType;
     pageIndx: pageType;
     fDebugOn: boolean;
     codeRunning: boolean;
 
-    Procedure InitEmul;
-    procedure Debug;
+  protected
+    procedure SetFlags(f: flagset; NewStates: byte);
     procedure SetFlag(f: flags; state: boolean);
     function  GetFlag(f: flags): boolean;
     function  GetState: byte;
     procedure SetState(state: byte);
+    procedure Setareg(Value: byte);
+    procedure SetXreg(Value: byte);
+    procedure SetYreg(Value: byte);
+  public
+    Procedure InitEmul;
+    procedure Debug;
+    function  NextByte: byte;
+    function  NextWord: word;
     procedure test(Value: byte);
     procedure doCompare(reg, val: word);
     procedure testSBC(Value: byte);
@@ -61,9 +46,6 @@ type
     procedure decr(var Value: byte);
     procedure ExecEmul(newPc: word);
     procedure SetIndex;
-    procedure Setareg(Value: byte);
-    procedure SetXreg(Value: byte);
-    procedure SetYreg(Value: byte);
 
     property p: byte read getState write SetState;
     property a: byte read areg write Setareg;
@@ -75,12 +57,11 @@ type
 
 
 var
-  memory: wordAdressable;
-  stack: tByteStack;
   Regs: tRegisters6502;
 
 
 implementation
+
 
 {_packb}
   function _unpackb(b: byte): byte;
@@ -98,121 +79,56 @@ implementation
 
 
 
-{Stack}
-
-const
-  StackBase = $100;
-
-  procedure tByteStack.setSp(b: byte);
-  begin
-    fsp := b;
-  end;
-
-  function tByteStack.pop: byte;
-  begin
-    Inc(fsp);
-    Result := memory[StackBase + fsp];
-  end;
-
-  procedure tByteStack.push(b: byte);
-  begin
-    memory[StackBase + fsp] := b;
-    Dec(fsp);
-  end;
-
-  function tByteStack.popAdr: word;
-  begin
-    Result := pop + pop shl 8;
-  end;
-
-  procedure tByteStack.pushAdr(w: word);
-  begin
-    push(w shr 8);
-    push(w and 255);
-  end; {Stack}
-
-
-  {memory}
-
-  procedure memStoreByte(address: word; Value: byte);
-  begin
-    memory[address] := Value;
-  end;
-
-  function memReadByte(address: word): byte;
-  begin
-    memReadByte := memory[address];
-  end;
-
-  function NextByte: byte;
-  begin
-    with regs do begin
-      PC := PC + 1;
-      NextByte := memory[PC];
-    end;
-  end;
-
-  function NextWord: word;
-  begin
-    NextWord := NextByte + (NextByte shl 8);
-  end;
-
-  function IndirAdr(adr: word): word;
-  begin
-    IndirAdr := memReadByte(adr) + (memReadByte(adr + 1) shl 8);
-  end;
-
-
-{ptrValue of addressable memory }
+{ptrValue of addressing memory }
 
   procedure nop; begin end;
 
   function aINDX(): bytep;
   begin                       { ORA INDX }
-    result := @memory[IndirAdr(NextByte + regs.X)];
+    result := @mem.bytes[byte(mem.PageAdr(regs.NextByte + regs.X))];
   end;
 
   function aZP(): bytep;
   begin                       { ORA ZP }
-    result := @memory[NextByte];
+    result := @mem.bytes[regs.NextByte];
   end;
 
   function aIMM(): bytep;
   begin                       { ORA IMM }
     with regs do begin
       PC := PC + 1;
-      result:= @memory[PC];
+      result:= @mem.bytes[PC];
     end;
   end;
 
   function aABS(): bytep;         { ORA ABS }
   begin
-    result := @memory[NextWord];
+    result := @mem.bytes[regs.NextWord];
   end;
 
   function aINDY(): bytep;
   begin                      { ORA INDY }
-    result := @memory[IndirAdr(NextByte)+regs.Y];
+    result := @mem.bytes[mem.PageAdr(regs.NextByte)+regs.Y];
   end;
 
   function aZPX(): bytep;
   begin                      { ORA ZPX }
-    result := @memory[(NextByte + regs.X) and $ff];
+    result := @mem.bytes[(regs.NextByte + regs.X) and $ff];
   end;
 
   function aABSY(): bytep;
   begin                       { ORA ABSY }
-    result := @memory[NextWord + regs.Y];
+    result := @mem.bytes[regs.NextWord + regs.Y];
   end;
 
   function aABSX(): bytep;
   begin                       { ORA ABSX }
-    result := @memory[NextWord + regs.X];
+    result := @mem.bytes[regs.NextWord + regs.X];
   end;
 
   function aZPY(): bytep;
   begin                      { STX ZPY }
-    result := @memory[(NextByte + regs.Y) and $ff];
+    result := @mem.bytes[(regs.NextByte + regs.Y) and $ff];
   end;
 
   function aRegA(): bytep;
@@ -222,7 +138,7 @@ const
 
   function aRegS(): bytep;
   begin                      { TSX }
-    result := @stack.sp;
+    result := stack.sadr;
   end;
 
   function aRegP(): bytep;
@@ -243,27 +159,24 @@ const
   end; {ptrValue}
 
 
-{num2hex}
-  function num2hex(nr: byte): str3;
-  const
-    HexStr: array[0..15] of char =
-      ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
-  begin
-    num2hex := HexStr[nr shr 4] + HexStr[nr and $F];
-  end;
-
-  function addr2hex(address: word): str7;
-  begin
-    addr2hex := num2hex((address shr 8)) + num2hex(address and $ff);
-  end; {num2hex}
-
-
 
 {tRegisters6502}
 
   function tRegisters6502.GetState: byte;
   begin
     Result := bytep(@pState)^;
+  end;
+
+  function tRegisters6502.NextByte: byte;
+  begin
+      PC := PC + 1;
+      result := mem.bytes[PC];
+  end;
+
+  function tRegisters6502.NextWord: word;
+  begin
+    wordRec(result).lo := NextByte;
+    wordRec(result).hi := NextByte;
   end;
 
   procedure tRegisters6502.SetState(state: byte);
@@ -303,7 +216,7 @@ const
     reind: array[INDX..ABSX] of adrType = (
            IMM_, ZP_, RegA, ABS_, INDY, zpy, Reg_SP, ABSY);
   begin
-    opcode := memReadByte(pc);
+    opcode := mem.bytes[pc];
     pageIndx := pageType(opcode and 3);
     adrIndex := adrType((opcode shr 2) and 7);
     opIndex := opType(opcode shr 5);
@@ -325,6 +238,13 @@ const
                then adrIndex := regA
        ;
 
+  end;
+
+  procedure tRegisters6502.SetFlags(f: flagset; NewStates: byte);
+  begin
+    newStates := bytep(@f)^ and NewStates;
+    pstate := pstate - f;
+    p := p or  NewStates)
   end;
 
   procedure tRegisters6502.SetFlag(f: flags; state: boolean);
@@ -438,13 +358,15 @@ const
 
   procedure tRegisters6502.Debug;
   begin
-    if (DebugOn) then
-      WriteLn('PC=', addr2hex(PC),
-        ' opc=', num2hex(opcode),
-        ' X=', num2hex(X),
-        ' Y=', num2hex(Y),
-        ' A=', num2hex(A),
-        ' P=', num2hex(P));
+    if not (DebugOn) then exit;
+
+      WriteLn('PC=', word2hex(PC),
+        ' opc=', byte2hex(opcode),
+        ' X=', byte2hex(X),
+        ' Y=', byte2hex(Y),
+        ' A=', byte2hex(A),
+        ' P=', byte2bin(P));
+      readln;
   end;
 
 
@@ -516,8 +438,8 @@ const
   procedure CPX; begin with Regs do doCompare(X, ptrValue^); end;
   procedure STY; begin with Regs do ptrValue^ := Y; end;
   procedure LDY; begin with Regs do begin y := ptrValue^; test(Y); end; end;
-  procedure JPA; begin regs.PC := NextWord-1; end;
-  procedure JPI; begin regs.PC := IndirAdr(NextWord)-1; end;
+  procedure JPA; begin regs.PC := regs.NextWord-1; end;
+  procedure JPI; begin regs.PC := mem.PageAdr(regs.NextWord)-1; end;
   procedure JSR; begin stack.PushAdr(regs.PC+2); JPA; end;
   procedure PH; begin stack.Push(ptrValue^); end;
   procedure PL; begin ptrValue^ := stack.Pop; end;
@@ -531,12 +453,12 @@ const
   procedure iny; begin with regs do y := succ(Y); end;
   procedure inx; begin with regs do X := succ(X); end;
   procedure dey; begin with regs do y := pred(y); end;
-  procedure BRK; begin codeRunning := False; end;
+  procedure BRK; begin regs.codeRunning := False; end;
   procedure Rel;
   CONST AfLAGS : ARRAY[0..3] of flags = (nf,vf,cf,zf);
   var offset: byte;
   begin
-    offset := nextbyte;
+    offset := regs.nextbyte;
     with regs do begin
       if odd(byte(opIndex)) <> (AfLAGS[byte(opIndex) shr 1] in state)
         then exit;
@@ -635,177 +557,5 @@ const
   end;
 
 end.
-
-
-  case opcode of      {45}
-    $00: { BRK }      BRK;
-    $08: { PHP }      PH;
-    $10: { BPL }      Rel;
-    $18: { CLC }      CSF;
-    $20: { JSR ABS}   JSR;
-    $24: { BIT ZP }   bit;
-    $28: { PLP }      PL;
-    $2c: { BIT ABS }  bit;
-    $30: { BMI }      Rel;
-    $38: { SEC }      CSF;
-    $40: { RTI }      RTI;
-    $48: { PHA }      ph;
-    $4c: { JMP abs }  jpa;
-    $50: { BVS }      Rel;
-    $58: { CLI }      CSF;
-    $60: { RTS }      RTS;
-    $68: { PLA }      PLA;
-    $6c: { JMP IND }  jpi;
-    $70: { BVS }      Rel;
-    $78: { SEI }      CSF;
-    $84: { STY ZP }   STY;
-    $88: { DEY }      DEY;
-    $8c: { STY abs }  STY;
-    $90: { BCC }      Rel;
-    $94: { STY ZPX }  STY;
-    $98: { TYA }      STY;
-    $a0: { LDY IMM }  LDY;
-    $a4: { LDY ZP }   LDY;
-    $ac: { LDY ABS }  LDY;
-    $a8: { TAY }      ldy;
-    $b0: { BCS }      Rel;
-    $b4: { LDY ZPX }  LDY;
-    $b8: { CLV }      clv;
-    $bc: { LDY ABSX } LDY;
-    $c0: { CPY IMM }  CPY;
-    $c4: { CPY ZP }   CPY;
-    $c8: { INY }      INY;
-    $cc: { CPY ABS }  CPY;
-    $d0: { BNE }      Rel;
-    $d8: { CLD }      CSF;
-    $e0: { CPX IMM }  CPX;
-    $e4: { CPX ZP }   CPX;
-    $e8: { INX }      INX;
-    $ec: { CPX ABS }  CPX;
-    $f0: { BEQ }      Rel;
-    $f8: { SED }      CSF;
-
-    $01: { ORA INDX } ORA;     {63}
-    $05: { ORA ZP }   ORA;
-    $09: { ORA IMM }  ORA;
-    $0d: { ORA ABS }  ORA;
-    $11: { ORA INDY } ORA;
-    $15: { ORA ZPX }  ORA;
-    $19: { ORA ABSY } ORA;
-    $1d: { ORA ABSX } ORA;
-    $21: { AND INDX } AND_;
-    $25: { AND ZP }   AND_;
-    $29: { AND IMM }  AND_;
-    $2d: { AND ABS }  AND_;
-    $31: { AND INDY } AND_;
-    $35: { AND INDX } AND_;
-    $39: { AND ABSY } AND_;
-    $3d: { AND ABSX } AND_ ;
-    $41: { EOR INDX } EOR;
-    $45: { EOR ZPX }  EOR;
-    $49: { EOR IMM }  EOR;
-    $4d: { EOR abs }  EOR;
-    $51: { EOR INDY } EOR;
-    $55: { EOR ZPX }  EOR;
-    $59: { EOR ABSY } EOR;
-    $5d: { EOR ABSX } EOR;
-    $61: { ADC INDX } ADC;
-    $65: { ADC ZP }   ADC;
-    $69: { ADC IMM }  ADC;
-    $6d: { ADC ABS }  ADC;
-    $71: { ADC INY }  ADC;
-    $75: { ADC ZPX }  ADC;
-    $79: { ADC ABSY } ADC;
-    $7d: { ADC ABSX } ADC;
-    $81: { STA INDX } sta;
-    $85: { STA ZP }   sta;
-    $8d: { STA ABS }  sta;
-    $91: { STA INDY } STA;
-    $95: { STA ZPX }  sta;
-    $99: { STA ABSY } STA;
-    $9d: { STA ABSX } STA;
-    $a1: { LDA INDX } LDA;
-    $a5: { LDA ZP }   LDA;
-    $a9: { LDA IMM }  LDA;
-    $ad: { LDA ABS }  LDA;
-    $b1: { LDA INDY } LDA;
-    $b5: { LDA ZPX }  LDA;
-    $b9: { LDA ABSY } LDA;
-    $bd: { LDA ABSX } lda;
-    $c1: { CMP INDX } CMP;
-    $c5: { CMP ZP }   CMP;
-    $c9: { CMP IMM }  CMP;
-    $cd: { CMP ABS }  CMP;
-    $d1: { CMP INDY } CMP;
-    $d5: { CMP ZPX }  CMP;
-    $d9: { CMP ABSY } CMP;
-    $dd: { CMP ABSX } CMP;
-    $e1: { SBC INDX } SBC;
-    $e5: { SBC ZP }   SBC;
-    $e9: { SBC IMM }  SBC;
-    $ed: { SBC ABS }  SBC;
-    $f1: { SBC INDY } SBC;
-    $f5: { SBC ZPX }  SBC;
-    $f9: { SBC ABSY } SBC;
-    $fd: { SBC ABSX } SBC;
-
-    $06: { ASL ZP  }  ASL;  {42}
-    $0a: { ASL a   }  ASL;
-    $0e: { ASL ABS }  ASL;
-    $16: { ASL ZPX }  ASL;
-    $1e: { ASL ABSX } ASL;
-    $26: { ROL ZP  }  ROL;
-    $2a: { ROL A   }  ROL;
-    $2e: { ROL ABS }  ROL;
-    $36: { ROL ZPX }  ROL;
-    $3e: { ROL ABSX } ROL;
-    $46: { LSR ZP  }  LSR;
-    $4a: { LSR a}     LSR;
-    $4e: { LSR abs }  LSR;
-    $56: { LSR ZPX }  LSR;
-    $5e: { LSR ABSX } LSR;
-    $66: { ROR ZP  }  ROR;
-    $6a: { ROR A   }  ROR;
-    $6e: { ROR ABS }  ROR;
-    $76: { ROR ZPX }  ROR;
-    $7e: { ROR ABSX } ROR;
-    $86: { STX ZP  }  STX;
-    $8a: { TXA     }  STX;
-    $8e: { STX abs }  STX;
-    $96: { STX ZPY }  STX;
-    $9a: { TXS      } STX;
-    $a2: { LDX IMM }  LDX;
-    $a6: { LDX ZP  }  LDX;
-    $aa: { TAX     }  LDX;
-    $ae: { LDX ABS }  LDX;
-    $b6: { LDX ZPY }  LDX;
-    $ba: { TSX     }  LDX;
-    $be: { LDX ABSY } LDX;
-    $c6: { DEC ZP   } DEC_;
-    $ca: { DEX     }  dec_;
-    $ce: { DEC ABS }  dec_;
-    $d6: { DEC ZPX }  dec_;
-    $de: { DEC ABSX } dec_;
-    $e6: { INC ZP  }  inc_;
-    $ea: { NOP     }  nop;
-    $ee: { INC ABS }  inc_;
-    $f6: { INC ZPX }  inc_;
-    $fe: { INC ABSX } inc_;
-
-
-    else
-    begin
-      WriteLn('Adresse $', addr2hex(PC), ' - code inconnu ', opcode);
-      codeRunning := False;
-    end;
-  end;
-
-  if (PC = 0) or (not codeRunning) then
-  begin
-    WriteLn('Programme termine a PC=$', addr2hex(PC - 1));
-    codeRunning := False;
-  end;
-end;
-
 
 
