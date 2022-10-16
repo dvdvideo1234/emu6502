@@ -33,7 +33,7 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <Units Count="3">
+    <Units Count="4">
       <Unit0>
         <Filename Value="emul6502.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -49,6 +49,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="BaseUnit"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="texts.oas.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="texts.oas"/>
+      </Unit3>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

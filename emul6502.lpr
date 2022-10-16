@@ -11,15 +11,17 @@ uses
 
 begin
   writeln('emul6502');
-  writeln;
+//  tt := 98;
+//  writeln(divmod(tt,10),' ',tt);
+//  writeln;
+  readln;
   //testary := (0,1, 2, 3, 4, 5, 6, 7);
 
-  stack.setStackBase();   { in hex $100}
-  regs.InitEmul;
-  regs.DebugOn := true;
-  mem.doPatch($200, testary);
-  mem.dump($200,8);
-  regs.ExecEmul($200);
+  //stack.setStackBase();   { in hex $100}
+  cpu.Debug := true;
+  cpu.doPatch($200, testary);
+  cpu.dump($200,8);
+  cpu.ExecEmul($200);
   readln;
 end.
 

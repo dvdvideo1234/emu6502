@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Compiler Value="D:\Lazarus\IDE\fpc\2.6.2\bin\i386-win32\fpc.exe" Date="1125670419"/>
-  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -vewnhi -FiE:\GIT\emu6502\lib\i386-win32 -FuE:\GIT\emu6502\ -FUE:\GIT\emu6502\lib\i386-win32\ -l emul6502.lpr"/>
+  <Compiler Value="E:\ARCHIVE\DVPC\Lazarus\IDE\fpc\2.6.2\bin\i386-win32\fpc.exe" Date="1125670419"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -vewnhi -FiE:\VersionControl\emu6502\lib\i386-win32 -FuE:\VersionControl\emu6502\ -FUE:\VersionControl\emu6502\lib\i386-win32\ -l emul6502.lpr"/>
 </CONFIG>

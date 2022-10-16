@@ -8,67 +8,118 @@ uses
   Classes, SysUtils;
 
 type
-  adrType = (INDX, ZP_, IMM_, ABS_, INDY, ZPX, ABSY, ABSX,
-          zpy, RegA, Reg_SP, RegP);
-  pageType = (page0, page1, page2, page3);
-  byteAry  = array of byte;
-  ProcType = procedure ;
-  opType = (op0, op1, op2, op3, op4, op5, op6, op7);
-  flags = (cf, zf, fi, df, bf, xf, vf, nf);
-  flagSet = packed set of flags;
-  wordAdressable = array[word] of byte;
   bytep = ^byte;
-  FuncType= function() : bytep;
   str3   = string[3];
   str7   = string[7];
   str15  = string[15];
+  byteAry  = array of byte;
+  flags = (fc, fz, fi, fd, fb, fx, fv, fn);
+  flagSet = packed set of flags;
+  wordAdressable = array[word] of byte;
 
-  tByteMymory = object
-    private
-      fMemory: wordAdressable;
-    protected
-      procedure Store(address: word; Value: byte);
-      function  Fetch(address: word): byte;
-    public
-      function  PageAdr(adr: word): word;
-      procedure doPatch(adr: word; Patch: byteAry);
-      procedure dump(adr, cnt: word);
+  tRegisters = class    { An object to hold the CPU registers}
+    YReg: byte;         { Register index Y }
+    AReg: byte;         { Register accumulator }
+    XReg: byte;         { Register index X }
+    pReg: flagSet;      { Register processor }
+    fPC: word;          { Register programm counter }
+    fsp: word;          { Register Stack pointer }
 
-      property bytes : wordAdressable read fMemory write fMemory;
+    procedure SetFlags(f: flagset; NewStates: byte);
+    procedure SetFlag(f: flags; stat: boolean);
+    function  GetFlag(f: flags): boolean;
+    function  GetState: byte;
+    procedure ZN(Value: byte);
+    procedure SetState(stat: byte);
+    procedure Setareg(Value: byte);
+    procedure SetXreg(Value: byte);
+    procedure SetYreg(Value: byte);
+    procedure setSp(b: byte);
+    function  GetSp: byte;
+    procedure setStackBase(w: byte = 1);
+
+    function  ROLbase(var b: byte): byte;
+    function  ASLbase(var b: byte): byte;
+    function  LSRbase(var b: byte): byte;
+    function  RORbase(var b: byte): byte;
+    procedure Cp(reg, val: byte);
+    procedure SB(Value: byte);
+    procedure AD(Value: byte);
+    function  incr(var b: byte):byte;
+    function  decr(var b: byte):byte;
+    procedure ASLa;
+    procedure LSRa;
+    procedure ROLa;
+    procedure RORa;
+    procedure INY;
+    procedure DEY;
+    procedure INX;
+    procedure DEX;
+    procedure TAY;
+    procedure TYA;
+    procedure TAX;
+    procedure TXA;
+    procedure TSX;
+    procedure TXS;
+    procedure CLV;
+
+    procedure regInit(pc: word=0);
+    procedure Show;
+
+    property s: byte read GetSp write setSp;
+    property p: byte read getState write SetState;
+    property a: byte read areg write Setareg;
+    property x: byte read xreg write SetXreg;
+    property y: byte read yreg write SetYreg;
+    property pc: word read fpc write fpc;
+    property state: flagSet read pReg write pReg;
   end;
 
-
-  tByteStack = object
-    private
-      fsp: word;
-    protected
-      procedure setSp(b: byte);
-      function  GetSp: byte;
-      function  GetSpAdr: bytep;
-    public
-      procedure setStackBase(w: byte = 1);
-      function  pop: byte;
-      procedure push(b: byte);
-      function  popAdr: word;
-      procedure pushAdr(w: word);
-
-      property sp: byte read GetSp write setSp;
-      property sadr: bytep read  GetSpAdr;
-  end;
 
   function byte2hex(nr: byte): str3;
   function word2hex(address: word): str7;
   function byte2bin(nr: byte): str15;
+  function divmod(var w: dword; d: dword): dword;
+  function fromTwosCom(v, mask: BYTE): integer;
 
-var
-  mem: tByteMymory;
-  stack: tByteStack;
 const
   testary: array[0..7] of byte = (0,1, 2, 3, 4, 5, 6, 7);
 
 implementation
 
 {num2hex}
+
+  function divmod(var w: dword; d: dword): dword; {$asmMode intel}
+  begin
+    asm
+       xor edx,edx
+       mov ecx,w
+       mov eax,[ecx]
+       div d
+       mov [ecx],eax
+       mov Result,edx
+    end;
+  end;
+
+  function fromTwosCom(v, mask: BYTE): integer;
+  begin
+    result :=  (v and pred(mask)) - (v and mask);
+  end;
+
+  function FromBCD(b: byte): byte;
+  var  tmp: dword;
+  begin
+    tmp := b;
+    result := divmod(tmp, 16) + (10 * tmp);
+  end;
+
+  function ToBCD(w: byte): word;
+  var  tmp: dword;
+  begin
+    tmp := w;
+    result := divmod(tmp, 10) + (16 * tmp);
+  end;
+
 
   function dig2char(nr: byte): char;
   const
@@ -98,105 +149,202 @@ implementation
   end; {num2hex}
 
 
-  {memory}
-
-  function tByteMymory.Fetch(address: word): byte;
+  {registers}
+  procedure tRegisters.SetFlags(f: flagset; NewStates: byte);
   begin
-    result := fMemory[address];
+    newStates := bytep(@f)^ and NewStates;
+    state := state - f;
+    p := p or  (NewStates);
   end;
 
-  procedure tByteMymory.Store(address: word; value: byte);
+  procedure tRegisters.regInit(pc: word=0);
   begin
-    fMemory[address] := Value;
+    a := 0    ;      // Accumulator
+    x := 0     ;     // General Purpose X
+    y := 0     ;     // General Purpose Y
+    fsp := $1ff ;    // Stack Pointer
+    pc := pc  ;      // Program Counter
+    p := $24;        // Flag Pointer - N|V|1|B|D|I|Z|C
   end;
 
-  function tByteMymory.PageAdr(adr: word): word;
+  procedure tRegisters.SetFlag(f: flags; stat: boolean = true);
   begin
-    wordRec(result).lo := Fetch(adr);
-    inc(wordRec(adr).Lo);
-    wordRec(result).hi := Fetch(adr);
+    if stat then
+      State := State + [f]
+    else
+      State := State - [f];
   end;
 
-  procedure tByteMymory.doPatch(adr: word; Patch: byteAry);
-  var i: word;
-    b: byte;
+  function tRegisters.GetFlag(f: flags): boolean;
   begin
-    for i := 0 to high(Patch) do begin
-      mem.bytes[adr] := patch[i];
-      inc(adr);
-    end;
+    GetFlag := f in State;
   end;
 
 
-  procedure tByteMymory.dump(adr, cnt: word);
-    var i, ind: word;
-
-    procedure NewLine;
-    begin
-      ind := 0;
-      writeln;
-      write(word2hex(adr), '  ');
-    end;
-
-  begin NewLine;
-    for i := cnt downto 1 do begin
-      write(byte2hex(mem.bytes[adr]), ' ');
-      inc(adr);
-      inc(ind);
-      if ind = 20  then NewLine
-    end;
-    writeln;
+  procedure tRegisters.ZN(Value: byte);
+  begin
+    setflag(fz, Value = 0);
+    setflags([fn], Value);
   end;
 
+  procedure tRegisters.Cp(reg, val: byte);
+  begin
+    setflag(fc, reg >= val);
+    ZN(reg - val);
+  end;
 
+  function tRegisters.GetState: byte;
+  begin
+    Result := bytep(@pReg)^;
+  end;
 
-  {Stack}
+  procedure tRegisters.SetState(stat: byte);
+  begin
+    bytep(@pReg)^ := stat;
+  end;
 
-  procedure tByteStack.setStackBase(w: byte);
+  procedure tRegisters.Setareg(Value: byte);
+  begin
+    ZN(Value);
+    areg := Value;
+  end;
+
+  procedure tRegisters.SetXreg(Value: byte);
+  begin
+    ZN(Value);
+    Xreg := Value;
+  end;
+
+  procedure tRegisters.SetYreg(Value: byte);
+  begin
+    ZN(Value);
+    Yreg := Value;
+  end;
+
+  procedure tRegisters.setStackBase(w: byte);
   begin
     wordRec(fsp).Hi := w;
     wordRec(fsp).Lo := $ff;
   end;
 
-  function tByteStack.GetSp: byte;
+  function tRegisters.GetSp: byte;
   begin
     Result := wordRec(fsp).lo;
   end;
 
-  procedure tByteStack.setSp(b: byte);
+  procedure tRegisters.setSp(b: byte);
   begin
     wordRec(fsp).Lo := b;
   end;
 
-  function tByteStack.pop: byte;
+  procedure tRegisters.show;
   begin
-    Inc(wordRec(fsp).Lo);
-    Result := mem.bytes[fsp];
+    //if not (DebugOn) then exit;
+
+      WriteLn('PC=', word2hex(PC),
+        //' opc=', byte2hex(opcode),
+        ' A=', byte2hex(A),
+        ' X=', byte2hex(X),
+        ' Y=', byte2hex(Y),
+        ' P=', byte2bin(P));
+      readln;
   end;
 
-  procedure tByteStack.push(b: byte);
+  procedure tRegisters.SB(Value: byte);
+    var  r: integer;   v: byte;
+    begin
+      v := a;
+      if Getflag(fd) then  begin
+        r := FromBCD(v) - FromBCD(Value) - Ord(not odd(p));
+        a := ToBCD(r mod 100);
+      end   else   begin
+        r := A - Value - Ord(not odd(p));
+        A := r and $ff;
+      end;
+      setflag(fc, r >= 0);
+      setflag(fv, (v xor Value) and (v xor r) and $80 <> 0);
+    end;
+
+  procedure tRegisters.AD(Value: byte);
+    var  r: integer;   v: byte;
+    begin
+      v := a;
+      if Getflag(fd) then   begin
+        r := FromBCD(v) + FromBCD(Value) + Ord(odd(p));
+        a := ToBCD(r mod 100);
+        setflag(fc, r > 99);
+      end   else  begin
+        r := v + Value + Ord(odd(p));
+        A := r and $ff;
+        setflag(fc, r > $ff);
+      end;
+      setflag(fv, (not (v xor Value)) and (v xor r) and $80 <> 0);
+    end;
+
+  function  tRegisters.ROLbase(var b: byte): byte;
   begin
-    mem.bytes[fsp] := b;
-    Dec(wordRec(fsp).Lo);
+    result := b;
+    SetFlag(fc, (result > $7f));
+    RESULT := (result shl 1) or (result shr 7);
+    b := result;
   end;
 
-  function tByteStack.popAdr: word;
+  function  tRegisters.ASLbase(var b: byte): byte;
+    begin
+      result := b;
+      SetFlag(fc, (result > $7f));
+      RESULT := result shl 1;
+      b := result;
+    end;
+
+  function  tRegisters.LSRbase(var b: byte): byte;
   begin
-    wordRec(result).lo := pop;
-    wordRec(result).Hi := pop;
+    result := b;
+    SetFlag(fc, odd(result));
+    RESULT := RESULT shr 1;
+    b := result;
   end;
 
-  procedure tByteStack.pushAdr(w: word);
+  function  tRegisters.RORbase(var b: byte): byte;
   begin
-    push(wordRec(w).Hi);
-    push(wordRec(w).lo);
-  end; {Stack}
-
-  function  tByteStack.GetSpAdr: bytep;
-  begin
-    Result := @(wordRec(fsp).lo);
+    result := b;
+    SetFlag(fc, odd(result));
+    RESULT := (result shr 1) or (result shl 7);
+    b := result;
   end;
 
+  function  tRegisters.incr(var b: byte):byte;
+  begin
+    result := b;
+    RESULT := succ(result);
+    b := result;
+  end;
+
+  function  tRegisters.decr(var b: byte):byte;
+  begin
+    result := b;
+    RESULT := PRED(result);
+    b := result;
+  end;
+
+  procedure tRegisters.INY; var b: byte; begin b := y;  Y := incr(b); END;
+  procedure tRegisters.DEY; var b: byte; begin b := y;  Y := DECr(b); END;
+  procedure tRegisters.INX; var b: byte; begin b := x;  X := incr(b); END;
+  procedure tRegisters.DEX; var b: byte; begin b := x;  X := DECr(b); END;
+  procedure tRegisters.TAY; BEGIN Y := A; END;
+  procedure tRegisters.TYA; BEGIN A := X; END;
+  procedure tRegisters.TAX; BEGIN X := X; END;
+  procedure tRegisters.TXA; BEGIN A := X; END;
+  procedure tRegisters.TSX; BEGIN X := X; END;
+  procedure tRegisters.TXS; BEGIN S := X; END;
+  procedure tRegisters.ASLa; var b: byte; begin b := a; a :=  ASLbase(b); end;
+  procedure tRegisters.LSRa; var b: byte; begin b := a; a :=  LSRbase(b); end;
+  procedure tRegisters.ROLa; var b: byte; begin b := a; a :=  ROLbase(b); end;
+  procedure tRegisters.RORa; var b: byte; begin b := a; a :=  RORbase(b); end;
+  procedure tRegisters.CLV; begin setflag(fv, false); end;
+
+  {registers}
 
 end.
+
 
