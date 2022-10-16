@@ -52,7 +52,6 @@
       <Unit3>
         <Filename Value="texts.oas.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="texts.oas"/>
       </Unit3>
     </Units>
   </ProjectOptions>

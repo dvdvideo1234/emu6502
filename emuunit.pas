@@ -427,7 +427,7 @@ implementation
     fOpers[50] := DEF(@ rel  { rel  }, 'BPL', $10, aOnly);
     fOpers[51] := DEF(@ rel  { rel  }, 'BMI', $30, aOnly);
     fOpers[52] := DEF(@ rel  { rel  }, 'BVC', $50, aOnly);
-    fOpers[53] := DEF(@ rel  { rel  }, 'BVC', $70, aOnly);
+    fOpers[53] := DEF(@ rel  { rel  }, 'BVS', $70, aOnly);
     fOpers[54] := DEF(@ rel  { rel  }, 'BCC', $90, aOnly);
     fOpers[55] := DEF(@ rel  { rel  }, 'BCS', $b0, aOnly);
     fOpers[56] := DEF(@ rel  { rel  }, 'BNE', $d0, aOnly);
@@ -448,20 +448,24 @@ implementation
   end;
 
   procedure tCPU6502.ShowTable;
-  var i, j, k: integer;
-  begin k := 0; writeln;
-    for i := 1 to 16 do begin
-      for j := 1 to 16 do begin
-        if fOpInds[k] <> 255
-          then write(fOpers[fOpInds[k]].n)
+  var i: word;  j, v, h, r, c: byte;
+  begin
+    for i := 0 to 255 do begin
+      if (i and 15) = 0 then writeln;
+      if (i and 127) = 0 then writeln;
+      if ((i-8) and 15) = 0 then write('  ');
+      c :=  i and 7;
+      v := i shr 7;
+      r := (i shr 4) and 7;
+      h := (i shr 3) and 1;
+      j := c shl 2 + v shl 1 + h + r shl 5;
+
+        if fOpInds[j] <> 255
+          then write(fOpers[fOpInds[j]].n)
           else write('---');
         write(' ');
-        inc(k);
-      end;
-      writeln;
     end;
     writeln;
-
   end;
 
 initialization

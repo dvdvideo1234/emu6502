@@ -81,6 +81,8 @@ type
   function byte2bin(nr: byte): str15;
   function divmod(var w: dword; d: dword): dword;
   function fromTwosCom(v, mask: BYTE): integer;
+  //function RORw(w: word; ind: byte): word;
+  //function  RORD(d: dword; ind: byte): dword;
 
 const
   testary: array[0..7] of byte = (0,1, 2, 3, 4, 5, 6, 7);
@@ -99,6 +101,35 @@ implementation
        mov [ecx],eax
        mov Result,edx
     end;
+  end;
+
+  function  RORD(d: dword; ind: byte): dword;
+  begin asm
+    xor edx,edx
+    inc edx
+    push edx
+    mov cl,ind
+    mov eax,d
+    shl edx,cl
+    dec edx // mask
+    and edx,eax
+    xor eax,edx
+    pop ecx
+    and ecx,edx
+    shr edx,1
+    or  eax,edx
+    mov edx,ecx
+    mov cl,ind
+    shl edx,cl
+    or  eax,edx
+    mov Result,eax
+  end; end;
+
+  function  RORw(w: word; ind: byte): word;
+  var mask: word;
+  begin
+    mask := pred(1 shl ind) and w;
+    result := (w xor mask ) or ((mask and 1) shl ind) or (mask shr 1);
   end;
 
   function fromTwosCom(v, mask: BYTE): integer;
