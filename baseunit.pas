@@ -28,6 +28,9 @@ type
     procedure SetFlags(f: flagset; NewStates: byte);
     procedure SetFlag(f: flags; stat: boolean);
     function  GetFlag(f: flags): boolean;
+    function  AdrA: bytep;
+    function  AdrY: bytep;
+    function  AdrX: bytep;
     function  GetState: byte;
     procedure ZN(Value: byte);
     procedure SetState(stat: byte);
@@ -38,15 +41,15 @@ type
     function  GetSp: byte;
     procedure setStackBase(w: byte = 1);
 
-    function  ROLbase(var b: byte): byte;
-    function  ASLbase(var b: byte): byte;
-    function  LSRbase(var b: byte): byte;
-    function  RORbase(var b: byte): byte;
+    procedure ROLbase(var b: byte);
+    procedure ASLbase(var b: byte);
+    procedure LSRbase(var b: byte);
+    procedure RORbase(var b: byte);
     procedure Cp(reg, val: byte);
     procedure SB(Value: byte);
     procedure AD(Value: byte);
-    function  incr(var b: byte):byte;
-    function  decr(var b: byte):byte;
+    procedure incr(var b: byte);
+    procedure decr(var b: byte);
     procedure ASLa;
     procedure LSRa;
     procedure ROLa;
@@ -81,8 +84,6 @@ type
   function byte2bin(nr: byte): str15;
   function divmod(var w: dword; d: dword): dword;
   function fromTwosCom(v, mask: BYTE): integer;
-  //function RORw(w: word; ind: byte): word;
-  //function  RORD(d: dword; ind: byte): dword;
 
 const
   testary: array[0..7] of byte = (0,1, 2, 3, 4, 5, 6, 7);
@@ -181,6 +182,21 @@ implementation
 
 
   {registers}
+  function  tRegisters.AdrA: bytep;
+  begin
+    result := @aReg;
+  end;
+
+  function  tRegisters.AdrY: bytep;
+  begin
+    result := @YReg;
+  end;
+
+  function  tRegisters.AdrX: bytep;
+  begin
+    result := @XReg;
+  end;
+
   procedure tRegisters.SetFlags(f: flagset; NewStates: byte);
   begin
     newStates := bytep(@f)^ and NewStates;
@@ -312,66 +328,77 @@ implementation
       setflag(fv, (not (v xor Value)) and (v xor r) and $80 <> 0);
     end;
 
-  function  tRegisters.ROLbase(var b: byte): byte;
+  procedure  tRegisters.ROLbase(var b: byte);
+  var res: byte;
   begin
-    result := b;
-    SetFlag(fc, (result > $7f));
-    RESULT := (result shl 1) or (result shr 7);
-    b := result;
+    res := b;
+    SetFlag(fc, (res > $7f));
+    res := (res shl 1) or (res shr 7);
+    b := res;
   end;
 
-  function  tRegisters.ASLbase(var b: byte): byte;
+  procedure  tRegisters.ASLbase(var b: byte);
+  var res: byte;
     begin
-      result := b;
-      SetFlag(fc, (result > $7f));
-      RESULT := result shl 1;
-      b := result;
+      res := b;
+      SetFlag(fc, (res > $7f));
+      res := res shl 1;
+      zn(res);
+      b := res;
     end;
 
-  function  tRegisters.LSRbase(var b: byte): byte;
+  procedure  tRegisters.LSRbase(var b: byte);
+  var res: byte;
   begin
-    result := b;
-    SetFlag(fc, odd(result));
-    RESULT := RESULT shr 1;
-    b := result;
+    res := b;
+    SetFlag(fc, odd(res));
+    res := res shr 1;
+    zn(res);
+    b := res;
   end;
 
-  function  tRegisters.RORbase(var b: byte): byte;
+  procedure  tRegisters.RORbase(var b: byte);
+  var res: byte;
   begin
-    result := b;
-    SetFlag(fc, odd(result));
-    RESULT := (result shr 1) or (result shl 7);
-    b := result;
+    res := b;
+    SetFlag(fc, odd(res));
+    res := (res shr 1) or (res shl 7);
+    zn(res);
+    b := res;
   end;
 
-  function  tRegisters.incr(var b: byte):byte;
+  procedure  tRegisters.incr(var b: byte);
+  var res: byte;
   begin
-    result := b;
-    RESULT := succ(result);
-    b := result;
+    res := b;
+    res := succ(res);
+    zn(res);
+    b := res;
   end;
 
-  function  tRegisters.decr(var b: byte):byte;
+  procedure  tRegisters.decr(var b: byte);
+  var res: byte;
   begin
-    result := b;
-    RESULT := PRED(result);
-    b := result;
+    res := b;
+    res := PRED(res);
+    zn(res);
+    b := res;
   end;
 
-  procedure tRegisters.INY; var b: byte; begin b := y;  Y := incr(b); END;
-  procedure tRegisters.DEY; var b: byte; begin b := y;  Y := DECr(b); END;
-  procedure tRegisters.INX; var b: byte; begin b := x;  X := incr(b); END;
-  procedure tRegisters.DEX; var b: byte; begin b := x;  X := DECr(b); END;
+  procedure tRegisters.INY; begin incr(adry^); END;
+  procedure tRegisters.DEY; begin DECr(adry^); END;
+  procedure tRegisters.INX; begin incr(adrx^); END;
+  procedure tRegisters.DEX; begin DECr(adrx^); END;
   procedure tRegisters.TAY; BEGIN Y := A; END;
   procedure tRegisters.TYA; BEGIN A := X; END;
   procedure tRegisters.TAX; BEGIN X := X; END;
   procedure tRegisters.TXA; BEGIN A := X; END;
   procedure tRegisters.TSX; BEGIN X := X; END;
   procedure tRegisters.TXS; BEGIN S := X; END;
-  procedure tRegisters.ASLa; var b: byte; begin b := a; a :=  ASLbase(b); end;
-  procedure tRegisters.LSRa; var b: byte; begin b := a; a :=  LSRbase(b); end;
-  procedure tRegisters.ROLa; var b: byte; begin b := a; a :=  ROLbase(b); end;
-  procedure tRegisters.RORa; var b: byte; begin b := a; a :=  RORbase(b); end;
+  procedure tRegisters.ASLa; begin ASLbase(adra^); end;
+  procedure tRegisters.LSRa; begin LSRbase(adra^); end;
+  procedure tRegisters.ROLa; begin ROLbase(adra^); end;
+  procedure tRegisters.RORa; begin RORbase(adra^); end;
   procedure tRegisters.CLV; begin setflag(fv, false); end;
 
   {registers}
