@@ -13,7 +13,7 @@ type
   TProcType = procedure() of object; // Method type
   FuncType = function(): bytep of object;
   Tprocary = array of TProcType;
-  //ProcType = procedure ;
+
   oper{ation} = record
     p{roc}: TProcType;
     n{ame}: str3;
@@ -416,6 +416,7 @@ begin
   fOpInds := nil;
 end;
 
+
 procedure tCPU6502.TablesMaker;
 var
   i, cnt: integer;
@@ -444,6 +445,7 @@ var
     end;
   end;
 
+
   procedure def(proc: TProcType; Name: str3;
   opcode {start}: byte; adrs{sation}: typeSet);
   var res: oper;
@@ -456,9 +458,11 @@ var
     inc(i);
   end;
 
+
 begin
   for i := 0 to high(fOpInds) do
     fOpInds[i] := $ff;
+
 
   fAdressation[aIX] := @aINDX;
   fAdressation[aZ]  := @aZP;
@@ -471,74 +475,73 @@ begin
   fAdressation[aZY] := @aZPY;
   fAdressation[aRa] := @Adra;
 
+
   i := 0;
-  DEF(@ORA  { ORA  }, 'ORA', $01, aAll);
-  DEF(@ANDm { ANDm }, 'AND', $21, aAll);
-  DEF(@EOR  { EOR  }, 'EOR', $41, aAll);
-  DEF(@ADC  { ADC  }, 'ADC', $61, aAll);
-  DEF(@STA  { STA  }, 'STA', $81, aAll - [aIM]);
-  DEF(@LDA  { LDA  }, 'LDA', $a1, aAll);
-  DEF(@CMP  { CMP  }, 'CMP', $c1, aAll);
-  DEF(@SBC  { SBC  }, 'SBC', $e1, aAll);
-  DEF(@incm { incm }, 'inc', $e2, aShift);       {page2}
-  DEF(@decm { decm }, 'dec', $c2, aShift);
-  DEF(@LDX  { LDX  }, 'LDX', $a2, aShift + [aIX]);
-  DEF(@STX  { STX  }, 'STX', $82, aShift-[aax]);
-  DEF(@ASL  { ASL  }, 'ASL', $02, aShift + [aIM]);
-  DEF(@ROL  { ROL  }, 'ROL', $22, aShift + [aIM]);
-  DEF(@LSR  { LSR  }, 'LSR', $42, aShift + [aIM]);
-  DEF(@ROR  { ROR  }, 'ROR', $62, aShift + [aIM]);
-  DEF(@TXS  { TXS  }, 'TXS', $9a, aOnly);
-  DEF(@TSX  { TSX  }, 'TSX', $ba, aOnly);
-  DEF(@TXA  { TXA  }, 'TXA', $aa, aOnly);
-  DEF(@TAX  { TAX  }, 'TAX', $8a, aOnly);
-  DEF(@DEX  { DEX  }, 'DEX', $ca, aOnly);
-  DEF(@nop  { nop  }, 'nop', $ea, aOnly);
-  DEF(@CPY  { CPY  }, 'CPY', $c0, aMem + [aIX]);
-  DEF(@CPX  { CPX  }, 'CPX', $e0, aMem + [aIX]);
-  DEF(@STY  { STY  }, 'STY', $80, aMem + [aZX]);
-  DEF(@LDY  { LDY  }, 'LDY', $a0, aShift + [aIX]);
-  DEF(@JPA  { JPA  }, 'JPA', $4c, aOnly);
-  DEF(@JPI  { JPI  }, 'JPI', $6c, aOnly);
-  DEF(@JSR  { JSR  }, 'JSR', $20, aOnly);
-  DEF(@RTS  { RTS  }, 'RTS', $60, aOnly);
-  DEF(@rti  { rti  }, 'rti', $40, aOnly);
-  DEF(@CSF  { CSF  }, 'CLC', $18, aOnly);
-  DEF(@CSF  { CSF  }, 'CLI', $58, aOnly);
-  DEF(@CLV  { CLV  }, 'CLV', $b8, aOnly);
-  DEF(@CSF  { CSF  }, 'CLD', $d8, aOnly);
-  DEF(@CSF  { CSF  }, 'SEC', $38, aOnly);
-  DEF(@CSF  { CSF  }, 'SEI', $78, aOnly);
-  DEF(@CSF  { CSF  }, 'SED', $f8, aOnly);
-  DEF(@BRK  { BRK  }, 'BRK', $00, aOnly);
-  DEF(@rel  { rel  }, 'BPL', $10, aOnly);
-  DEF(@rel  { rel  }, 'BMI', $30, aOnly);
-  DEF(@rel  { rel  }, 'BVC', $50, aOnly);
-  DEF(@rel  { rel  }, 'BVS', $70, aOnly);
-  DEF(@rel  { rel  }, 'BCC', $90, aOnly);
-  DEF(@rel  { rel  }, 'BCS', $b0, aOnly);
-  DEF(@rel  { rel  }, 'BNE', $d0, aOnly);
-  DEF(@rel  { rel  }, 'BEQ', $f0, aOnly);
-  DEF(@BIT  { BIT  }, 'BIT', $20, aMem);
-  DEF(@PHp  { PHp  }, 'PHp', $08, aOnly);
-  DEF(@PLp  { PLp  }, 'PLp', $28, aOnly);
-  DEF(@PHa  { PHa  }, 'PHa', $48, aOnly);
-  DEF(@PLA  { PLA  }, 'PLA', $68, aOnly);
-  DEF(@INY  { INY  }, 'INY', $c8, aOnly);
-  DEF(@DEY  { DEY  }, 'DEY', $88, aOnly);
-  DEF(@INX  { INX  }, 'INX', $e8, aOnly);
-  DEF(@TAY  { TAY  }, 'TAY', $98, aOnly);
-  DEF(@TYA  { TYA  }, 'TYA', $a8, aOnly);
-  cnt := 0;
+  DEF(@ORA  { ORA  }, 'ORA', $01, aALL);
+  DEF(@ANDM { ANDM }, 'AND', $21, aALL);
+  DEF(@EOR  { EOR  }, 'EOR', $41, aALL);
+  DEF(@ADC  { ADC  }, 'ADC', $61, aALL);
+  DEF(@STA  { STA  }, 'STA', $81, aALL - [AIM]);
+  DEF(@LDA  { LDA  }, 'LDA', $A1, aALL);
+  DEF(@CMP  { CMP  }, 'CMP', $C1, aALL);
+  DEF(@SBC  { SBC  }, 'SBC', $E1, aALL);
+  DEF(@INCM { INCM }, 'INC', $E2, aSHIFT);       {PAGE2}
+  DEF(@DECM { DECM }, 'DEC', $C2, aSHIFT);
+  DEF(@LDX  { LDX  }, 'LDX', $A2, aSHIFT + [AIX]);
+  DEF(@STX  { STX  }, 'STX', $82, aSHIFT - [AAX]);
+  DEF(@ASL  { ASL  }, 'ASL', $02, aSHIFT + [AIM]);
+  DEF(@ROL  { ROL  }, 'ROL', $22, aSHIFT + [AIM]);
+  DEF(@LSR  { LSR  }, 'LSR', $42, aSHIFT + [AIM]);
+  DEF(@ROR  { ROR  }, 'ROR', $62, aSHIFT + [AIM]);
+  DEF(@TXS  { TXS  }, 'TXS', $9A, aONLY);
+  DEF(@TSX  { TSX  }, 'TSX', $BA, aONLY);
+  DEF(@TXA  { TXA  }, 'TXA', $AA, aONLY);
+  DEF(@TAX  { TAX  }, 'TAX', $8A, aONLY);
+  DEF(@DEX  { DEX  }, 'DEX', $CA, aONLY);
+  DEF(@NOP  { NOP  }, 'NOP', $EA, aONLY);
+  DEF(@CPY  { CPY  }, 'CPY', $C0, aMEM  +  [AIX]);
+  DEF(@CPX  { CPX  }, 'CPX', $E0, aMEM  +  [AIX]);
+  DEF(@STY  { STY  }, 'STY', $80, aMEM  +  [AZX]);
+  DEF(@LDY  { LDY  }, 'LDY', $A0, aSHIFT + [AIX]);
+  DEF(@JPA  { JPA  }, 'JPA', $4C, aONLY);
+  DEF(@JPI  { JPI  }, 'JPI', $6C, aONLY);
+  DEF(@JSR  { JSR  }, 'JSR', $20, aONLY);
+  DEF(@RTS  { RTS  }, 'RTS', $60, aONLY);
+  DEF(@RTI  { RTI  }, 'RTI', $40, aONLY);
+  DEF(@CSF  { CSF  }, 'CLC', $18, aONLY);
+  DEF(@CSF  { CSF  }, 'CLI', $58, aONLY);
+  DEF(@CLV  { CLV  }, 'CLV', $B8, aONLY);
+  DEF(@CSF  { CSF  }, 'CLD', $D8, aONLY);
+  DEF(@CSF  { CSF  }, 'SEC', $38, aONLY);
+  DEF(@CSF  { CSF  }, 'SEI', $78, aONLY);
+  DEF(@CSF  { CSF  }, 'SED', $F8, aONLY);
+  DEF(@BRK  { BRK  }, 'BRK', $00, aONLY);
+  DEF(@REL  { REL  }, 'BPL', $10, aONLY);
+  DEF(@REL  { REL  }, 'BMI', $30, aONLY);
+  DEF(@REL  { REL  }, 'BVC', $50, aONLY);
+  DEF(@REL  { REL  }, 'BVS', $70, aONLY);
+  DEF(@REL  { REL  }, 'BCC', $90, aONLY);
+  DEF(@REL  { REL  }, 'BCS', $B0, aONLY);
+  DEF(@REL  { REL  }, 'BNE', $D0, aONLY);
+  DEF(@REL  { REL  }, 'BEQ', $F0, aONLY);
+  DEF(@BIT  { BIT  }, 'BIT', $20, aMEM);
+  DEF(@PHP  { PHP  }, 'PHP', $08, aONLY);
+  DEF(@PLP  { PLP  }, 'PLP', $28, aONLY);
+  DEF(@PHA  { PHA  }, 'PHA', $48, aONLY);
+  DEF(@PLA  { PLA  }, 'PLA', $68, aONLY);
+  DEF(@INY  { INY  }, 'INY', $C8, aONLY);
+  DEF(@DEY  { DEY  }, 'DEY', $88, aONLY);
+  DEF(@INX  { INX  }, 'INX', $E8, aONLY);
+  DEF(@TAY  { TAY  }, 'TAY', $98, aONLY);
+  DEF(@TYA  { TYA  }, 'TYA', $A8, aONLY);
+  CNT := 0;
   for i := 0 to high(fOpers) do
     expander(i);
   writeln(cnt);
 end;
 
 procedure tCPU6502.ShowTable;
-var
-  i: word;
-  j, v, h, r, c: byte;
+var i, j: byte; //, v, h, r, c: byte;
 begin
   for i := 0 to 255 do
   begin
@@ -548,11 +551,9 @@ begin
       writeln;
     if ((i - 8) and 15) = 0 then
       Write('  ');
-    c := i and 7;
-    v := i shr 7;
-    r := (i shr 4) and 7;
-    h := (i shr 3) and 1;
-    j := c shl 2 + v shl 1 + h + r shl 5;
+    {c := i and 7;  v := i shr 7; r := (i shr 4) and 7;
+    h := (i shr 3) and 1;  j := c shl 2 + v shl 1 + h + r shl 5;}
+    j := rold(rold(i,7),4); // and 255;
 
     if fOpInds[j] <> 255 then
       Write(fOpers[fOpInds[j]].n)

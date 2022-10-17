@@ -50,10 +50,6 @@ type
     procedure AD(Value: byte);
     procedure incr(var b: byte);
     procedure decr(var b: byte);
-    //procedure ASLa;
-    //procedure LSRa;
-    //procedure ROLa;
-    //procedure RORa;
     procedure INY;
     procedure DEY;
     procedure INX;
@@ -84,6 +80,7 @@ type
   function byte2bin(nr: byte): str15;
   function divmod(var w: dword; d: dword): dword;
   function fromTwosCom(v, mask: BYTE): integer;
+  function  ROLD(d: dword; ind: byte): dword;
 
 const
   testary: array[0..7] of byte = (0,1, 2, 3, 4, 5, 6, 7);
@@ -104,34 +101,56 @@ implementation
     end;
   end;
 
-  function  RORD(d: dword; ind: byte): dword;
+  function  ROLD(d: dword; ind: byte): dword;
+  label stayz;
   begin asm
     xor edx,edx
     inc edx
-    push edx
     mov cl,ind
     mov eax,d
+    and cl,31
     shl edx,cl
-    dec edx // mask
+
+    mov ecx,edx
+    and ecx,eax // one bit isolate
+    xor eax,ecx // and zeroed
+
+    dec edx    // mask
+
     and edx,eax
     xor eax,edx
-    pop ecx
-    and ecx,edx
-    shr edx,1
-    or  eax,edx
-    mov edx,ecx
-    mov cl,ind
-    shl edx,cl
+    shl edx,1
+    jecxz stayz
+    inc  edx
+stayz:
     or  eax,edx
     mov Result,eax
   end; end;
 
-  function  RORw(w: word; ind: byte): word;
-  var mask: word;
-  begin
-    mask := pred(1 shl ind) and w;
-    result := (w xor mask ) or ((mask and 1) shl ind) or (mask shr 1);
-  end;
+function  RORD(d: dword; ind: byte): dword;
+label stayz;
+begin asm
+  xor edx,edx
+  inc edx
+  mov cl,ind
+  mov eax,d
+  and cl,31
+  shl edx,cl
+
+  mov ecx,edx  // one bit isolate
+
+  dec edx    // mask
+  or  edx,ecx
+
+  and edx,eax
+  xor eax,edx
+  shr edx,1
+  jnc stayz
+  or  edx,ecx
+stayz:
+  or  eax,edx
+  mov Result,eax
+end; end;
 
   function fromTwosCom(v, mask: BYTE): integer;
   begin
@@ -395,10 +414,6 @@ implementation
   procedure tRegisters.TXA; BEGIN A := X; END;
   procedure tRegisters.TSX; BEGIN X := X; END;
   procedure tRegisters.TXS; BEGIN S := X; END;
-  //procedure tRegisters.ASLa; begin ASLbase(adra^); end;
-  //procedure tRegisters.LSRa; begin LSRbase(adra^); end;
-  //procedure tRegisters.ROLa; begin ROLbase(adra^); end;
-  //procedure tRegisters.RORa; begin RORbase(adra^); end;
   procedure tRegisters.CLV; begin setflag(fv, false); end;
 
   {registers}
