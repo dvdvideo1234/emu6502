@@ -43,6 +43,10 @@ type
 
   public
     procedure TablesMaker;
+    procedure precodX;
+    function NextByte: byte;
+    function NextWord: word;
+
     function aINDX(): bytep;
     function aZP(): bytep;
     function aIMM(): bytep;
@@ -52,9 +56,8 @@ type
     function aABSY(): bytep;
     function aABSX(): bytep;
     function aZPY(): bytep;
+    // ara
     function ptrValue: bytep;
-    function NextByte: byte;
-    function NextWord: word;
 
     procedure doPatch(adr: word; Patch: byteAry);
     procedure dump(adr, cnt: word);
@@ -262,162 +265,71 @@ end;
 
 
 
-procedure tCPU6502.ORA;
-begin
-  A := A or ptrValue^;
+procedure tCPU6502.ORA;  begin A := A or ptrValue^; end;
+
+procedure tCPU6502.ANDm; begin A := A and ptrValue^; end;
+
+procedure tCPU6502.EOR;  begin A := A xor ptrValue^; end;
+
+procedure tCPU6502.ADC;  begin AD(ptrValue^); end;
+
+procedure tCPU6502.STA;  begin ptrValue^ := a; end;
+
+procedure tCPU6502.LDA;  begin A := ptrValue^; end;
+
+procedure tCPU6502.CMP;  begin cp(A, ptrValue^); end;
+
+procedure tCPU6502.SBC;  begin SB(ptrValue^); end;
+
+procedure tCPU6502.incm; begin incr(ptrValue^); end;
+
+procedure tCPU6502.decm; begin decr(ptrValue^); end;
+
+//aType = (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa);
+
+const precod: array[azx..aax] of aTYpe = (azy, aAY, aay);
+procedure tCPU6502.precodX; begin
+  if fadrs in [azx,aax] then fadrs := precod[fadrs];
 end;
 
-procedure tCPU6502.ANDm;
-begin
-  A := A and ptrValue^;
-  ;
-end;
+procedure tCPU6502.STX;  begin  precodX; ptrValue^ := X; end;
 
-procedure tCPU6502.EOR;
-begin
-  A := A xor ptrValue^;
-end;
+procedure tCPU6502.LDX;  begin  precodX; X := ptrValue^; end;
 
-procedure tCPU6502.ADC;
-begin
-  AD(ptrValue^);
-end;
+procedure tCPU6502.ASL;  begin  ASLbase(ptrValue^); end;
 
-procedure tCPU6502.STA;
-begin
-  ptrValue^ := a;
-end;
+procedure tCPU6502.LSR;  begin LSRbase(ptrValue^); end;
 
-procedure tCPU6502.LDA;
-begin
-  A := ptrValue^;
-end;
+procedure tCPU6502.ROL;  begin ROLbase(ptrValue^); end;
 
-procedure tCPU6502.CMP;
-begin
-  cp(A, ptrValue^);
-end;
-
-procedure tCPU6502.SBC;
-begin
-  SB(ptrValue^);
-end;
+procedure tCPU6502.ROR;  begin RORbase(ptrValue^); end;
 
 
-procedure tCPU6502.incm;
-begin
-  incr(ptrValue^);
-end;
+procedure tCPU6502.CPY;  begin cp(Y, ptrValue^);  end;
 
-procedure tCPU6502.decm;
-begin
-  decr(ptrValue^);
-end;
+procedure tCPU6502.CPX;  begin cp(X, ptrValue^);  end;
 
-procedure tCPU6502.STX;
-begin
-  if (fadrs) = azx then fadrs := (azy);
-  ptrValue^ := X;
-end;
+procedure tCPU6502.STY;  begin ptrValue^ := Y;    end;
 
-procedure tCPU6502.LDX;
-begin
-  if aType(fadrs) = azx
-     then fadrs := (azy)
-     else if (fadrs) = aax
-          then fadrs := (aay) ;
-  X := ptrValue^;
-end;
+procedure tCPU6502.LDY;  begin y := ptrValue^;    end;
 
-procedure tCPU6502.ASL;
-begin
-  ASLbase(ptrValue^);
-end;
+procedure tCPU6502.JPA;  begin PC := NextWord; Execute; end;
 
-procedure tCPU6502.LSR;
-begin
-  LSRbase(ptrValue^);
-end;
+procedure tCPU6502.JPI;  begin PC := PageAdr(NextWord); Execute; end;
 
-procedure tCPU6502.ROL;
-begin
-  ROLbase(ptrValue^);
-end;
+procedure tCPU6502.JSR;  begin PushAdr(PC + 2); JPA; end;
 
-procedure tCPU6502.ROR;
-begin
-  RORbase(ptrValue^);
-end;
+procedure tCPU6502.RTS;  begin PC := Popadr; end;
 
+procedure tCPU6502.PHa;  begin Push(a); end;
 
-procedure tCPU6502.CPY;
-begin
-  cp(Y, ptrValue^);
-end;
+procedure tCPU6502.PLA;  begin A := Pop; end;
 
-procedure tCPU6502.CPX;
-begin
-  cp(X, ptrValue^);
-end;
+procedure tCPU6502.PHp;  begin Push(p or $40); end;
 
-procedure tCPU6502.STY;
-begin
-  ptrValue^ := Y;
-end;
+procedure tCPU6502.PLp;  begin p := Pop; end;
 
-procedure tCPU6502.LDY;
-begin
-  y := ptrValue^;
-end;
-
-procedure tCPU6502.JPA;
-begin
-  PC := NextWord;
-  Execute;
-end;
-
-procedure tCPU6502.JPI;
-begin
-  PC := PageAdr(NextWord);
-  Execute;
-end;
-
-procedure tCPU6502.JSR;
-begin
-  PushAdr(PC + 2);
-  JPA;
-end;
-
-procedure tCPU6502.RTS;
-begin
-  PC := Popadr;
-end;
-
-procedure tCPU6502.PHa;
-begin
-  Push(a);
-end;
-
-procedure tCPU6502.PLA;
-begin
-  A := Pop;
-end;
-
-procedure tCPU6502.PHp;
-begin
-  Push(p or $40);
-end;
-
-procedure tCPU6502.PLp;
-begin
-  p := Pop;
-end;
-
-procedure tCPU6502.rti;
-begin
-  plp;
-  RTS;
-end;
+procedure tCPU6502.rti;  begin plp; RTS; end;
 
 procedure tCPU6502.CSF;    {clear set flag}
 var
@@ -441,9 +353,8 @@ var
   offset: byte;
 begin
   offset := nextbyte;
-  if odd(fopc shr 5) <> (AfLAGS[fopc shr 6] in state) then
-    exit;
-  PC := pc + fromTwosCom(offset, $80);
+  if odd(fopc shr 5) and (AfLAGS[fopc shr 6] in state)
+     then PC := pc + fromTwosCom(offset, $80);
 end;
 
 procedure tCPU6502.BIT;
@@ -550,9 +461,9 @@ begin
     fOpInds[i] := $ff;
 
   fAdressation[aIX] := @aINDX;
-  fAdressation[aZ] := @aZP;
+  fAdressation[aZ]  := @aZP;
   fAdressation[aIM] := @aIMM;
-  fAdressation[aA] := @aABS;
+  fAdressation[aA]  := @aABS;
   fAdressation[aIY] := @aINDY;
   fAdressation[aZX] := @aZPX;
   fAdressation[aAY] := @aABSY;
@@ -573,14 +484,10 @@ begin
   DEF(@decm { decm }, 'dec', $c2, aShift);
   DEF(@LDX  { LDX  }, 'LDX', $a2, aShift + [aIX]);
   DEF(@STX  { STX  }, 'STX', $82, aShift-[aax]);
-  DEF(@ASLa { ASLa }, 'ALa', $0a, aOnly);
-  DEF(@ASL  { ASL  }, 'ASL', $02, aShift);
-  DEF(@ROLa { ROLa }, 'RLa', $2a, aOnly);
-  DEF(@ROL  { ROL  }, 'ROL', $22, aShift);
-  DEF(@LSRa { LSRa }, 'LRa', $4a, aOnly);
-  DEF(@LSR  { LSR  }, 'LSR', $42, aShift);
-  DEF(@RORa { RORa }, 'RRa', $6a, aOnly);
-  DEF(@ROR  { ROR  }, 'ROR', $62, aShift);
+  DEF(@ASL  { ASL  }, 'ASL', $02, aShift + [aIM]);
+  DEF(@ROL  { ROL  }, 'ROL', $22, aShift + [aIM]);
+  DEF(@LSR  { LSR  }, 'LSR', $42, aShift + [aIM]);
+  DEF(@ROR  { ROR  }, 'ROR', $62, aShift + [aIM]);
   DEF(@TXS  { TXS  }, 'TXS', $9a, aOnly);
   DEF(@TSX  { TSX  }, 'TSX', $ba, aOnly);
   DEF(@TXA  { TXA  }, 'TXA', $aa, aOnly);

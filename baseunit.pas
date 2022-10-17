@@ -50,10 +50,10 @@ type
     procedure AD(Value: byte);
     procedure incr(var b: byte);
     procedure decr(var b: byte);
-    procedure ASLa;
-    procedure LSRa;
-    procedure ROLa;
-    procedure RORa;
+    //procedure ASLa;
+    //procedure LSRa;
+    //procedure ROLa;
+    //procedure RORa;
     procedure INY;
     procedure DEY;
     procedure INX;
@@ -395,10 +395,10 @@ implementation
   procedure tRegisters.TXA; BEGIN A := X; END;
   procedure tRegisters.TSX; BEGIN X := X; END;
   procedure tRegisters.TXS; BEGIN S := X; END;
-  procedure tRegisters.ASLa; begin ASLbase(adra^); end;
-  procedure tRegisters.LSRa; begin LSRbase(adra^); end;
-  procedure tRegisters.ROLa; begin ROLbase(adra^); end;
-  procedure tRegisters.RORa; begin RORbase(adra^); end;
+  //procedure tRegisters.ASLa; begin ASLbase(adra^); end;
+  //procedure tRegisters.LSRa; begin LSRbase(adra^); end;
+  //procedure tRegisters.ROLa; begin ROLbase(adra^); end;
+  //procedure tRegisters.RORa; begin RORbase(adra^); end;
   procedure tRegisters.CLV; begin setflag(fv, false); end;
 
   {registers}
