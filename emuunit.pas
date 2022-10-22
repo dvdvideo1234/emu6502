@@ -8,12 +8,17 @@ uses
   Classes, SysUtils, BaseUnit;
 
 type
-  aType = (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa);
+  aType = (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa, aRl, aI);
   TypeSet = packed set of aType;
   TProcType = procedure() of object; // Method type
   FuncType = function(): bytep of object;
   Tprocary = array of TProcType;
 
+const
+  precod:  array[aIX..aIm] of aTYpe = (aim, az, ara);
+  precod_x: array[azx..aax] of aTYpe = (azy, aAY, aay);
+
+type
   oper{ation} = record
     p{roc}: TProcType;
     n{ame}: str3;
@@ -42,6 +47,7 @@ type
     fmemory: wordAdressable;
 
   public
+    procedure disasm(adr, cnt: word);
     procedure TablesMaker;
     procedure precodX;
     function NextByte: byte;
@@ -123,6 +129,7 @@ type
 
 var
   cpu: tCPU6502;
+  counter: word;
 
 
 implementation
@@ -156,7 +163,6 @@ begin
   end;
 end;
 
-
 procedure tCPU6502.dump(adr, cnt: word);
 var
   i, ind: word;
@@ -189,12 +195,11 @@ begin
 end;
 
 procedure tCPU6502.Execute;
-const precod: array[aIX..aIm] of aTYpe = (aim, az, ara);
 begin
   fopc := bytes[pc];
   fadrs := aType((fopc shr 2) and 7);
   if ((fopC and 1) = 0) and (fadrs in [aim, aIX])
-     then  fadrs := precod[fadrs];
+     then  fadrs  := precod[fadrs];
   fopcodes[fopc];
 end;
 
@@ -287,9 +292,8 @@ procedure tCPU6502.decm; begin decr(ptrValue^); end;
 
 //aType = (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa);
 
-const precod: array[azx..aax] of aTYpe = (azy, aAY, aay);
 procedure tCPU6502.precodX; begin
-  if fadrs in [azx,aax] then fadrs := precod[fadrs];
+  if fadrs in [azx,aax] then fadrs := precod_x[fadrs];
 end;
 
 procedure tCPU6502.STX;  begin  precodX; ptrValue^ := X; end;
@@ -553,6 +557,70 @@ begin
   writeln;
 end;
 
+procedure tCPU6502.disasm(adr, cnt: word);
+  function getByte: byte;
+  begin
+    inc(adr);
+    result := bytes[adr];
+  end;
+
+  procedure dis1();
+  var val, b, len, ind: byte;
+     adrs: aType;
+     disp: word;
+  const aLen: array[atype] of byte = ( {addres or operand lemgth}
+              1,   1,  1,   2,  1,   1,   2,   2,   1,   0, 1, 2);
+     //  aType = (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa, aRl, aI);
+  begin  disp := adr; b := getbyte;
+    adrs := aType((b shr 2) and 7);
+    ind := fOpInds[b];
+    if (ind = $ff) then adrs := aRa {invalid 1 byte}
+    else
+    case b of
+      $20, $4c: adrs := aA;  {jsr, jmp}
+      $6c: adrs := aI;   {jmp ind}
+      $96,$b6: adrs := aZY;  {ldx, stx}
+      $be: adrs := aAY;      {ldx}
+      $a0, $a2, $c0, $e0: adrs := aIM;
+    else begin
+      if (b and $1f) = $10  then adrs := aRl
+      else if fOpers[ind].a = aONLY then adrs := aRa;
+      end;
+    end;
+    len := aLen[adrs];   {printing}
+    write(#13#10,word2hex(disp),'  ',byte2hex(b));
+    case len of
+      0: write('      ');
+      1: begin val := getbyte;write(byte2hex(val),'   ');end;
+      2: begin disp := getbyte; write(byte2hex(disp),' ');
+        val := getbyte; write(byte2hex(val),' '); disp := disp + val shl 8;end;
+    end;
+    if (ind = $ff) then write('???') {invalid 1 byte}
+       else  write(fOpers[ind].n);
+    if len <> 0 then begin
+      write('  ');
+      if adrs in  [aIX, aIY, aI] then write('(')
+         else if adrs = aIM then write('#');
+
+      if pred(len)=0 then begin
+        if adrs = aRl
+           then write(word2hex(adr + fromTwosCom(val,$80)))
+           else  write(byte2hex(val));
+      end else write(word2hex(disp));
+
+      if adrs in  [aIY, aI] then write(')');
+      case adrs of
+      aIY, aZY, aAY: write(',Y');
+      aZX, aAX, aIx: write(',X');
+      end;
+      if adrs = aIx then  write(')');
+    end;
+  end;
+begin
+  for cnt := cnt downto 1 do dis1;
+  writeln;
+end;
+
 initialization
 
   cpu := tCPU6502.Create();
@@ -563,3 +631,5 @@ finalization
   cpu.Done;
 
 end.
+
+

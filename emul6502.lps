@@ -4,24 +4,26 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="7">
+    <Units Count="8">
       <Unit0>
         <Filename Value="emul6502.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="emul6502"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="27" Y="14"/>
+        <CursorPos X="6" Y="20"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="emuunit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="EmuUnit"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="25" Y="534"/>
+        <TopLine Value="121"/>
+        <CursorPos X="17" Y="132"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit1>
@@ -29,32 +31,30 @@
         <Filename Value="baseunit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="BaseUnit"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="72"/>
-        <CursorPos X="20" Y="78"/>
-        <UsageCount Value="179"/>
+        <TopLine Value="255"/>
+        <CursorPos X="21" Y="271"/>
+        <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="texts.oas.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="90"/>
-        <CursorPos X="58" Y="126"/>
-        <UsageCount Value="77"/>
-        <Loaded Value="True"/>
+        <TopLine Value="126"/>
+        <CursorPos X="16" Y="134"/>
+        <UsageCount Value="98"/>
       </Unit3>
       <Unit4>
         <Filename Value="emul6502.pas"/>
         <UnitName Value="emul6502"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="16"/>
-        <CursorPos X="32" Y="1232"/>
-        <UsageCount Value="101"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="45"/>
+        <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -63,44 +63,148 @@
         <WindowIndex Value="0"/>
         <TopLine Value="274"/>
         <CursorPos X="12" Y="282"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="5"/>
       </Unit5>
       <Unit6>
         <Filename Value="D:\Lazarus\IDE\fpc\2.6.2\source\rtl\objpas\sysutils\sysutilh.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="38"/>
         <CursorPos X="4" Y="60"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="5"/>
       </Unit6>
+      <Unit7>
+        <Filename Value="emul6502.lpi"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="XML"/>
+      </Unit7>
     </Units>
     <General>
       <ActiveWindowIndexAtStart Value="0"/>
     </General>
-    <JumpHistory Count="6" HistoryIndex="5">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="emuunit.pas"/>
-        <Caret Line="546" Column="10" TopLine="543"/>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="22" Column="19" TopLine="16"/>
       </Position1>
       <Position2>
-        <Filename Value="emuunit.pas"/>
-        <Caret Line="11" Column="48" TopLine="1"/>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="417" Column="36" TopLine="414"/>
       </Position2>
       <Position3>
-        <Filename Value="emuunit.pas"/>
-        <Caret Line="546" Column="65" TopLine="538"/>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="430" Column="30" TopLine="408"/>
       </Position3>
       <Position4>
-        <Filename Value="emuunit.pas"/>
-        <Caret Line="430" Column="20" TopLine="422"/>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="25" Column="1" TopLine="10"/>
       </Position4>
       <Position5>
-        <Filename Value="texts.oas.pas"/>
-        <Caret Line="87" Column="67" TopLine="68"/>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="446" Column="14" TopLine="443"/>
       </Position5>
       <Position6>
-        <Filename Value="emuunit.pas"/>
-        <Caret Line="546" Column="15" TopLine="524"/>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="447" Column="30" TopLine="435"/>
       </Position6>
+      <Position7>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="448" Column="35" TopLine="438"/>
+      </Position7>
+      <Position8>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position8>
+      <Position9>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="22" Column="23" TopLine="2"/>
+      </Position9>
+      <Position10>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="42" Column="23" TopLine="22"/>
+      </Position10>
+      <Position11>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="265" Column="1" TopLine="241"/>
+      </Position11>
+      <Position12>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="453" Column="1" TopLine="446"/>
+      </Position12>
+      <Position13>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="457" Column="5" TopLine="439"/>
+      </Position13>
+      <Position14>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position14>
+      <Position15>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="453" Column="18" TopLine="439"/>
+      </Position15>
+      <Position16>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="451" Column="20" TopLine="439"/>
+      </Position16>
+      <Position17>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="18" Column="22" TopLine="1"/>
+      </Position17>
+      <Position18>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="452" Column="41" TopLine="440"/>
+      </Position18>
+      <Position19>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="457" Column="19" TopLine="446"/>
+      </Position19>
+      <Position20>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="458" Column="64" TopLine="446"/>
+      </Position20>
+      <Position21>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="460" Column="57" TopLine="448"/>
+      </Position21>
+      <Position22>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="459" Column="57" TopLine="448"/>
+      </Position22>
+      <Position23>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="465" Column="36" TopLine="453"/>
+      </Position23>
+      <Position24>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="365" Column="1" TopLine="365"/>
+      </Position24>
+      <Position25>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="32" Column="1" TopLine="16"/>
+      </Position25>
+      <Position26>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="480" Column="1" TopLine="462"/>
+      </Position26>
+      <Position27>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="31" Column="20" TopLine="18"/>
+      </Position27>
+      <Position28>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="475" Column="25" TopLine="458"/>
+      </Position28>
+      <Position29>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="470" Column="31" TopLine="458"/>
+      </Position29>
+      <Position30>
+        <Filename Value="baseunit.pas"/>
+        <Caret Line="68" Column="34" TopLine="62"/>
+      </Position30>
     </JumpHistory>
   </ProjectSession>
   <Debugging>

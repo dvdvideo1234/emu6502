@@ -15,7 +15,23 @@ type
   byteAry  = array of byte;
   flags = (fc, fz, fi, fd, fb, fx, fv, fn);
   flagSet = packed set of flags;
+  pFlagset= ^FlagSet;
   wordAdressable = array[word] of byte;
+
+  tByteRegister = object
+    fReg: byte;
+    procedure SetFlags(f: flagset; NewStates: byte);
+    procedure SetFlag(f: flags; stat: boolean);
+    function  GetFlag(f: flags): boolean;
+    function  incr: byte;
+    function  decr: byte;
+    function  Adr: bytep;
+    function  GetReg: byte;
+    function  RL(b: boolean): boolean;
+    function  RR(b: boolean): boolean;
+    procedure SetReg(stat: byte);
+    property  reg: byte read freg write freg;
+  end;
 
   tRegisters = class    { An object to hold the CPU registers}
     YReg: byte;         { Register index Y }
@@ -24,6 +40,7 @@ type
     pReg: flagSet;      { Register processor }
     fPC: word;          { Register programm counter }
     fsp: word;          { Register Stack pointer }
+    g:  tByteRegister;
 
     procedure SetFlags(f: flagset; NewStates: byte);
     procedure SetFlag(f: flags; stat: boolean);
@@ -32,7 +49,7 @@ type
     function  AdrY: bytep;
     function  AdrX: bytep;
     function  GetState: byte;
-    procedure ZN(Value: byte);
+    function  ZN(Value: byte): byte;
     procedure SetState(stat: byte);
     procedure Setareg(Value: byte);
     procedure SetXreg(Value: byte);
@@ -175,7 +192,7 @@ end; end;
   function dig2char(nr: byte): char;
   const
     HexStr: packed array[0..15] of char =
-      ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+      ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
   begin
     Result :=  HexStr[nr and $F];
   end;
@@ -247,10 +264,11 @@ end; end;
   end;
 
 
-  procedure tRegisters.ZN(Value: byte);
+  function tRegisters.ZN(Value: byte): byte;
   begin
     setflag(fz, Value = 0);
     setflags([fn], Value);
+    result := Value;
   end;
 
   procedure tRegisters.Cp(reg, val: byte);
@@ -356,6 +374,16 @@ end; end;
     b := res;
   end;
 
+  procedure  tRegisters.RORbase(var b: byte);
+  var res: byte;
+  begin
+    res := b;
+    SetFlag(fc, odd(res));
+    res := (res shr 1) or (res shl 7);
+    zn(res);
+    b := res;
+  end;
+
   procedure  tRegisters.ASLbase(var b: byte);
   var res: byte;
     begin
@@ -372,16 +400,6 @@ end; end;
     res := b;
     SetFlag(fc, odd(res));
     res := res shr 1;
-    zn(res);
-    b := res;
-  end;
-
-  procedure  tRegisters.RORbase(var b: byte);
-  var res: byte;
-  begin
-    res := b;
-    SetFlag(fc, odd(res));
-    res := (res shr 1) or (res shl 7);
     zn(res);
     b := res;
   end;
@@ -403,6 +421,65 @@ end; end;
     zn(res);
     b := res;
   end;
+
+  function tByteRegister.incr: byte;
+  begin
+    inc(fReg);
+    result := fReg;
+  end;
+
+  function tByteRegister.decr: byte;
+  begin
+    dec(fReg);
+    result := fReg;
+  end;
+
+  function  tByteRegister.Adr: bytep;
+  begin
+    result := @fReg;
+  end;
+
+  function  tByteRegister.GetReg: byte;
+  begin
+    result := fReg;
+  end;
+
+  procedure tByteRegister.SetReg(stat: byte);
+  begin
+    fReg := stat;
+  end;
+
+  procedure tByteRegister.SetFlags(f: flagset; NewStates: byte);
+  begin
+    newStates := bytep(@f)^ and NewStates;
+    pflagset(@fReg)^ := pflagset(@fReg)^ - f;
+    fReg := fReg or NewStates;
+  end;
+
+  procedure tByteRegister.SetFlag(f: flags; stat: boolean);
+  begin
+    if stat
+       then   pflagset(@fReg)^ := pflagset(@fReg)^ + [f]
+       else   pflagset(@fReg)^ := pflagset(@fReg)^ - [f];
+  end;
+
+  function  tByteRegister.GetFlag(f: flags): boolean;
+  begin
+    result := f in pflagset(@fReg)^;
+  end;
+
+  function  tByteRegister.RL(b: boolean): boolean;
+  begin
+    result := fReg > $7f;
+    freg := (freg shl 1) or ord(b);
+  end;
+
+  function  tByteRegister.RR(b: boolean): boolean;
+  begin
+    result := odd(fReg);
+    freg := (freg shr 1) or (ord(b) shl 7);
+  end;
+
 
   procedure tRegisters.INY; begin incr(adry^); END;
   procedure tRegisters.DEY; begin DECr(adry^); END;

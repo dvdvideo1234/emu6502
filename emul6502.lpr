@@ -7,21 +7,18 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Classes, EmuUnit, BaseUnit
-  { you can add units after this };
+  { you can add units after this }
+  ,crt
+  ;
 
 begin
-  writeln('emul6502');
-//  tt := 98;
-//  writeln(divmod(tt,10),' ',tt);
-//  writeln;
-  readln;
-  //testary := (0,1, 2, 3, 4, 5, 6, 7);
-
-  //stack.setStackBase();   { in hex $100}
+  for counter :=0 to 300 do
+      cpu.bytes[counter] := counter;
   cpu.Debug := true;
-  cpu.doPatch($200, testary);
-  cpu.dump($200,8);
-  cpu.ExecEmul($200);
+  //cpu.doPatch($200, testary);
+  cpu.dump(0, 330);
+  writeln;
+  //cpu.ExecEmul($200);
   readln;
 end.
 
