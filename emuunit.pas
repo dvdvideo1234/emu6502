@@ -332,12 +332,9 @@ procedure tCPU6502.PLp;  begin p := Pop; end;
 procedure tCPU6502.rti;  begin plp; RTS; end;
 
 procedure tCPU6502.CSF;    {clear set flag}
-var
-  opIndex: byte;
-const
-  AfLAGS: array[0..3] of flags = (fc, fi, fv, fd);
-begin
-  opIndex := fopc shr 5;
+var    opIndex: byte;
+const  AfLAGS: array[0..3] of flags = (fc, fi, fv, fd);
+begin  opIndex := fopc shr 5;
   SetFlag(AfLAGS[(opIndex) shr 1], odd((opIndex)));
 end;
 
@@ -347,21 +344,16 @@ begin
 end;
 
 procedure tCPU6502.Rel;
-const
-  AfLAGS: array[0..3] of flags = (fn, fv, fc, fz);
-var
-  offset: byte;
-begin
-  offset := nextbyte;
+const   AfLAGS: array[0..3] of flags = (fn, fv, fc, fz);
+var     offset: byte;
+begin   offset := nextbyte;
   if odd(fopc shr 5) and (AfLAGS[fopc shr 6] in state)
      then PC := pc + fromTwosCom(offset, $80);
 end;
 
 procedure tCPU6502.BIT;
-var
-  b: byte;
-begin
-  b := ptrValue^;
+var   b: byte;
+begin b := ptrValue^;
   setFlag(fz, (A and b) = 0);
   setFlags([fv, fn], b);
 end;
@@ -422,26 +414,19 @@ var
   i, cnt: integer;
 
   procedure expander(ind: integer);
-  const
-    step = 4;
-  var
-    j: aType;
-    rec: oper;
-  begin
-    rec := fOpers[ind];
-    if rec.a = aOnly then begin
+    const  step = 4;
+    var    j: aType;  rec: oper;
+    procedure exp1; begin
+      if fopcodes[rec.o] <> nil then writeln(fOpers[ind].n);
       fopcodes[rec.o] := rec.p;
       fOpInds[rec.o] := ind;
       Inc(cnt);
-    end else begin
-      for j := aIX to aAX do begin
-        if j in rec.a then  begin
-          fopcodes[rec.o] := rec.p;
-          fOpInds[rec.o] := ind;
-          Inc(cnt);
-        end;
-        Inc(rec.o, step);
-      end;
+    end;
+  begin   rec := fOpers[ind];
+    if rec.a = aOnly then exp1
+    else  for j := aIX to aAX do begin
+      if j in rec.a then  exp1;
+      Inc(rec.o, step);
     end;
   end;
 
@@ -474,7 +459,6 @@ begin
   fAdressation[aAX] := @aABSX;
   fAdressation[aZY] := @aZPY;
   fAdressation[aRa] := @Adra;
-
 
   i := 0;
   DEF(@ORA  { ORA  }, 'ORA', $01, aALL);
@@ -537,28 +521,33 @@ begin
   CNT := 0;
   for i := 0 to high(fOpers) do
     expander(i);
-  writeln(cnt);
+  write(cnt);
 end;
 
 procedure tCPU6502.ShowTable;
 var i, j: byte; //, v, h, r, c: byte;
-begin
-  for i := 0 to 255 do
-  begin
-    if (i and 15) = 0 then
-      writeln;
-    if (i and 127) = 0 then
-      writeln;
-    if ((i - 8) and 15) = 0 then
-      Write('  ');
-    {c := i and 7;  v := i shr 7; r := (i shr 4) and 7;
-    h := (i shr 3) and 1;  j := c shl 2 + v shl 1 + h + r shl 5;}
-    j := rold(rold(i,7),4); // and 255;
+  {c := i and 7;  v := i shr 7; r := (i shr 4) and 7;
+  h := (i shr 3) and 1;  j := c shl 2 + v shl 1 + h + r shl 5;}
 
-    if fOpInds[j] <> 255 then
-      Write(fOpers[fOpInds[j]].n)
-    else
-      Write('---');
+  procedure amiddle(i: byte);  begin
+    if (i and 7) = 0 then   Write('  ');  end;
+
+  procedure aRow; var n: integer; begin writeln; writeln; write('   ');
+    for n := i to i+15 do begin   j := rold(rold(n,7),4);
+      amiddle(n);
+      write(byte2hex(j and $1f),'  ');
+    end;
+  end;
+
+begin
+  write(' aIX aZ  aIM aA  aIY aZX aAY aAX   aIX aZ  aIM aA  aIY aZX aAY aAX');
+  for i := 0 to 255 do  begin
+    if (i and 127) = 0 then  aRow;
+    j := rold(rold(i,7),4); // and 255;
+    if ((i) and 15)  = 0 then  write(#13#10,byte2hex(j and $f0));
+    amiddle(i);
+    if fOpInds[j] <> 255 then  Write(fOpers[fOpInds[j]].n)
+                         else  Write('---');
     Write(' ');
   end;
   writeln;
