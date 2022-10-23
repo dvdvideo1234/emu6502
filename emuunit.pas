@@ -35,9 +35,13 @@ const
   aMem = [aZ, aA];
 
 type
-  tCPU6502 = class(tRegisters)
+  tCPU6502 = class
+    regs: tRegisters;
+
     fDebug: boolean;
     Running: boolean;
+
+    VALptr: bytep;
     fopc: byte;
     fadrs: aType;
     fAdressation: array[aType] of FuncType;
@@ -50,68 +54,48 @@ type
     procedure disasm(adr, cnt: word);
     procedure TablesMaker;
     procedure precodX;
-    function NextByte: byte;
-    function NextWord: word;
+    function  NextByte: byte;
+    function  NextWord: word;
 
-    function aINDX(): bytep;
-    function aZP(): bytep;
-    function aIMM(): bytep;
-    function aABS(): bytep;
-    function aINDY(): bytep;
-    function aZPX(): bytep;
-    function aABSY(): bytep;
-    function aABSX(): bytep;
-    function aZPY(): bytep;
-    // ara
-    function ptrValue: bytep;
+    function  GetState: flagSet;
+    procedure SetState(f: flagSet);
+    function  GetPc: word;
+    procedure SetPc(w: word);
+    procedure SetA(b: byte);
+    procedure SetY(b: byte);
+    procedure SetX(b: byte);
+    function  GetSp: word;
+
+    function aINDX(): bytep;    function aZP(): bytep;
+    function aIMM(): bytep;     function aABS(): bytep;
+    function aINDY(): bytep;    function aZPX(): bytep;
+    function aABSY(): bytep;    function aABSX(): bytep;
+    function aZPY(): bytep;     function aRacc():bytep;
+    procedure ptrValue;
 
     procedure doPatch(adr: word; Patch: byteAry);
     procedure dump(adr, cnt: word);
 
-    function pop: byte;
-    procedure push(b: byte);
-    function popAdr: word;
-    procedure pushAdr(w: word);
+    function pop: byte;                 procedure push(b: byte);
+    function popAdr: word;              procedure pushAdr(w: word);
 
     {page1}
-    procedure ORA;
-    procedure ANDm;
-    procedure EOR;
-    procedure ADC;
-    procedure STA;
-    procedure LDA;
-    procedure CMP;
-    procedure SBC;
+    procedure ORA;    procedure ANDm;   procedure EOR;    procedure ADC;
+    procedure STA;    procedure LDA;    procedure CMP;    procedure SBC;
 
     {page2}
-    procedure incm;
-    procedure decm;
-    procedure LDX;
-    procedure STX;
-    procedure ASL;
-    procedure LSR;
-    procedure ROL;
-    procedure ROR;
-    procedure nop;
+    procedure incm;   procedure decm;   procedure LDX;    procedure STX;
+    procedure ASL;    procedure LSR;    procedure ROL;    procedure ROR;
+    procedure nop;    procedure TAX;    procedure TXA;    procedure TSX;
+    procedure TXS;    procedure DEX;
 
     {page0}
-    procedure CPY;
-    procedure CPX;
-    procedure STY;
-    procedure LDY;
-    procedure JPA;
-    procedure JPI;
-    procedure JSR;
-    procedure RTS;
-    procedure rti;
-    procedure CSF;
-    procedure BRK;
-    procedure Rel;
-    procedure PLA;
-    procedure PHa;
-    procedure PHp;
-    procedure PLp;
-    procedure BIT;
+    procedure CPY;    procedure CPX;    procedure STY;    procedure LDY;
+    procedure JPA;    procedure JPI;    procedure JSR;    procedure RTS;
+    procedure rti;    procedure CSF;    procedure BRK;    procedure Rel;
+    procedure PLA;    procedure PHa;    procedure PHp;    procedure PLp;
+    procedure BIT;    procedure INY;    procedure DEY;    procedure INX;
+    procedure TAY;    procedure TYA;    procedure CLV;
 
     constructor Create(StackBase: byte = 1);
     destructor Done;
@@ -122,6 +106,14 @@ type
     procedure Store(address: word; Value: byte);
     function Fetch(address: word): byte;
     function PageAdr(adr: word): word;
+
+    property a:  byte read regs.aReg.fReg write SetA;
+    property x:  byte read regs.xReg.fReg write SetX;
+    property y:  byte read regs.YReg.fReg write SetY;
+    property p:  byte read regs.PReg.fReg write regs.PReg.fReg;
+    property pc: word read GetPc write SetPc;
+    property SP: word read GetSP;
+    property state: flagSet read GetState write SetState;
 
     property Debug: boolean read fDebug write fDebug;
     property bytes: wordAdressable read fMemory write fMemory;
@@ -189,14 +181,14 @@ end;
 
 {ptrValue of addressing memory }
 
-function tCPU6502.ptrValue: bytep;
+procedure tCPU6502.ptrValue;
 begin
-  bytep(Result) := fAdressation[fadrs]();
+  valPtr := fAdressation[fadrs]();
 end;
 
 procedure tCPU6502.Execute;
 begin
-  fopc := bytes[pc];
+  fopc := bytes[Pc];
   fadrs := aType((fopc shr 2) and 7);
   if ((fopC and 1) = 0) and (fadrs in [aim, aIX])
      then  fadrs  := precod[fadrs];
@@ -209,7 +201,7 @@ end;
 
 function tCPU6502.aINDX(): bytep;
 begin                       { ORA INDX }
-  Result := @bytes[byte(PageAdr(NextByte + X))];
+  Result := @bytes[byte(PageAdr(NextByte + regs.xReg.fReg))];
 end;
 
 function tCPU6502.aZP(): bytep;
@@ -230,27 +222,27 @@ end;
 
 function tCPU6502.aINDY(): bytep;
 begin                      { ORA INDY }
-  Result := @bytes[PageAdr(NextByte) + Y];
+  Result := @bytes[PageAdr(NextByte) + regs.yReg.fReg];
 end;
 
 function tCPU6502.aZPX(): bytep;
 begin                      { ORA ZPX }
-  Result := @bytes[byte(NextByte + X)];
+  Result := @bytes[byte(NextByte + regs.xReg.fReg)];
 end;
 
 function tCPU6502.aABSY(): bytep;
 begin                       { ORA ABSY }
-  Result := @bytes[NextWord + Y];
+  Result := @bytes[NextWord + regs.yReg.fReg];
 end;
 
 function tCPU6502.aABSX(): bytep;
 begin                       { ORA ABSX }
-  Result := @bytes[NextWord + X];
+  Result := @bytes[NextWord + regs.xReg.fReg];
 end;
 
 function tCPU6502.aZPY(): bytep;
 begin                      { STX ZPY }
-  Result := @bytes[byte(NextByte + Y)];
+  Result := @bytes[byte(NextByte + regs.yReg.fReg)];
 end;
 
 
@@ -259,8 +251,21 @@ end;
 function tCPU6502.NextByte: byte;
 begin
   pc := pc + 1;
-  Result := bytes[pc];
+  Result := bytes[Pc];
 end;
+
+{
+function tCPU6502.incr(pb: bytep): byte;
+begin
+  inc(pb^);
+  result := pb^
+end;
+
+function tCPU6502.decr(pb: bytep): byte;
+begin
+  dec(pb^);
+  result := pb^
+end; }
 
 function tCPU6502.NextWord: word;
 begin
@@ -270,25 +275,26 @@ end;
 
 
 
-procedure tCPU6502.ORA;  begin A := A or ptrValue^; end;
+procedure tCPU6502.EOR;
+begin a := regs.pReg.ZN(a  xor valPtr^); end;
 
-procedure tCPU6502.ANDm; begin A := A and ptrValue^; end;
+procedure tCPU6502.ORA;  begin a := a or valPtr^; end;
 
-procedure tCPU6502.EOR;  begin A := A xor ptrValue^; end;
+procedure tCPU6502.ANDm; begin a := a  and valPtr^; end;
 
-procedure tCPU6502.ADC;  begin AD(ptrValue^); end;
+procedure tCPU6502.LDA;  begin A := valPtr^; end;
 
-procedure tCPU6502.STA;  begin ptrValue^ := a; end;
+procedure tCPU6502.incm; begin regs.incr(valPtr^); end;
 
-procedure tCPU6502.LDA;  begin A := ptrValue^; end;
+procedure tCPU6502.decm; begin regs.decr(valPtr^); end;
 
-procedure tCPU6502.CMP;  begin cp(A, ptrValue^); end;
+procedure tCPU6502.STA;  begin valPtr^ := a; end;
 
-procedure tCPU6502.SBC;  begin SB(ptrValue^); end;
+procedure tCPU6502.ADC;  begin regs.AD(valPtr^); end;
 
-procedure tCPU6502.incm; begin incr(ptrValue^); end;
+procedure tCPU6502.CMP;  begin regs.cp(A, valPtr^); end;
 
-procedure tCPU6502.decm; begin decr(ptrValue^); end;
+procedure tCPU6502.SBC;  begin regs.SB(valPtr^); end;
 
 //aType = (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa);
 
@@ -296,34 +302,34 @@ procedure tCPU6502.precodX; begin
   if fadrs in [azx,aax] then fadrs := precod_x[fadrs];
 end;
 
-procedure tCPU6502.STX;  begin  precodX; ptrValue^ := X; end;
+procedure tCPU6502.STX;  begin  precodX; valPtr^ := X; end;
 
-procedure tCPU6502.LDX;  begin  precodX; X := ptrValue^; end;
+procedure tCPU6502.LDX;  begin  precodX; X := regs.pReg.ZN(valPtr^); end;
 
-procedure tCPU6502.ASL;  begin  ASLbase(ptrValue^); end;
+procedure tCPU6502.ASL;  begin  regs.RL(valPtr^); end;
 
-procedure tCPU6502.LSR;  begin LSRbase(ptrValue^); end;
+procedure tCPU6502.LSR;  begin regs.RR(valPtr^); end;
 
-procedure tCPU6502.ROL;  begin ROLbase(ptrValue^); end;
+procedure tCPU6502.ROL;  begin regs.RL(valPtr^,regs.pReg.GetC); end;
 
-procedure tCPU6502.ROR;  begin RORbase(ptrValue^); end;
+procedure tCPU6502.ROR;  begin regs.rr(valPtr^,regs.pReg.GetC); end;
 
 
-procedure tCPU6502.CPY;  begin cp(Y, ptrValue^);  end;
+procedure tCPU6502.CPY;  begin regs.cp(Y, valPtr^);  end;
 
-procedure tCPU6502.CPX;  begin cp(X, ptrValue^);  end;
+procedure tCPU6502.CPX;  begin regs.cp(X, valPtr^);  end;
 
-procedure tCPU6502.STY;  begin ptrValue^ := Y;    end;
+procedure tCPU6502.STY;  begin valPtr^ := Y;    end;
 
-procedure tCPU6502.LDY;  begin y := ptrValue^;    end;
+procedure tCPU6502.LDY;  begin y := regs.pReg.ZN(valPtr^);    end;
 
-procedure tCPU6502.JPA;  begin PC := NextWord; Execute; end;
+procedure tCPU6502.JPA;  begin PC := (NextWord); Execute; end;
 
-procedure tCPU6502.JPI;  begin PC := PageAdr(NextWord); Execute; end;
+procedure tCPU6502.JPI;  begin PC := (PageAdr(NextWord)); Execute; end;
 
-procedure tCPU6502.JSR;  begin PushAdr(PC + 2); JPA; end;
+procedure tCPU6502.JSR;  begin PushAdr(Pc + 2); JPA; end;
 
-procedure tCPU6502.RTS;  begin PC := Popadr; end;
+procedure tCPU6502.RTS;  begin PC := (Popadr); end;
 
 procedure tCPU6502.PHa;  begin Push(a); end;
 
@@ -339,7 +345,7 @@ procedure tCPU6502.CSF;    {clear set flag}
 var    opIndex: byte;
 const  AfLAGS: array[0..3] of flags = (fc, fi, fv, fd);
 begin  opIndex := fopc shr 5;
-  SetFlag(AfLAGS[(opIndex) shr 1], odd((opIndex)));
+  regs.pReg.SetFlag(AfLAGS[(opIndex) shr 1], odd((opIndex)));
 end;
 
 procedure tCPU6502.BRK;
@@ -356,10 +362,9 @@ begin   offset := nextbyte;
 end;
 
 procedure tCPU6502.BIT;
-var   b: byte;
-begin b := ptrValue^;
-  setFlag(fz, (A and b) = 0);
-  setFlags([fv, fn], b);
+begin
+  regs.pReg.SetFlag(fz, (A and valPtr^) = 0);
+  regs.pReg.setFlags([fv, fn], valPtr^);
 end;
 
 procedure tCPU6502.ExecEmul(newPc: word);
@@ -375,14 +380,14 @@ end;
 
 function tCPU6502.pop: byte;
 begin
-  Inc(wordRec(fsp).Lo);
-  Result := bytes[fsp];
+  regs.sReg.incr;
+  Result := bytes[sp];
 end;
 
 procedure tCPU6502.push(b: byte);
 begin
-  bytes[fsp] := b;
-  Dec(wordRec(fsp).Lo);
+  bytes[sp] := b;
+  regs.sReg.decr;
 end;
 
 function tCPU6502.popAdr: word;
@@ -399,8 +404,8 @@ end;
 
 constructor tCPU6502.Create(StackBase: byte = 1);
 begin
-  regInit;
-  setStackBase(StackBase);
+  regs.shReg.fReg:= StackBase;
+  //regInit;
   setLength(fOpers, 62);
   setLength(fOpInds, 256);
   TablesMaker;
@@ -462,7 +467,7 @@ begin
   fAdressation[aAY] := @aABSY;
   fAdressation[aAX] := @aABSX;
   fAdressation[aZY] := @aZPY;
-  fAdressation[aRa] := @Adra;
+  fAdressation[aRa] := @aracc;
 
   i := 0;
   DEF(@ORA  { ORA  }, 'ORA', $01, aALL);
@@ -620,6 +625,107 @@ begin
   for cnt := cnt downto 1 do dis1;
   writeln;
 end;
+
+function tCPU6502.GetPc: word;
+begin
+  result := pword(@regs.pcLo)^;
+end;
+
+function tCPU6502.GetSp: word;
+begin
+  result := pword(@regs.sReg)^;
+end;
+
+procedure tCPU6502.SetPc(w: word);
+begin
+  pword(@regs.pcLo)^ := w;
+end;
+
+function  tCPU6502.GetState: flagSet;
+begin
+  result := pFlagset(@regs.preg.freg)^;
+end;
+
+procedure tCPU6502.SetState(f: flagSet);
+begin
+  pFlagset(@regs.preg.freg)^ := f;
+end;
+
+procedure tCPU6502.SetA(b: byte);
+begin
+  regs.aReg.fReg := regs.preg.zn(b);
+end;
+
+procedure tCPU6502.SetY(b: byte);
+begin
+  regs.YReg.fReg := regs.preg.zn(b);
+end;
+
+procedure tCPU6502.SetX(b: byte);
+begin
+  regs.xReg.fReg := regs.preg.zn(b);
+end;
+
+procedure tCPU6502.INY;
+begin
+  Y := Y+ 1;
+end;
+
+procedure tCPU6502.DEY;
+begin
+  Y := Y - 1;
+end;
+
+procedure tCPU6502.INX;
+begin
+  X := X + 1;
+end;
+
+procedure tCPU6502.DEX;
+begin
+  X := X - 1;
+end;
+
+procedure tCPU6502.TAY;
+begin
+  y := a;
+end;
+
+procedure tCPU6502.TYA;
+begin
+  A := Y;
+end;
+
+procedure tCPU6502.TAX;
+begin
+  x := a;
+end;
+
+procedure tCPU6502.TXA;
+begin
+  a := x;
+end;
+
+procedure tCPU6502.TSX;
+begin
+  x := regs.sReg.fReg;
+end;
+
+procedure tCPU6502.TXS;
+begin
+  regs.sReg.fReg := x;
+end;
+
+procedure tCPU6502.CLV;
+begin
+  regs.preg.clrFlag(fv);
+end;
+
+function tCPU6502.aracc: bytep;
+begin
+  result := @regs.aReg.fReg;
+end;
+
 
 initialization
 
