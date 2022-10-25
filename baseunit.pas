@@ -13,8 +13,8 @@ type
   str7   = string[7];
   str15  = string[15];
   byteAry  = array of byte;
-  flags = (fc, fz, fi, fd, fb, fx, fv, fn);
-  flagSet = packed set of flags;
+  tCPUflag = (fc, fz, fi, fd, fb, fx, fv, fn);
+  flagSet = packed set of tCPUflag;
   pFlagset= ^FlagSet;
   wordAdressable = array[word] of byte;
 
@@ -30,9 +30,9 @@ type
 
   tFlagRegister = object(tByteRegister)
     procedure SetFlags(f: flagset; NewStates: byte);
-    procedure SetFlag(f: flags; stat: boolean = true);
-    procedure clrFlag(f: flags);
-    function  GetFlag(f: flags): boolean;
+    procedure SetFlag(f: tCPUflag; stat: boolean = true);
+    procedure clrFlag(f: tCPUflag);
+    function  GetFlag(f: tCPUflag): boolean;
     function  ZN(Value: byte): byte;
     function  GetC: boolean;
   end;
@@ -202,19 +202,19 @@ end; end;
     fReg := fReg or NewStates;
   end;
 
-  procedure tFlagRegister.clrFlag(f: flags);
+  procedure tFlagRegister.clrFlag(f: tCPUflag);
   begin
     pflagset(@fReg)^ := pflagset(@fReg)^ - [f];
   end;
 
-  procedure tFlagRegister.SetFlag(f: flags; stat: boolean);
+  procedure tFlagRegister.SetFlag(f: tCPUflag; stat: boolean);
   begin
     if stat then
       pflagset(@fReg)^ := pflagset(@fReg)^ + [f]
     else  clrFlag(f);
   end;
 
-  function  tFlagRegister.GetFlag(f: flags): boolean;
+  function  tFlagRegister.GetFlag(f: tCPUflag): boolean;
   begin
     result := f in pflagset(@fReg)^;
   end;

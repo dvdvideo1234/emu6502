@@ -4,14 +4,15 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="8">
+    <Units Count="7">
       <Unit0>
         <Filename Value="emul6502.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="emul6502"/>
-        <EditorIndex Value="1"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="9"/>
+        <TopLine Value="10"/>
         <CursorPos X="3" Y="17"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -20,11 +21,10 @@
         <Filename Value="emuunit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="EmuUnit"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="441"/>
-        <CursorPos X="29" Y="454"/>
+        <TopLine Value="527"/>
+        <CursorPos X="17" Y="544"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit1>
@@ -34,8 +34,8 @@
         <UnitName Value="BaseUnit"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="1"/>
+        <TopLine Value="205"/>
+        <CursorPos X="46" Y="217"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit2>
@@ -44,12 +44,12 @@
         <WindowIndex Value="0"/>
         <TopLine Value="126"/>
         <CursorPos X="16" Y="134"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="99"/>
       </Unit3>
       <Unit4>
         <Filename Value="emul6502.pas"/>
         <UnitName Value="emul6502"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="793"/>
         <CursorPos X="39" Y="804"/>
@@ -57,28 +57,22 @@
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
-        <Filename Value="D:\Lazarus\IDE\fpc\2.6.2\source\rtl\win\sysutils.pp"/>
-        <UnitName Value="sysutils"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="274"/>
-        <CursorPos X="12" Y="282"/>
-        <UsageCount Value="1"/>
-      </Unit5>
-      <Unit6>
-        <Filename Value="D:\Lazarus\IDE\fpc\2.6.2\source\rtl\objpas\sysutils\sysutilh.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="38"/>
-        <CursorPos X="4" Y="60"/>
-        <UsageCount Value="1"/>
-      </Unit6>
-      <Unit7>
         <Filename Value="emul6502.lpi"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
         <DefaultSyntaxHighlighter Value="XML"/>
-      </Unit7>
+      </Unit5>
+      <Unit6>
+        <Filename Value="E:\ARCHIVE\DVPC\Lazarus\IDE\fpc\2.6.2\source\rtl\objpas\sysutils\sysutilh.inc"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="225"/>
+        <CursorPos X="38" Y="40"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit6>
     </Units>
     <General>
       <ActiveWindowIndexAtStart Value="0"/>
@@ -86,123 +80,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="465" Column="43" TopLine="445"/>
+        <Caret Line="186" Column="38" TopLine="174"/>
       </Position1>
       <Position2>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="11" Column="26" TopLine="1"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position2>
       <Position3>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="34" Column="9" TopLine="14"/>
+        <Caret Line="52" Column="30" TopLine="32"/>
       </Position3>
       <Position4>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="562" Column="67" TopLine="556"/>
+        <Caret Line="193" Column="19" TopLine="181"/>
       </Position4>
       <Position5>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="11" Column="67" TopLine="1"/>
+        <Caret Line="197" Column="32" TopLine="185"/>
       </Position5>
       <Position6>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="25" Column="39" TopLine="14"/>
+        <Caret Line="201" Column="21" TopLine="181"/>
       </Position6>
       <Position7>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="34" Column="9" TopLine="14"/>
+        <Caret Line="11" Column="60" TopLine="1"/>
       </Position7>
       <Position8>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="480" Column="20" TopLine="466"/>
+        <Caret Line="193" Column="1" TopLine="184"/>
       </Position8>
       <Position9>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="11" Column="8" TopLine="4"/>
+        <Caret Line="12" Column="1" TopLine="1"/>
       </Position9>
       <Position10>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="19" Column="36" TopLine="4"/>
+        <Caret Line="593" Column="1" TopLine="586"/>
       </Position10>
       <Position11>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="20" Column="37" TopLine="4"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position11>
       <Position12>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="47" Column="17" TopLine="27"/>
+        <Caret Line="206" Column="37" TopLine="194"/>
       </Position12>
       <Position13>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="48" Column="30" TopLine="28"/>
+        <Caret Line="207" Column="38" TopLine="194"/>
       </Position13>
       <Position14>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="194" Column="15" TopLine="174"/>
+        <Caret Line="208" Column="35" TopLine="194"/>
       </Position14>
       <Position15>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="412" Column="34" TopLine="392"/>
+        <Caret Line="220" Column="30" TopLine="200"/>
       </Position15>
       <Position16>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="414" Column="53" TopLine="394"/>
+        <Caret Line="311" Column="11" TopLine="291"/>
       </Position16>
       <Position17>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="27" Column="28" TopLine="7"/>
+        <Caret Line="315" Column="41" TopLine="1"/>
       </Position17>
       <Position18>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="29" Column="27" TopLine="9"/>
+        <Caret Line="204" Column="1" TopLine="195"/>
       </Position18>
       <Position19>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="49" Column="17" TopLine="29"/>
+        <Caret Line="202" Column="1" TopLine="188"/>
       </Position19>
       <Position20>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="111" Column="11" TopLine="92"/>
+        <Caret Line="307" Column="49" TopLine="296"/>
       </Position20>
       <Position21>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="112" Column="11" TopLine="93"/>
+        <Caret Line="576" Column="42" TopLine="567"/>
       </Position21>
       <Position22>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="113" Column="11" TopLine="94"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position22>
       <Position23>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="114" Column="11" TopLine="95"/>
+        <Caret Line="52" Column="21" TopLine="32"/>
       </Position23>
       <Position24>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="115" Column="11" TopLine="96"/>
+        <Caret Line="208" Column="26" TopLine="184"/>
       </Position24>
       <Position25>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="116" Column="11" TopLine="97"/>
+        <Caret Line="215" Column="20" TopLine="195"/>
       </Position25>
       <Position26>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="117" Column="11" TopLine="98"/>
+        <Caret Line="580" Column="17" TopLine="574"/>
       </Position26>
       <Position27>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="119" Column="11" TopLine="100"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position27>
       <Position28>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="120" Column="11" TopLine="101"/>
+        <Caret Line="206" Column="1" TopLine="182"/>
       </Position28>
       <Position29>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="394" Column="25" TopLine="374"/>
+        <Caret Line="579" Column="27" TopLine="572"/>
       </Position29>
       <Position30>
         <Filename Value="emuunit.pas"/>
-        <Caret Line="401" Column="10" TopLine="381"/>
+        <Caret Line="11" Column="67" TopLine="1"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

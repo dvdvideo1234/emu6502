@@ -8,18 +8,13 @@ uses
   Classes, SysUtils, BaseUnit;
 
 type
-  aType = (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa, aRl);
+  aType = (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa, aRl, aI);
   bType = aIx..aAx;
   TypeSet = packed set of bType;
   TProcType = procedure() of object; // Method type
   FuncType = function(): bytep of object;
   Tprocary = array of TProcType;
 
-const
-  precod:  array[aIX..aIm] of aTYpe = (aim, az, ara);
-  precod_x: array[azx..aax] of aTYpe = (azy, aAY, aay);
-
-type
   oper{ation} = record
     p{roc}: TProcType;
     n{ame}: str3;
@@ -54,7 +49,7 @@ type
   public
     procedure disasm(adr, cnt: word);
     procedure TablesMaker;
-    procedure precodX;
+    function  precodX(a: byte): atype;
     function  NextByte: byte;
     function  NextWord: word;
 
@@ -91,12 +86,12 @@ type
     procedure TXS;    procedure DEX;
 
     {page0}
+    procedure BRK;    procedure CSF;    procedure Rel;    procedure CLV;
     procedure CPY;    procedure CPX;    procedure STY;    procedure LDY;
     procedure JPA;    procedure JPI;    procedure JSR;    procedure RTS;
-    procedure rti;    procedure CSF;    procedure BRK;    procedure Rel;
     procedure PLA;    procedure PHa;    procedure PHp;    procedure PLp;
     procedure BIT;    procedure INY;    procedure DEY;    procedure INX;
-    procedure TAY;    procedure TYA;    procedure CLV;
+    procedure TAY;    procedure TYA;    procedure rti;
 
     constructor Create(StackBase: byte = 1);
     destructor Done;
@@ -188,12 +183,30 @@ uses crt;
     valPtr := fAdressation[fadrs]();
   end;
 
+    function tCPU6502.precodX(a: byte): atype;
+    const  // aType = (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa, aRl);
+      precod_0: array[aIX..aax] of aTYpe =
+                (aim, az, ara, aA, aRl, azx, aAY, aax);
+      precod_1: array[aIX..aax] of aTYpe =
+                (aim, az, ara, aA, aRa, azx, aAY, aax);
+      precod_2: array[aIX..aax] of aTYpe =
+                (aim, az, ara, aA, aRa, azy, aAY, aay);
+    begin
+      result := bType((a shr 2) and 7);
+      case (a and 3) of
+        0: result := precod_0[result];
+        2: begin
+             if a in [$96 ,$b6, $be]
+               then result := precod_2[result]
+             else result := precod_1[result];
+           end;
+      end;
+    end;
+
   procedure tCPU6502.Execute;
   begin
     fopc := bytes[Pc];
-    fadrs := bType((fopc shr 2) and 7);
-    if ((fopC and 1) = 0) and (fadrs in [aim, aIX])
-       then  fadrs  := precod[fadrs];
+    fadrs := precodX(fopc);
     fopcodes[fopc];
   end;
 
@@ -283,13 +296,9 @@ uses crt;
 
   procedure tCPU6502.SBC;  begin regs.SB(valPtr^); end;
 
-  procedure tCPU6502.precodX; begin
-    if fadrs in [azx,aax] then fadrs := precod_x[fadrs];
-  end;
+  procedure tCPU6502.STX;  begin  valPtr^ := X; end;
 
-  procedure tCPU6502.STX;  begin  precodX; valPtr^ := X; end;
-
-  procedure tCPU6502.LDX;  begin  precodX; X := valPtr^; end;
+  procedure tCPU6502.LDX;  begin  X := valPtr^; end;
 
   procedure tCPU6502.ASL;  begin  regs.RL(valPtr^); end;
 
@@ -328,7 +337,7 @@ uses crt;
 
   procedure tCPU6502.CSF;    {clear set flag}
   var    opIndex: byte;
-  const  AfLAGS: array[0..3] of flags = (fc, fi, fv, fd);
+  const  AfLAGS: array[0..3] of tCPUflag = (fc, fi, fv, fd);
   begin  opIndex := fopc shr 5;
     regs.pReg.SetFlag(AfLAGS[(opIndex) shr 1], odd((opIndex)));
   end;
@@ -339,11 +348,11 @@ uses crt;
   end;
 
   procedure tCPU6502.Rel;
-  const   AfLAGS: array[0..3] of flags = (fn, fv, fc, fz);
+  const   AfLAGS: array[0..3] of tCPUflag = (fn, fv, fc, fz);
   var     offset: byte;
   begin   offset := nextbyte;
     if odd(fopc shr 5) and (AfLAGS[fopc shr 6] in state)
-       then PC := pc + fromTwosCom(offset, $80);
+       then PC := pc + shortInt(offset);
   end;
 
   procedure tCPU6502.BIT;
@@ -524,7 +533,7 @@ uses crt;
     procedure amiddle(i: byte);  begin
       if (i and 7) = 0 then   Write('  ');  end;
 
-    procedure aRow; var n: integer; begin writeln; writeln; write('   ');
+    procedure aRow; var n: integer; begin write(#13#10#13#10'   ');
       for n := i to i+15 do begin   j := rold(rold(n,7),4);
         amiddle(n);
         write(byte2hex(j and $1f),'  ');
@@ -532,75 +541,52 @@ uses crt;
     end;
 
   begin
-    write('    ', adr_s, '   ', adr_s);
+    write(#13#10'    ', adr_s, '   ', adr_s);
     for i := 0 to 255 do  begin
       if (i and 127) = 0 then  aRow;
-      j := rold(rold(i,7),4); // and 255;
+      j := rold(rold(i,7),4);
       if ((i) and 15)  = 0 then  write(#13#10,byte2hex(j and $f0));
       amiddle(i);
-      if fOpInds[j] <> 255 then  Write(fOpers[fOpInds[j]].n)
-                           else  Write('---');
-      Write(' ');
+      Write(fOpers[fOpInds[j]].n,' ');
     end;
     writeln;
   end;
 
   procedure tCPU6502.disasm(adr, cnt: word);
-    function getByte: byte;
-    begin
-      result := bytes[adr];
-      inc(adr);
-    end;
-
     procedure dis1();
     var val, b, len, ind: byte;
        adrs: aType;
-       disp: word;
+       disp: array[0..2] of byte;
     const aLen: array[atype] of byte = ( {index or operand lemgth}
-                1,   1,  1,   2,  1,   1,   2,   2,   1,   0, 1);
-    begin  disp := adr; b := getbyte;
-      adrs := aType((b shr 2) and 7);
-      ind := fOpInds[b];
+                1,   1,  1,   2,  1,   1,   2,   2,   1,   0, 1, 2);
+    begin  b := bytes[adr]; adrs := precodx(b); ind := fOpInds[b];
       if (ind = 0) then adrs := aRa {invalid 1 byte}
-      else if (b and $1f) = $10  then adrs := aRl
-      else
-      case b of   {special cases}
-        $20:                adrs := aA;  {jsr, jmp}  {jmp ind}
-        $96,$b6:            adrs := aZY;  {ldx, stx}
-        $be:                adrs := aAY;   {ldx}
-        $a0, $a2, $c0, $e0: adrs := aIM;
+      else if b = $20 then adrs := aA
       else if fOpers[ind].a = aONLY then adrs := aRa;
-      end;
-      len := aLen[adrs];   {printing}
-      write(#13#10,word2hex(disp),'  ',byte2hex(b),' ');
-      case len of
-        0: write('       ');
-        1: begin val := getbyte; write(byte2hex(val),'     ');end;
-        2: begin disp := getbyte; write(byte2hex(disp),' ');
-              val := getbyte; write(byte2hex(val),'  ');
-              disp := disp + val shl 8;
-           end;
-      end;
-      write(fOpers[ind].n); {invalid 1 byte 0 ind }
-      if len <> 0 then begin    {addressation}
-        write('  ');
-        if (adrs in  [aIX, aIY]) or (b=$6c) then write('(')
-           else if adrs = aIM then write('#');
 
-        if pred(len)=0 then begin
-          if adrs = aRl
-             then write(word2hex(adr + shortint(val)))
-             else  write(byte2hex(val));
-        end else write(word2hex(disp));
+      len := aLen[adrs];   {printing}
+      write(#13#10,word2hex(adr),'  ');
+      for val := 0 to len do begin  disp[val] :=  bytes[adr]; inc(adr);
+        write(byte2hex(disp[val]),' ');
+      end;
+      for val := 1 to 2-len do write('   ');
+      write(' ',fOpers[ind].n,'  '); {invalid 1 byte 0 ind }
+      if len <> 0 then begin    {addressation}
+        if (adrs in  [aIX, aIY, aI]) then write('(') else if adrs = aIM then write('#');
+
+        if adrs = aRl then write(word2hex(adr + shortint(disp[1])))
+        else if len = 1 then write(byte2hex(disp[1]))
+        else write(word2hex(disp[1] + disp[2] shl 8));
 
         if (adrs = aIY) then write(')');
         case adrs of
         aIY, aZY, aAY: write(',Y');
         aZX, aAX, aIx: write(',X');
         end;
-        if (adrs = aIx)  or (b=$6c) then write(')');
+        if adrs in [aIX, aI] then write(')');
       end;
     end;
+
   begin
     for cnt := cnt downto 1 do dis1;
   end;
