@@ -13,7 +13,6 @@ type
   TypeSet = packed set of bType;
   TProcType = procedure() of object; // Method type
   FuncType = function(): bytep of object;
-  Tprocary = array of TProcType;
 
   oper{ation} = record
     p{roc}: TProcType;
@@ -25,6 +24,7 @@ type
 
 
 const
+  aLen: array[atype] of byte = (1,1,1,2,1,1,2,2,1,0,1,2);
   aOnly = [aIX];
   aAll = [aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX];
   aShift = [aZ, aA, aZX, aAX];
@@ -42,38 +42,32 @@ type
     fadrs: aType;
     fAdressation: array[aType] of FuncType;
     fopers: opertype;
-    fopcodes: array[byte] of tProctype;
+    //fopcodes: array[byte] of tProctype;
+    fprecode: array[byte] of aType;
     fOpInds: byteAry;
     fmemory: wordAdressable;
 
   public
-    procedure disasm(adr, cnt: word);
-    procedure TablesMaker;
-    function  precodX(a: byte): atype;
-    function  NextByte: byte;
-    function  NextWord: word;
+    procedure Execute;          function  disasm(adr, cnt: word): word;
+    procedure TablesMaker;      function  precodX(a: byte): atype;
 
-    function  GetState: flagSet;
-    procedure SetState(f: flagSet);
-    function  GetPc: word;
-    procedure SetPc(w: word);
-    procedure SetA(b: byte);
-    procedure SetY(b: byte);
-    procedure SetX(b: byte);
-    function  GetSp: word;
+    function  NextByte: byte;   function  Fetch(address: word): byte;
+    function  NextWord: word;   procedure Store(address: word; Value: byte);
+    function  PageAdr(adr: word): word;
+
+    function  pop: byte;        procedure push(b: byte);
+    function  popAdr: word;     procedure pushAdr(w: word);
+
+    function  GetState: flagSet;procedure SetState(f: flagSet);
+    function  GetPc: word;      procedure SetPc(w: word);
+    procedure SetA(b: byte);    procedure SetY(b: byte);
+    procedure SetX(b: byte);    function  GetSp: word;
 
     function aINDX(): bytep;    function aZP(): bytep;
     function aIMM(): bytep;     function aABS(): bytep;
     function aINDY(): bytep;    function aZPX(): bytep;
     function aABSY(): bytep;    function aABSX(): bytep;
     function aZPY(): bytep;     function aRacc():bytep;
-    procedure ptrValue;
-
-    procedure doPatch(adr: word; Patch: byteAry);
-    procedure dump(adr, cnt: word);
-
-    function pop: byte;                 procedure push(b: byte);
-    function popAdr: word;              procedure pushAdr(w: word);
 
     {page1}
     procedure ORA;    procedure ANDm;   procedure EOR;    procedure ADC;
@@ -96,16 +90,13 @@ type
     constructor Create(StackBase: byte = 1);
     destructor Done;
     procedure ExecEmul(newPc: word);
-    procedure Execute;
     procedure ShowTable;
+    procedure doPatch(adr: word; Patch: byteAry);
+    procedure dump(adr, cnt: word);
 
-    procedure Store(address: word; Value: byte);
-    function Fetch(address: word): byte;
-    function PageAdr(adr: word): word;
-
+    property y:  byte read regs.YReg.fReg write SetY;
     property a:  byte read regs.aReg.fReg write SetA;
     property x:  byte read regs.xReg.fReg write SetX;
-    property y:  byte read regs.YReg.fReg write SetY;
     property p:  byte read regs.PReg.fReg write regs.PReg.fReg;
     property pc: word read GetPc write SetPc;
     property SP: word read GetSP;
@@ -178,11 +169,6 @@ uses crt;
 
   {ptrValue of addressing memory }
 
-  procedure tCPU6502.ptrValue;
-  begin
-    valPtr := fAdressation[fadrs]();
-  end;
-
   function tCPU6502.precodX(a: byte): atype;
   const  // (aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa, aRl, aI);
     precod_0: array[aIX..aax] of aTYpe =
@@ -193,12 +179,14 @@ uses crt;
               (aim, az, ara, aA, aRa, azy, aAY, aay);
   var ind: byte;
   begin  ind := fOpInds[a];
-    if ind = 0 then exit(aRa)
-    else if a = $20 then exit(aA)
-    else if fOpers[ind].a = aONLY then exit(aRa);
+    if (ind = 0) or (fOpers[ind].a = aONLY) then exit(aRa);
     result := bType((a shr 2) and 7);
     case (a and 3) of
-      0: if a = $6c then exit(aI) else result := precod_0[result];
+      0: case a of
+         $20: exit(aA);
+         $6c: exit(aI);
+         else result := precod_0[result];
+         end;
       2: if a in [$96 ,$b6, $be] then exit( precod_2[result])
            else result := precod_1[result];
     end;
@@ -207,8 +195,19 @@ uses crt;
   procedure tCPU6502.Execute;
   begin
     fopc := bytes[Pc];
-    fadrs := precodX(fopc);
-    fopcodes[fopc];
+    fadrs := fprecode[fopc];
+    If Debug
+      Then begin
+        Write(
+           ' Y=',   byte2hex(Y),
+           ' A=',   byte2hex(A),
+           ' X=',   byte2hex(X),
+           ' P=',   byte2hex(P), '   ');
+        disasm(pc, 1);
+        crt.readkey;
+      end;
+    valPtr := fAdressation[fadrs]();
+    fopers[fOpInds[fopc]].p;
   end;
 
   procedure tCPU6502.nop;
@@ -217,7 +216,7 @@ uses crt;
 
   function tCPU6502.aINDX(): bytep;
   begin                       { ORA INDX }
-    Result := @bytes[byte(PageAdr(NextByte + X))];
+    Result := @bytes[PageAdr(byte(NextByte + X))];
   end;
 
   function tCPU6502.aZP(): bytep;
@@ -261,6 +260,11 @@ uses crt;
     Result := @bytes[byte(NextByte + Y)];
   end;
 
+  function tCPU6502.aracc: bytep;
+  begin
+    result := @regs.aReg.fReg;
+  end;
+
 
   {tRegisters6502}
 
@@ -276,18 +280,36 @@ uses crt;
     wordRec(Result).hi := NextByte;
   end;
 
-  procedure tCPU6502.EOR;
-  begin a := regs.pReg.ZN(a  xor valPtr^); end;
+  procedure tCPU6502.CSF;    {clear set flag}
+  var    opIndex: byte;
+  const  AfLAGS: array[0..3] of tCPUflag = (fc, fi, fv, fd);
+  begin  opIndex := fopc shr 5;
+    regs.pReg.SetFlag(AfLAGS[(opIndex) shr 1], odd((opIndex)));
+  end;
+
+  procedure tCPU6502.Rel;
+  const   AfLAGS: array[0..3] of tCPUflag = (fn, fv, fc, fz);
+  begin
+    if odd(fopc shr 5) and (AfLAGS[fopc shr 6] in state)
+       then PC := pc + shortInt(valPtr^);
+  end;
+
+  procedure tCPU6502.BIT;
+  begin
+    regs.pReg.SetFlag(fz, (A and valPtr^) = 0);
+    regs.pReg.setFlags([fv, fn], valPtr^);
+  end;
+
+
+  procedure tCPU6502.BRK;  begin    Running := False;  end;
+
+  procedure tCPU6502.EOR;  begin a := regs.pReg.ZN(a  xor valPtr^); end;
 
   procedure tCPU6502.ORA;  begin a := a or valPtr^; end;
 
   procedure tCPU6502.ANDm; begin a := a  and valPtr^; end;
 
   procedure tCPU6502.LDA;  begin A := valPtr^; end;
-
-  procedure tCPU6502.incm; begin regs.incr(valPtr^); end;
-
-  procedure tCPU6502.decm; begin regs.decr(valPtr^); end;
 
   procedure tCPU6502.STA;  begin valPtr^ := a; end;
 
@@ -296,6 +318,11 @@ uses crt;
   procedure tCPU6502.CMP;  begin regs.cp(A, valPtr^); end;
 
   procedure tCPU6502.SBC;  begin regs.SB(valPtr^); end;
+
+
+  procedure tCPU6502.incm; begin regs.incr(valPtr^); end;
+
+  procedure tCPU6502.decm; begin regs.decr(valPtr^); end;
 
   procedure tCPU6502.STX;  begin  valPtr^ := X; end;
 
@@ -309,7 +336,6 @@ uses crt;
 
   procedure tCPU6502.ROR;  begin regs.rr(valPtr^,regs.pReg.GetC); end;
 
-
   procedure tCPU6502.CPY;  begin regs.cp(Y, valPtr^);  end;
 
   procedure tCPU6502.CPX;  begin regs.cp(X, valPtr^);  end;
@@ -318,9 +344,9 @@ uses crt;
 
   procedure tCPU6502.LDY;  begin y := valPtr^;    end;
 
-  procedure tCPU6502.JPA;  begin PC := NextWord; Execute; end;
+  procedure tCPU6502.JPA;  begin PC := NextWord; end;
 
-  procedure tCPU6502.JPI;  begin PC := PageAdr(NextWord); Execute; end;
+  procedure tCPU6502.JPI;  begin PC := PageAdr(NextWord); end;
 
   procedure tCPU6502.JSR;  begin PushAdr(Pc + 2); JPA; end;
 
@@ -336,31 +362,6 @@ uses crt;
 
   procedure tCPU6502.rti;  begin plp; RTS; end;
 
-  procedure tCPU6502.CSF;    {clear set flag}
-  var    opIndex: byte;
-  const  AfLAGS: array[0..3] of tCPUflag = (fc, fi, fv, fd);
-  begin  opIndex := fopc shr 5;
-    regs.pReg.SetFlag(AfLAGS[(opIndex) shr 1], odd((opIndex)));
-  end;
-
-  procedure tCPU6502.BRK;
-  begin
-    Running := False;
-  end;
-
-  procedure tCPU6502.Rel;
-  const   AfLAGS: array[0..3] of tCPUflag = (fn, fv, fc, fz);
-  var     offset: byte;
-  begin   offset := nextbyte;
-    if odd(fopc shr 5) and (AfLAGS[fopc shr 6] in state)
-       then PC := pc + shortInt(offset);
-  end;
-
-  procedure tCPU6502.BIT;
-  begin
-    regs.pReg.SetFlag(fz, (A and valPtr^) = 0);
-    regs.pReg.setFlags([fv, fn], valPtr^);
-  end;
 
   procedure tCPU6502.ExecEmul(newPc: word);
   begin
@@ -421,8 +422,7 @@ uses crt;
       const  step = 4;
       var    j: aType;  rec: oper;
       procedure exp1; begin
-        if fopcodes[rec.o] <> nil then writeln(fOpers[ind].n);
-        fopcodes[rec.o] := rec.p;
+        if fOpInds[rec.o] <> 0 then writeln(fOpers[ind].n);
         fOpInds[rec.o] := ind;
         Inc(cnt);
       end;
@@ -448,7 +448,7 @@ uses crt;
     end;
 
 
-  begin
+  begin   //(aIX, aZ, aIM, aA, aIY, aZX, aAY, aAX, aZY, aRa, aRl, aI)
     fAdressation[aIX] := @aINDX;
     fAdressation[aZ]  := @aZP;
     fAdressation[aIM] := @aIMM;
@@ -459,9 +459,11 @@ uses crt;
     fAdressation[aAX] := @aABSX;
     fAdressation[aZY] := @aZPY;
     fAdressation[aRa] := @aracc;
+    fAdressation[aRl] := @aIMM;
+    fAdressation[aI ] := @aracc;
 
     i := 0;
-    DEF(@ORA  { ilg  }, '-?-', $01, []);
+    DEF(@BRK  { ilg  }, '-?-', $01, []);
     DEF(@ORA  { ORA  }, 'ORA', $01, aALL);
     DEF(@ANDM { ANDM }, 'AND', $21, aALL);
     DEF(@EOR  { EOR  }, 'EOR', $41, aALL);
@@ -520,9 +522,8 @@ uses crt;
     DEF(@TXA  { TXA  }, 'TXA', $8A, aONLY);
     DEF(@TAX  { TAX  }, 'TAX', $AA, aONLY);
     CNT := 0;
-    for i := 0 to high(fOpers) do
-      expander(i);
-    //write(cnt);
+    for i := 0 to high(fOpers) do expander(i);
+    for i := 0 to high(byte) do fprecode[i] := precodx(i);
   end;
 
   procedure tCPU6502.ShowTable;
@@ -550,12 +551,11 @@ uses crt;
     writeln;
   end;
 
-  procedure tCPU6502.disasm(adr, cnt: word);
+  function tCPU6502.disasm(adr, cnt: word): word;
     procedure dis1();
-    var val, b, len, ind: byte;  adrs: aType; disp: array[0..2] of byte;
-    const aLen: array[atype] of byte = (1,1,1,2,1,1,2,2,1,0,1,2);
+    var val, b, len: byte;  adrs: aType; disp: array[0..2] of byte;
     begin  b := bytes[adr];adrs := precodx(b);{index or operand lemgth by type}
-      len := aLen[adrs];{printing} write(#13#10,word2hex(adr),'  ');  {address}
+      len := aLen[adrs];{printing} write(word2hex(adr),'  ');  {address}
       for val := 0 to len do begin  disp[val] :=  bytes[adr]; inc(adr);
         write(byte2hex(disp[val]),' ');  { bytes}  end;
       for val := 1 to 2-len do write('   ');
@@ -563,18 +563,19 @@ uses crt;
       if len <> 0 then begin             {addressation = no impl | no acc}
         if (adrs in  [aIX, aIY, aI]) then write('(')
           else if adrs = aIM then write('#');
-        if adrs = aRl then write(word2hex(adr + shortint(disp[1]))) {rel adr}
-          else if len = 1 then write(byte2hex(disp[1]))               {byte}
-          else write(word2hex(disp[1] + disp[2] shl 8));              {word}
-        if (adrs = aIY) then write(')');
+        if adrs = aRl then write('$',word2hex(adr + shortint(disp[1]))) {rel adr}
+          else if len = 1 then BEGIN write('$',byte2hex(disp[1]));      {byte}
+            if (adrs = aIY) then write(')'); end
+          else write('$',word2hex(disp[1] + disp[2] shl 8));              {word}
         case adrs of
         aIY, aZY, aAY: write(',Y');
         aZX, aAX, aIx: write(',X');
         end;
         if adrs in [aIX, aI] then write(')');
       end;
+      writeln;
     end;
-  begin     for cnt := cnt downto 1 do dis1;  end;
+  begin     for cnt := cnt downto 1 do dis1; result := adr; end;
 
   function tCPU6502.GetPc: word;
   begin
@@ -669,11 +670,6 @@ uses crt;
   procedure tCPU6502.CLV;
   begin
     regs.preg.clrFlag(fv);
-  end;
-
-  function tCPU6502.aracc: bytep;
-  begin
-    result := @regs.aReg.fReg;
   end;
 
 

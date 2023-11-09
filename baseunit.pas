@@ -40,9 +40,8 @@ type
 
   tRegisters = packed object
     yReg, aReg, xReg:  tByteRegister;
-    sReg: tbyteIndex;
-    shReg: tByteRegister;
     pReg:  tFlagRegister;
+    sReg, shReg: tbyteIndex;
     pcLo, PcHi: tByteRegister;
     procedure RL(var b: byte; f: boolean = false);
     procedure RR(var b: byte; f: boolean = false);
@@ -61,7 +60,7 @@ type
   function  ROLD(d: dword; ind: byte): dword;
 
 const
-  testary: array[0..7] of byte = (0,1, 2, 3, 4, 5, 6, 7);
+  testary: array[0..8] of byte = ($a2,1, $ca, $ca, $a0, $ff, $c8, $c8, 0);
 
 implementation
 
@@ -264,41 +263,25 @@ procedure tRegisters.SB(Value: byte);
     end;
 
   procedure  tRegisters.RL(var b: byte; f: boolean);
-  var res: word;
   begin
-    res := (b shl 1)  or ord(f);
-    b := res;
-    preg.zn(res);
-    preg.setflag(fc, odd(wordrec(res).Hi) );
+    preg.setflag(fc, b>$7f );
+    b := preg.zn((b shl 1)  or ord(f));
   end;
 
   procedure  tRegisters.RR(var b: byte; f: boolean);
-  var res: word;
   begin
-    res := b;
-    wordrec(res).Hi:= ord(f);
-    preg.setflag(fc, odd(res) );
-    res := (res shr 1);
-    b := res;
-    preg.zn(res);
+    preg.setflag(fc, odd(b) );
+    b := preg.zn((b shr 1) or (ord(f) shl 7));
   end;
 
   procedure  tRegisters.incr(var b: byte);
-  var res: byte;
   begin
-    res := b;
-    res := succ(res);
-    preg.zn(res);
-    b := res;
+    b := preg.zn(b+1);
   end;
 
   procedure  tRegisters.decr(var b: byte);
-  var res: byte;
   begin
-    res := b;
-    res := PRED(res);
-    preg.zn(res);
-    b := res;
+    b := preg.zn(b-1);
   end;
 
 end.
